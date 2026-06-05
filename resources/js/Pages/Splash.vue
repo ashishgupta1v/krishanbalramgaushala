@@ -24,7 +24,7 @@
 
       <!-- Enter button -->
       <button v-else class="btn-saffron fu si" style="font-size:16px;padding:16px 50px;" @click="enter" :data-prefetch="route('choose')">
-        🙏 &nbsp; Jai Gau Mata — Enter
+        🙏 &nbsp; Jai Gau Mata - Enter
       </button>
     </div>
   </div>
