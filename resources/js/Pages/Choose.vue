@@ -3,10 +3,11 @@
     <div class="devo-card-container" style="width:100%;max-width:380px;padding:24px 20px;">
       <!-- Header -->
       <div style="text-align:center;margin-bottom:32px;display:flex;flex-direction:column;align-items:center;">
-        <div style="width: 90px; height: 90px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 16px; background: linear-gradient(145deg, var(--bg1), var(--bg)); box-shadow: 6px 6px 14px var(--sd), -6px -6px 14px var(--sl); padding: 4px; border: 1px solid rgba(255,255,255,0.75);">
+        <!-- Logo -->
+        <div style="margin-bottom:16px;">
           <picture>
             <source srcset="/logo.webp" type="image/webp">
-            <img src="/logo1.png" alt="Krishan Balram Gaushala Logo" width="90" height="90" style="width:100%;height:100%;object-fit:contain;" loading="eager" decoding="async" />
+            <img src="/logo1.png" alt="Krishan Balram Gaushala Logo" width="90" height="90" class="logo-img" style="width:90px;height:90px;" loading="eager" decoding="async" />
           </picture>
         </div>
         <h1 class="fu" style="font-family:'Playfair Display',serif;font-size:26px;font-weight:800;">Welcome</h1>

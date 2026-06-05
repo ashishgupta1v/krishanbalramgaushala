@@ -43,8 +43,8 @@
               </select>
             </div>
 
-            <!-- Scrollable Log Entries -->
-            <div style="max-height:460px;overflow-y:auto;display:flex;flex-direction:column;gap:10px;padding-right:4px;">
+            <!-- Log Entries -->
+            <div style="display:flex;flex-direction:column;gap:10px;">
               <div v-for="l in filteredLogs" :key="l.id" class="nr-sm" style="padding:10px 12px;background:var(--bg1);border-radius:12px;display:flex;align-items:center;gap:10px;">
                 <div class="av" :style="`width:34px;height:34px;background:${avColor(l.devotee?.name || 'Devotee')};font-size:10px;flex-shrink:0;`">
                   {{ initials(l.devotee?.name || 'Devotee') }}
@@ -135,7 +135,7 @@
                 <input v-model="form.label" class="n-inp" type="text" placeholder="e.g. Gopashtami Festival Wish" required style="font-size:12px;padding:10px 12px;">
               </div>
 
-              <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+              <div style="display:grid;grid-template-columns:1fr;gap:10px;">
                 <div>
                   <label style="font-size:10px;font-weight:700;color:var(--tl);display:block;margin-bottom:4px;">Meta Developer Name *</label>
                   <input v-model="form.meta_name" class="n-inp" type="text" placeholder="e.g. gaushala_festival_wish" required style="font-size:12px;padding:10px 12px;font-family:monospace;">

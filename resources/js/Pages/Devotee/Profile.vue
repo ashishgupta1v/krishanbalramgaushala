@@ -25,14 +25,12 @@
             <img src="/gomata.png" alt="Gomata Watermark" style="position:absolute;top:50%;left:52%;transform:translate(-50%,-50%);width:min(400px, 90%);height:auto;opacity:0.15;mix-blend-mode:multiply;pointer-events:none;z-index:1;filter:grayscale(10%);" />
             
             <div style="position:relative;z-index:2;">
-              <div style="display:flex;justify-content:center;margin-bottom:12px;">
-                <div style="width: 100px; height: 100px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: linear-gradient(145deg, var(--bg1), var(--bg)); box-shadow: 4px 4px 12px var(--sd), -4px -4px 12px var(--sl); padding: 4px; border: 1px solid rgba(255,255,255,0.7);">
+                <div style="display:flex;justify-content:center;margin-bottom:12px;">
                   <picture>
                     <source srcset="/logo.webp" type="image/webp">
-                    <img src="/logo1.png" alt="Krishan Balram Gaushala Logo" width="100" height="100" style="width:100%;height:100%;object-fit:contain;" loading="eager" decoding="async" />
+                    <img src="/logo1.png" alt="Krishan Balram Gaushala Logo" width="100" height="100" class="logo-img" style="width:100px;height:100px;" loading="eager" decoding="async" />
                   </picture>
                 </div>
-              </div>
               <div style="font-family:'Playfair Display',serif;font-size:18px;font-weight:700;">Krishan Balram Gaushala</div>
               <div style="font-size:10px;color:var(--tl);margin:3px 0 12px;line-height:1.4;">Singla Enclave, Village Dullon Khurd, Pakhowal Road, Ludhiana<br>Member since {{ memberSince }}</div>
               <div style="display:inline-flex;align-items:center;gap:7px;background:rgba(46,125,50,.12);border:1px solid rgba(67,160,71,.3);border-radius:20px;padding:5px 16px;">

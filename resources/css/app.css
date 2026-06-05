@@ -303,7 +303,15 @@ body::after {
 .slbl:first-child { margin-top: 0; }
 
 /* ══ PAGE PADDING ══ */
-.page { padding: 20px 16px 84px; }
+.page { padding: 20px 16px 90px; min-height: 100%; }
+
+/* ══ LOGO IMAGE — bare display, no circular clip ══ */
+.logo-img {
+  display: block;
+  object-fit: contain;
+  border-radius: 0;
+  filter: drop-shadow(0 3px 10px rgba(80,20,0,.35));
+}
 
 /* ══ DIVIDER ══ */
 .div {
@@ -709,8 +717,16 @@ body::after {
   flex-direction: column;
   height: 100%;
   background: var(--bg);
-  overflow-y: auto;
+  overflow: hidden;
   min-width: 0;
+}
+
+/* The scrollable content region sits between header and bottom nav */
+.page-content-wrapper {
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+  height: 100%;
 }
 
 /* Hide on desktop, show on mobile helper classes */
@@ -736,6 +752,7 @@ body::after {
 @media (min-width: 768px) {
   .desktop-grid-2 {
     grid-template-columns: 1fr 1fr;
+    gap: 20px;
   }
 }
 
@@ -758,7 +775,7 @@ body::after {
 .desktop-grid-4 {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 12px;
+  gap: 10px;
 }
 @media (min-width: 768px) {
   .desktop-grid-4 {
@@ -778,7 +795,6 @@ body::after {
   flex-direction: column;
   gap: 16px;
 }
-
 @media (min-width: 1024px) {
   .devo-profile-container {
     max-width: 1080px;
@@ -790,5 +806,42 @@ body::after {
     gap: 24px;
     align-items: start;
   }
+}
+
+/* ══ RESPONSIVE TABLE WRAPPER ══ */
+.tbl-scroll {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  border-radius: 12px;
+}
+
+/* ══ MOBILE CHIP ROW — allow horizontal scroll ══ */
+.chip-row {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  padding-bottom: 6px;
+  scrollbar-width: none;
+}
+.chip-row::-webkit-scrollbar { display: none; }
+
+/* ══ SAFE AREA for notched phones ══ */
+.a-nav {
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+/* ══ COLUMN TEXT CLAMP — prevent overflow in tight columns ══ */
+.clamp-1 { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 120px; }
+.clamp-2 { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+
+/* ══ SCROLL FIX — admin content area scrolls on mobile ══ */
+.admin-scroll-area {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+  min-height: 0;
 }
 

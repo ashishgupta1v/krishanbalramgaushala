@@ -5,12 +5,10 @@
       <!-- Header -->
       <div style="text-align:center;margin-bottom:24px;">
         <div style="display:flex;justify-content:center;margin-bottom:12px;">
-          <div style="width: 80px; height: 80px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: linear-gradient(145deg, var(--bg1), var(--bg)); box-shadow: 4px 4px 10px var(--sd), -4px -4px 10px var(--sl); padding: 3px; border: 1px solid rgba(255,255,255,0.75);">
-            <picture>
-              <source srcset="/logo.webp" type="image/webp">
-              <img src="/logo1.png" alt="Krishan Balram Gaushala Logo" width="80" height="80" style="width:100%;height:100%;object-fit:contain;" loading="eager" decoding="async" />
-            </picture>
-          </div>
+          <picture>
+            <source srcset="/logo.webp" type="image/webp">
+            <img src="/logo1.png" alt="Krishan Balram Gaushala Logo" width="80" height="80" class="logo-img" style="width:80px;height:80px;" loading="eager" decoding="async" />
+          </picture>
         </div>
         <h1 style="font-family:'Playfair Display',serif;font-size:22px;font-weight:800;">
           {{ registered ? 'Welcome! 🙏' : 'Join Gau Seva Family' }}
@@ -91,7 +89,7 @@
             <div style="width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;padding:1px;background:var(--bg);border:1px solid rgba(255,255,255,0.5);">
               <picture>
                 <source srcset="/logo.webp" type="image/webp">
-                <img src="/logo1.png" alt="logo" width="38" height="38" style="width:100%;height:100%;object-fit:contain;" loading="eager" decoding="async" />
+                <img src="/logo1.png" alt="logo" width="36" height="36" class="logo-img" style="width:36px;height:36px;" loading="eager" decoding="async" />
               </picture>
             </div>
             <div>
@@ -133,7 +131,7 @@ const form = ref({
 });
 
 const welcomeMsg = computed(() =>
-  `🙏 Jai Gau Mata!\n\nDear ${form.value.name} Ji,\n\nWelcome to our divine Gau Seva family! 🐄\n\nYou will receive special blessings on your Birthday and Anniversary from Krishan Balram Gaushala, Singla Enclave, Village Dullon Khurd, Pakhowal Road, Ludhiana.\n\n— Anand Tayal Ji`
+  `🙏 Jai Gau Mata!\n\nDear ${form.value.name} Ji,\n\nWelcome to our divine Gau Seva family! 🐄\n\n May Gau Mata bless your bond with eternal love and togetherness. \n\n— Krishan Balram Gaushala, Singla Enclave, Village Dullon Khurd, Pakhowal Road, Ludhiana`
 );
 
 function back() { router.visit(route('choose')); }

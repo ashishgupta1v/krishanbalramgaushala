@@ -7,10 +7,10 @@
     <!-- Content -->
     <div style="position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;">
       <!-- Logo -->
-      <div style="width: 130px; height: 130px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 20px; background: linear-gradient(145deg, var(--bg1), var(--bg)); box-shadow: 8px 8px 20px var(--sd), -8px -8px 20px var(--sl); padding: 5px; border: 1px solid rgba(255,255,255,0.75); animation: pulse 2.5s ease infinite;">
+      <div style="width:130px;height:130px;display:flex;align-items:center;justify-content:center;margin-bottom:20px;animation:pulse 2.5s ease infinite;">
         <picture>
           <source srcset="/logo.webp" type="image/webp">
-          <img src="/logo1.png" alt="Krishan Balram Gaushala Logo" width="130" height="130" style="width:100%;height:100%;object-fit:contain;" loading="eager" decoding="async" />
+          <img src="/logo1.png" alt="Krishan Balram Gaushala Logo" width="130" height="130" class="logo-img" style="width:130px;height:130px;" loading="eager" decoding="async" />
         </picture>
       </div>
       <div class="fu" style="font-family:'Playfair Display',serif;font-size:11px;font-weight:700;letter-spacing:3.5px;color:var(--gd1);text-transform:uppercase;margin-bottom:4px;">GauSeva Connect</div>
