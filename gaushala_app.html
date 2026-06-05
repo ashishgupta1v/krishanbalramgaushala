@@ -1,0 +1,1997 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+  <title>GauSeva Connect — Sri Krishan Balaram Gaushala, Ludhiana</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700;800&family=Poppins:wght@400;500;600;700&display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      --bg: #edda9f;
+      --bg1: #f5e8c0;
+      --bg2: #e2c882;
+      --sl: rgba(255, 246, 208, 0.90);
+      --sd: rgba(128, 68, 0, 0.26);
+      --pr: #b84e00;
+      --pr1: #d46600;
+      --pr2: #f08a30;
+      --gd: #c09010;
+      --gd1: #dba820;
+      --gd2: #f5c840;
+      --gd3: #ffe488;
+      --tx: #3a1200;
+      --tm: #7a4010;
+      --tl: #a86828;
+      --td: #c8a060;
+      --wa: #25D366;
+      --fb: #1877F2;
+      --ok: #2e7d32;
+      --ok1: #43a047;
+      --er: #c62828;
+      --er1: #ef5350;
+    }
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html,
+    body {
+      height: 100%;
+      overflow: hidden;
+      font-family: 'Poppins', sans-serif;
+      color: var(--tx);
+    }
+
+    body {
+      background: var(--bg);
+      background-image:
+        radial-gradient(ellipse 65% 55% at 18% 18%, rgba(210, 148, 8, .17) 0%, transparent 55%),
+        radial-gradient(ellipse 55% 60% at 82% 82%, rgba(180, 96, 0, .12) 0%, transparent 55%);
+    }
+
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 9998;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='256' height='256'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='256' height='256' filter='url(%23n)' opacity='.06'/%3E%3C/svg%3E");
+      opacity: .55;
+    }
+
+    /* ══ APP SHELL ══ */
+    #app {
+      position: fixed;
+      inset: 0;
+      overflow: hidden;
+    }
+
+    /* ══ SCREENS (all hidden by default; JS toggles display) ══ */
+    .screen {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: none;
+      overflow-y: auto;
+      overflow-x: hidden;
+    }
+
+    /* ══ NEO SHADOWS ══ */
+    .nr {
+      box-shadow: 6px 6px 16px var(--sd), -6px -6px 16px var(--sl);
+      background: var(--bg);
+      border-radius: 16px;
+    }
+
+    .nr-sm {
+      box-shadow: 4px 4px 10px var(--sd), -4px -4px 10px var(--sl);
+      background: var(--bg);
+      border-radius: 12px;
+    }
+
+    .ni {
+      box-shadow: inset 4px 4px 10px var(--sd), inset -4px -4px 10px var(--sl);
+      background: var(--bg);
+      border-radius: 12px;
+    }
+
+    .ni-sm {
+      box-shadow: inset 3px 3px 8px var(--sd), inset -3px -3px 8px var(--sl);
+    }
+
+    /* ══ SKEU BUTTONS ══ */
+    .btn-saffron {
+      background: linear-gradient(145deg, var(--pr2), var(--pr1) 45%, var(--pr) 75%, var(--pr1));
+      box-shadow: 4px 4px 12px rgba(100, 38, 0, .38), -3px -3px 9px rgba(255, 238, 180, .70), inset 0 1px 0 rgba(255, 200, 140, .4);
+      border: none;
+      border-radius: 50px;
+      color: #fff5e0;
+      font-family: 'Poppins', sans-serif;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform .12s, box-shadow .12s;
+    }
+
+    .btn-saffron:active {
+      transform: scale(.97);
+      box-shadow: inset 3px 3px 7px rgba(100, 38, 0, .35), inset -3px -3px 7px rgba(255, 238, 180, .6);
+    }
+
+    .btn-brass {
+      background: linear-gradient(145deg, var(--gd3), var(--gd1) 45%, var(--gd) 75%, var(--gd1));
+      box-shadow: 4px 4px 12px rgba(100, 70, 0, .35), -3px -3px 9px rgba(255, 245, 190, .75), inset 0 1px 0 rgba(255, 255, 200, .55);
+      border: none;
+      border-radius: 50px;
+      color: var(--tx);
+      font-family: 'Poppins', sans-serif;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform .12s, box-shadow .12s;
+    }
+
+    .btn-brass:active {
+      transform: scale(.97);
+    }
+
+    .btn-green {
+      background: linear-gradient(145deg, #66bb6a, #388e3c 50%, #2e7d32);
+      box-shadow: 4px 4px 11px rgba(18, 60, 18, .38), -3px -3px 8px rgba(190, 255, 190, .45);
+      border: none;
+      border-radius: 50px;
+      color: #efffef;
+      font-family: 'Poppins', sans-serif;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform .12s, box-shadow .12s;
+    }
+
+    .btn-green:active {
+      transform: scale(.97);
+    }
+
+    .btn-ghost {
+      box-shadow: 3px 3px 8px var(--sd), -3px -3px 8px var(--sl);
+      background: var(--bg);
+      border: none;
+      border-radius: 50px;
+      color: var(--tm);
+      font-family: 'Poppins', sans-serif;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform .12s, box-shadow .12s;
+    }
+
+    .btn-ghost:active {
+      box-shadow: inset 2px 2px 6px var(--sd), inset -2px -2px 6px var(--sl);
+    }
+
+    /* ══ INPUTS ══ */
+    .n-inp {
+      width: 100%;
+      box-shadow: inset 4px 4px 10px var(--sd), inset -4px -4px 10px var(--sl);
+      background: var(--bg);
+      border: none;
+      outline: none;
+      border-radius: 12px;
+      padding: 13px 15px;
+      color: var(--tx);
+      font-size: 14px;
+      font-family: 'Poppins', sans-serif;
+      transition: box-shadow .18s;
+    }
+
+    .n-inp:focus {
+      box-shadow: inset 3px 3px 8px var(--sd), inset -3px -3px 8px var(--sl), 0 0 0 3px rgba(184, 78, 0, .15);
+    }
+
+    .n-inp::placeholder {
+      color: var(--td);
+    }
+
+    .n-ta {
+      width: 100%;
+      box-shadow: inset 4px 4px 10px var(--sd), inset -4px -4px 10px var(--sl);
+      background: var(--bg);
+      border: none;
+      outline: none;
+      border-radius: 12px;
+      padding: 13px 15px;
+      color: var(--tx);
+      font-size: 13px;
+      font-family: 'Poppins', sans-serif;
+      resize: none;
+      line-height: 1.65;
+      transition: box-shadow .18s;
+    }
+
+    .n-ta:focus {
+      box-shadow: inset 3px 3px 8px var(--sd), inset -3px -3px 8px var(--sl), 0 0 0 3px rgba(184, 78, 0, .15);
+    }
+
+    /* ══ CHIP / PILL ══ */
+    .chip {
+      padding: 6px 16px;
+      border-radius: 50px;
+      border: none;
+      cursor: pointer;
+      font-size: 11px;
+      font-weight: 600;
+      font-family: 'Poppins', sans-serif;
+      white-space: nowrap;
+      box-shadow: 3px 3px 8px var(--sd), -3px -3px 8px var(--sl);
+      background: var(--bg);
+      color: var(--tl);
+      transition: all .15s;
+      flex-shrink: 0;
+    }
+
+    .chip.on {
+      box-shadow: inset 3px 3px 7px var(--sd), inset -3px -3px 7px var(--sl);
+      color: var(--pr);
+      font-weight: 700;
+    }
+
+    /* ══ BADGE ══ */
+    .bdg {
+      display: inline-block;
+      padding: 2px 9px;
+      border-radius: 20px;
+      font-size: 10px;
+      font-weight: 700;
+    }
+
+    /* ══ SECTION LABEL ══ */
+    .slbl {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 1.4px;
+      text-transform: uppercase;
+      color: var(--tl);
+      margin: 18px 0 10px;
+    }
+
+    .slbl:first-child {
+      margin-top: 0;
+    }
+
+    /* ══ COMMON PAGE PADDING ══ */
+    .page {
+      padding: 20px 16px 84px;
+    }
+
+    /* ══ DIVIDER ══ */
+    .div {
+      border: none;
+      height: 1px;
+      background: rgba(180, 128, 40, .18);
+      margin: 10px 0;
+    }
+
+    /* ══ ANIMATIONS ══ */
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(18px)
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0)
+      }
+    }
+
+    @keyframes scaleIn {
+      from {
+        opacity: 0;
+        transform: scale(.93)
+      }
+
+      to {
+        opacity: 1;
+        transform: scale(1)
+      }
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg)
+      }
+    }
+
+    @keyframes pulse {
+
+      0%,
+      100% {
+        opacity: 1
+      }
+
+      50% {
+        opacity: .5
+      }
+    }
+
+    @keyframes toastIn {
+      from {
+        transform: translate(-50%, 14px);
+        opacity: 0
+      }
+
+      to {
+        transform: translate(-50%, 0);
+        opacity: 1
+      }
+    }
+
+    .fu {
+      animation: fadeUp .35s ease both;
+    }
+
+    .fu2 {
+      animation: fadeUp .35s .08s ease both;
+    }
+
+    .fu3 {
+      animation: fadeUp .35s .16s ease both;
+    }
+
+    .fu4 {
+      animation: fadeUp .35s .24s ease both;
+    }
+
+    .si {
+      animation: scaleIn .22s ease both;
+    }
+
+    .spin {
+      display: inline-block;
+      width: 16px;
+      height: 16px;
+      border: 2px solid rgba(255, 255, 255, .2);
+      border-top-color: #fff;
+      border-radius: 50%;
+      animation: spin .6s linear infinite;
+    }
+
+    .spin-dark {
+      border-color: rgba(58, 18, 0, .15);
+      border-top-color: var(--pr);
+    }
+
+    /* ══════════════════════════════════════
+   SPLASH SCREEN
+══════════════════════════════════════ */
+    #s-splash {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 32px 28px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .s-ring {
+      position: absolute;
+      border-radius: 50%;
+      pointer-events: none;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    /* ══════════════════════════════════════
+   CHOOSE SCREEN
+══════════════════════════════════════ */
+    #s-choose {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 24px 20px;
+    }
+
+    .choice-btn {
+      width: 100%;
+      border: none;
+      cursor: pointer;
+      border-radius: 18px;
+      font-family: 'Poppins', sans-serif;
+      box-shadow: 6px 6px 18px var(--sd), -6px -6px 18px var(--sl);
+      background: var(--bg);
+      transition: transform .15s, box-shadow .15s;
+      text-align: left;
+    }
+
+    .choice-btn:active {
+      transform: scale(.98);
+      box-shadow: inset 4px 4px 10px var(--sd), inset -4px -4px 10px var(--sl);
+    }
+
+    /* ══════════════════════════════════════
+   REGISTER SCREEN  
+══════════════════════════════════════ */
+    #s-register {
+      overflow-y: auto;
+      overflow-x: hidden;
+    }
+
+    .otp-d {
+      width: 50px;
+      height: 56px;
+      text-align: center;
+      font-size: 22px;
+      font-weight: 800;
+      box-shadow: inset 4px 4px 10px var(--sd), inset -4px -4px 10px var(--sl);
+      background: var(--bg);
+      border: none;
+      outline: none;
+      border-radius: 12px;
+      color: var(--tx);
+      font-family: 'Poppins', sans-serif;
+      transition: box-shadow .18s;
+    }
+
+    .otp-d:focus {
+      box-shadow: inset 3px 3px 8px var(--sd), inset -3px -3px 8px var(--sl), 0 0 0 3px rgba(184, 78, 0, .2);
+    }
+
+    /* ══════════════════════════════════════
+   ADMIN SCREEN — strict flex column
+══════════════════════════════════════ */
+    #s-admin {
+      display: none;
+      flex-direction: column;
+      overflow: hidden;
+      height: 100%;
+    }
+
+    #s-admin.active-admin {
+      display: flex;
+    }
+
+    /* header */
+    .a-hdr {
+      flex-shrink: 0;
+      background: linear-gradient(135deg, #5a1600, #8c2e00 35%, #c04800 65%, #8c2e00 90%, #5a1600);
+      padding: 13px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 4px 18px rgba(60, 18, 0, .55);
+      position: relative;
+      z-index: 10;
+    }
+
+    .a-hdr::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 2.5px;
+      background: linear-gradient(90deg, transparent, var(--gd3), var(--gd1), var(--gd2), var(--gd1), var(--gd3), transparent);
+    }
+
+    /* scrollable body */
+    .a-body {
+      flex: 1;
+      overflow-y: auto;
+      overflow-x: hidden;
+      min-height: 0;
+      /* critical for flex scroll */
+    }
+
+    /* tab panes — all hidden, JS shows active one */
+    .tab-p {
+      display: none;
+      padding: 20px 16px 84px;
+    }
+
+    /* bottom nav */
+    .a-nav {
+      flex-shrink: 0;
+      display: flex;
+      background: var(--bg);
+      border-top: 1px solid rgba(180, 128, 40, .22);
+      box-shadow: 0 -5px 18px rgba(128, 68, 0, .18), -0 -1px 0 var(--sl);
+    }
+
+    .nav-i {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 9px 4px 7px;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      font-family: 'Poppins', sans-serif;
+      border-top: 2.5px solid transparent;
+      transition: border-color .18s;
+    }
+
+    .nav-i.on {
+      border-top-color: var(--pr1);
+    }
+
+    .nav-ic {
+      font-size: 20px;
+      transition: transform .18s;
+    }
+
+    .nav-i.on .nav-ic {
+      transform: translateY(-1px);
+    }
+
+    .nav-lb {
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: .3px;
+      color: var(--td);
+      margin-top: 2px;
+      transition: color .18s;
+    }
+
+    .nav-i.on .nav-lb {
+      color: var(--pr1);
+    }
+
+    /* ══ TOAST ══ */
+    #toast {
+      position: fixed;
+      bottom: 88px;
+      left: 50%;
+      transform: translateX(-50%);
+      padding: 9px 20px;
+      border-radius: 50px;
+      font-size: 12px;
+      font-weight: 700;
+      z-index: 9999;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity .2s;
+      white-space: nowrap;
+      font-family: 'Poppins', sans-serif;
+      box-shadow: 3px 4px 16px rgba(0, 0, 0, .35);
+    }
+
+    #toast.show {
+      opacity: 1;
+      animation: toastIn .22s ease;
+    }
+
+    /* ══ MEMBER EXPAND ══ */
+    .m-extra {
+      overflow: hidden;
+      max-height: 0;
+      opacity: 0;
+      transition: max-height .28s ease, opacity .25s ease;
+      border-top: 0 solid rgba(180, 128, 40, .18);
+      margin-top: 0;
+      padding-top: 0;
+    }
+
+    .m-open .m-extra {
+      max-height: 200px;
+      opacity: 1;
+      border-top-width: 1px;
+      margin-top: 12px;
+      padding-top: 12px;
+    }
+
+    /* ══ WA BUBBLE ══ */
+    .wa-bbl {
+      background: #075e54;
+      border-radius: 16px;
+      padding: 14px;
+    }
+
+    .wa-msg {
+      background: rgba(255, 255, 255, .12);
+      border-radius: 10px;
+      border-top-left-radius: 2px;
+      padding: 10px 12px;
+    }
+
+    /* ══ EVENT CARDS ══ */
+    .ev-card {
+      display: flex;
+      gap: 12px;
+      padding: 13px 14px;
+      border-radius: 14px;
+      margin-bottom: 9px;
+      background: var(--bg1);
+      box-shadow: 4px 4px 12px var(--sd), -4px -4px 12px var(--sl);
+      border-left: 3px solid #ccc;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .ev-ico {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      flex-shrink: 0;
+      box-shadow: 3px 3px 8px var(--sd), -2px -2px 6px var(--sl);
+    }
+
+    /* ══ TIMELINE ══ */
+    .tl-row {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      padding: 9px 0;
+    }
+
+    .tl-dot {
+      width: 11px;
+      height: 11px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      margin-top: 4px;
+    }
+
+    /* ══ FB POST ══ */
+    .fb-card {
+      background: var(--bg1);
+      box-shadow: 4px 4px 11px var(--sd), -4px -4px 11px var(--sl);
+      border-radius: 13px;
+      padding: 13px;
+      margin-bottom: 10px;
+    }
+
+    /* ══ DROP ZONE ══ */
+    .dropz {
+      border: 2px dashed rgba(180, 100, 0, .32);
+      border-radius: 18px;
+      padding: 38px 20px;
+      text-align: center;
+      cursor: pointer;
+      background: rgba(255, 246, 210, .3);
+      transition: all .2s;
+    }
+
+    .dropz.drag {
+      border-color: var(--pr1);
+      background: rgba(255, 178, 72, .15);
+      transform: scale(1.01);
+    }
+
+    /* ══ AVATAR ══ */
+    .av {
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      color: #fff;
+      flex-shrink: 0;
+      box-shadow: 3px 3px 8px var(--sd), -2px -2px 6px var(--sl);
+    }
+
+    /* ══ SKEU HEADER TRIM ══ */
+    .sk-leather {
+      background:
+        repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0, 0, 0, .013) 2px, rgba(0, 0, 0, .013) 4px),
+        linear-gradient(150deg, var(--bg1), var(--bg) 50%, var(--bg2));
+      box-shadow: 6px 6px 18px var(--sd), -6px -6px 18px var(--sl), inset 0 1px 0 rgba(255, 248, 220, .55), inset 0 -1px 0 rgba(120, 62, 0, .12);
+    }
+
+    .sk-seal {
+      border-radius: 50%;
+      background: radial-gradient(circle at 38% 38%, #e83000, #9a1000);
+      box-shadow: 2px 3px 9px rgba(80, 0, 0, .45), inset 0 1px 2px rgba(255, 200, 180, .3);
+    }
+
+    /* ══ STAT CARD ══ */
+    .stat-card {
+      text-align: center;
+      padding: 18px 10px;
+    }
+
+    .stat-v {
+      font-family: 'Playfair Display', serif;
+      font-size: 30px;
+      font-weight: 800;
+      line-height: 1.05;
+    }
+
+    .stat-l {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: .9px;
+      text-transform: uppercase;
+      color: var(--tl);
+      margin-top: 5px;
+    }
+
+    .stat-s {
+      font-size: 10px;
+      color: var(--td);
+      margin-top: 3px;
+    }
+
+    /* ══ AUTO STATUS ROW ══ */
+    .a-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 0;
+      border-bottom: 1px solid rgba(180, 128, 40, .14);
+    }
+
+    .a-row:last-child {
+      border-bottom: none;
+    }
+
+    .a-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      display: inline-block;
+      margin-right: 7px;
+    }
+
+    /* ══ PROGRESS BAR ══ */
+    .pb-wrap {
+      height: 3px;
+      border-radius: 2px;
+      background: rgba(180, 128, 40, .2);
+    }
+
+    .pb-fill {
+      height: 100%;
+      border-radius: 2px;
+      background: linear-gradient(to right, var(--pr), var(--pr2));
+      transition: width .4s ease;
+    }
+
+    /* ══ CHECKBOX ══ */
+    .n-chk {
+      appearance: none;
+      width: 20px;
+      height: 20px;
+      border-radius: 6px;
+      cursor: pointer;
+      flex-shrink: 0;
+      box-shadow: inset 3px 3px 7px var(--sd), inset -3px -3px 7px var(--sl);
+      background: var(--bg);
+      position: relative;
+    }
+
+    .n-chk:checked {
+      background: var(--pr1);
+      box-shadow: inset 2px 2px 5px rgba(100, 40, 0, .32), inset -2px -2px 5px rgba(255, 200, 150, .32);
+    }
+
+    .n-chk:checked::after {
+      content: '✓';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: #fff;
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    @media(min-width:520px) {
+
+      .screen,
+      #s-admin,
+      #s-splash,
+      #s-choose,
+      #s-register,
+      #s-devotee,
+      #s-alog {
+        max-width: 520px;
+        left: 50%;
+        transform: translateX(-50%);
+      }
+
+      .a-nav {
+        max-width: 520px;
+        left: 50%;
+        transform: translateX(-50%);
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div id="app">
+
+    <!-- ═══ TOAST ═══ -->
+    <div id="toast"></div>
+
+    <!-- ══════════════════════════════════════
+  SPLASH
+══════════════════════════════════════ -->
+    <div id="s-splash" class="screen">
+      <div class="s-ring" style="width:540px;height:540px;border:1px solid rgba(200,140,0,.05)"></div>
+      <div class="s-ring" style="width:390px;height:390px;border:1px solid rgba(200,140,0,.08)"></div>
+      <div class="s-ring" style="width:270px;height:270px;border:1px solid rgba(200,140,0,.12)"></div>
+      <div class="s-ring" style="width:170px;height:170px;border:1px solid rgba(200,140,0,.17)"></div>
+      <div style="position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;">
+        <div
+          style="font-size:78px;margin-bottom:8px;filter:drop-shadow(0 4px 18px rgba(180,76,0,.38));animation:pulse 2.5s ease infinite;">
+          🐄</div>
+        <div class="fu"
+          style="font-family:'Playfair Display',serif;font-size:11px;font-weight:700;letter-spacing:3.5px;color:var(--gd1);text-transform:uppercase;margin-bottom:4px;">
+          GauSeva Connect</div>
+        <h1 class="fu2"
+          style="font-family:'Playfair Display',serif;font-size:28px;font-weight:800;color:var(--tx);line-height:1.18;text-align:center;">
+          Sri Krishan Balaram</h1>
+        <h2 class="fu3"
+          style="font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:var(--pr);margin-bottom:5px;">
+          Gaushala</h2>
+        <div class="fu4" style="font-size:12px;color:var(--tl);font-weight:500;">Civil Lines, Ludhiana, Punjab</div>
+        <div class="fu4" style="font-size:11px;color:var(--td);margin-bottom:52px;">Est. 1992 &nbsp;•&nbsp; Registered
+          &nbsp;🙏</div>
+        <div id="splash-loader"
+          style="width:36px;height:36px;border:3px solid rgba(180,100,0,.18);border-top-color:var(--pr1);border-radius:50%;animation:spin .9s linear infinite;">
+        </div>
+        <button id="splash-btn" class="btn-saffron fu" style="display:none;font-size:16px;padding:16px 50px;"
+          onclick="nav('choose')">
+          🙏 &nbsp; Jai Gau Mata — Enter
+        </button>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════
+  CHOOSE
+══════════════════════════════════════ -->
+    <div id="s-choose" class="screen" style="display:none;">
+      <div
+        style="min-height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px 20px;">
+        <div style="width:100%;max-width:380px;">
+          <div style="text-align:center;margin-bottom:32px;">
+            <div style="font-size:50px;margin-bottom:10px;">🙏</div>
+            <h2 class="fu" style="font-family:'Playfair Display',serif;font-size:26px;font-weight:800;">Welcome</h2>
+            <p class="fu2" style="color:var(--tl);font-size:13px;margin-top:4px;line-height:1.7;">Sri Krishan Balaram
+              Gaushala<br>Civil Lines, Ludhiana</p>
+          </div>
+          <button class="choice-btn fu3" onclick="nav('register')"
+            style="padding:22px 20px;margin-bottom:14px;border-left:4px solid var(--pr1);">
+            <div style="display:flex;align-items:center;gap:15px;">
+              <div
+                style="width:56px;height:56px;border-radius:15px;display:flex;align-items:center;justify-content:center;font-size:30px;box-shadow:3px 3px 9px var(--sd),-2px -2px 7px var(--sl);background:var(--bg);flex-shrink:0;">
+                🐄</div>
+              <div>
+                <div style="font-family:'Playfair Display',serif;font-size:18px;font-weight:800;color:var(--tx);">I am a
+                  Devotee</div>
+                <div style="font-size:12px;color:var(--tl);margin-top:3px;line-height:1.5;">Register to receive Gaushala
+                  blessings every year on WhatsApp</div>
+                <div style="margin-top:8px;font-size:10px;color:var(--pr1);font-weight:700;">🎂 Birthday &nbsp; 💐
+                  Anniversary &nbsp; 📲 Wishes</div>
+              </div>
+            </div>
+          </button>
+          <button class="choice-btn fu4" onclick="nav('alog')" style="padding:16px 20px;opacity:.9;">
+            <div style="display:flex;align-items:center;gap:14px;">
+              <span style="font-size:28px;">🔐</span>
+              <div>
+                <div style="font-size:15px;font-weight:700;color:var(--tx);">Admin Panel</div>
+                <div style="font-size:11px;color:var(--tl);margin-top:2px;">Gaushala management dashboard</div>
+              </div>
+              <span style="margin-left:auto;color:var(--td);font-size:20px;font-weight:300;">›</span>
+            </div>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════
+  REGISTER
+══════════════════════════════════════ -->
+    <div id="s-register" class="screen" style="display:none;">
+      <div class="page" style="padding-bottom:50px;max-width:480px;margin:0 auto;">
+        <div style="margin-bottom:20px;">
+          <button class="btn-ghost" style="padding:7px 16px;font-size:12px;" onclick="nav('choose')">← Back</button>
+        </div>
+        <div style="text-align:center;margin-bottom:24px;">
+          <div style="font-size:44px;margin-bottom:8px;">🐄</div>
+          <h1 id="reg-title" style="font-family:'Playfair Display',serif;font-size:22px;font-weight:800;">Join Gau Seva
+            Family</h1>
+          <p style="color:var(--tl);font-size:12px;margin-top:3px;">Sri Krishan Balaram Gaushala, Ludhiana</p>
+        </div>
+        <!-- Progress -->
+        <div style="display:flex;gap:8px;margin-bottom:26px;" id="reg-progress">
+          <div style="flex:1;">
+            <div class="pb-wrap">
+              <div class="pb-fill" id="pb1" style="width:100%;"></div>
+            </div>
+            <div style="font-size:9px;color:var(--pr1);margin-top:3px;text-align:center;font-weight:700;">Details</div>
+          </div>
+          <div style="flex:1;">
+            <div class="pb-wrap">
+              <div class="pb-fill" id="pb2" style="width:0%;"></div>
+            </div>
+            <div style="font-size:9px;color:var(--td);margin-top:3px;text-align:center;font-weight:600;" id="pb2-lbl">
+              Verify OTP</div>
+          </div>
+        </div>
+        <!-- STEP 1 -->
+        <div id="reg-s1">
+          <div style="margin-bottom:14px;">
+            <div class="slbl" style="margin-top:0;">Full Name *</div>
+            <input id="r-name" class="n-inp" type="text" placeholder="e.g. Rajesh Kumar Sharma">
+          </div>
+          <div style="margin-bottom:14px;">
+            <div class="slbl" style="margin-top:0;">WhatsApp Number *</div>
+            <div style="position:relative;">
+              <span
+                style="position:absolute;left:15px;top:50%;transform:translateY(-50%);font-weight:700;font-size:13px;color:var(--tl);pointer-events:none;">+91</span>
+              <input id="r-wa" class="n-inp" type="tel" placeholder="10-digit number" style="padding-left:48px;"
+                maxlength="10">
+            </div>
+            <div style="font-size:11px;color:var(--td);margin-top:4px;padding-left:2px;">A 5-digit OTP will be sent to
+              this WhatsApp number</div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px;">
+            <div>
+              <div class="slbl" style="margin-top:0;">Date of Birth *</div>
+              <input id="r-dob" class="n-inp" type="date">
+            </div>
+            <div>
+              <div class="slbl" style="margin-top:0;">Anniversary</div>
+              <input id="r-ann" class="n-inp" type="date">
+              <div style="font-size:10px;color:var(--td);margin-top:3px;">Optional</div>
+            </div>
+          </div>
+          <div class="nr-sm" style="padding:14px;margin-bottom:24px;">
+            <label style="display:flex;align-items:flex-start;gap:11px;cursor:pointer;">
+              <input type="checkbox" id="r-fb" class="n-chk" checked>
+              <div>
+                <div style="font-size:13px;font-weight:600;">📘 Facebook Blessings</div>
+                <div style="font-size:11px;color:var(--tl);margin-top:3px;line-height:1.5;">Allow Gaushala to feature my
+                  name in birthday & anniversary posts on their Facebook page</div>
+              </div>
+            </label>
+          </div>
+          <button class="btn-saffron" style="width:100%;padding:15px;font-size:15px;" id="reg-s1-btn"
+            onclick="regS1()">Send WhatsApp OTP →</button>
+        </div>
+        <!-- STEP 2 -->
+        <div id="reg-s2" style="display:none;">
+          <div class="nr" style="padding:20px;text-align:center;margin-bottom:24px;background:var(--bg1);">
+            <div style="font-size:40px;margin-bottom:10px;">📲</div>
+            <div style="font-size:14px;color:var(--tx);line-height:1.75;">OTP sent to<br><strong
+                style="color:var(--pr);">+91 <span id="otp-wa-num"></span></strong><br>via WhatsApp</div>
+            <div style="font-size:11px;color:var(--td);margin-top:5px;">Check your WhatsApp messages</div>
+          </div>
+          <div class="slbl" style="text-align:center;">Enter 5-Digit OTP</div>
+          <div style="display:flex;gap:9px;justify-content:center;margin-bottom:24px;" id="otp-row">
+            <input class="otp-d" maxlength="1" type="tel" inputmode="numeric">
+            <input class="otp-d" maxlength="1" type="tel" inputmode="numeric">
+            <input class="otp-d" maxlength="1" type="tel" inputmode="numeric">
+            <input class="otp-d" maxlength="1" type="tel" inputmode="numeric">
+            <input class="otp-d" maxlength="1" type="tel" inputmode="numeric">
+          </div>
+          <button class="btn-saffron" style="width:100%;padding:15px;font-size:15px;" id="otp-btn"
+            onclick="regVerify()">✓ Verify & Register</button>
+          <p style="text-align:center;margin-top:12px;color:var(--td);font-size:11px;">Demo: enter any 5 digits to
+            continue</p>
+        </div>
+        <!-- STEP 3 SUCCESS -->
+        <div id="reg-s3" style="display:none;text-align:center;">
+          <div style="font-size:72px;margin-bottom:16px;animation:pulse 2s ease infinite;">✅</div>
+          <h2 style="font-family:'Playfair Display',serif;font-size:24px;font-weight:800;margin-bottom:6px;">Registered!
+          </h2>
+          <p style="color:var(--tl);font-size:14px;line-height:1.8;margin-bottom:26px;">Welcome, <strong
+              id="reg-success-name"></strong>ji!<br>You're now part of our Gau Seva family. 🙏</p>
+          <div class="wa-bbl" style="max-width:320px;margin:0 auto 28px;text-align:left;">
+            <div
+              style="display:flex;align-items:center;gap:10px;margin-bottom:9px;padding-bottom:9px;border-bottom:1px solid rgba(255,255,255,.1);">
+              <div
+                style="width:38px;height:38px;border-radius:50%;background:#128c7e;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;">
+                🐄</div>
+              <div>
+                <div style="color:#fff;font-weight:700;font-size:12px;">Sri Krishan Balaram Gaushala</div>
+                <div style="color:rgba(255,255,255,.45);font-size:10px;">Official • Just now</div>
+              </div>
+            </div>
+            <div class="wa-msg">
+              <p id="reg-wa-msg" style="color:#fff;font-size:12px;line-height:1.7;white-space:pre-line;margin:0;"></p>
+              <div style="text-align:right;color:rgba(255,255,255,.4);font-size:10px;margin-top:5px;">✓✓ Delivered</div>
+            </div>
+          </div>
+          <button class="btn-saffron" style="padding:14px 44px;font-size:15px;" onclick="nav('devotee')">View My Profile
+            →</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════
+  DEVOTEE HOME
+══════════════════════════════════════ -->
+    <div id="s-devotee" class="screen" style="display:none;">
+      <div class="page" style="padding-bottom:40px;max-width:480px;margin:0 auto;">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:22px;">
+          <div>
+            <div style="font-size:11px;color:var(--tl);">🙏 Jai Gau Mata</div>
+            <h2 style="font-family:'Playfair Display',serif;font-size:20px;">Namaste, <span
+                id="dev-name">Rajesh</span>ji!</h2>
+          </div>
+          <button class="btn-ghost" style="padding:7px 14px;font-size:12px;" onclick="nav('choose')">← Back</button>
+        </div>
+        <!-- Hero -->
+        <div class="sk-leather fu"
+          style="padding:22px;text-align:center;margin-bottom:18px;border-radius:20px;overflow:hidden;">
+          <div style="font-size:54px;margin-bottom:8px;filter:drop-shadow(0 4px 14px rgba(180,80,0,.3));">🐄</div>
+          <div style="font-family:'Playfair Display',serif;font-size:18px;font-weight:700;">Sri Krishan Balaram Gaushala
+          </div>
+          <div style="font-size:12px;color:var(--tl);margin:3px 0 12px;">Civil Lines, Ludhiana &nbsp;•&nbsp; Member
+            since Jan 2024</div>
+          <div
+            style="display:inline-flex;align-items:center;gap:7px;background:rgba(46,125,50,.12);border:1px solid rgba(67,160,71,.3);border-radius:20px;padding:5px 16px;">
+            <span
+              style="width:8px;height:8px;background:var(--ok1);border-radius:50%;box-shadow:0 0 7px var(--ok1);"></span>
+            <span style="color:var(--ok1);font-size:12px;font-weight:700;">Active Devotee</span>
+          </div>
+        </div>
+        <!-- Details -->
+        <div class="nr fu2" style="padding:16px;margin-bottom:14px;">
+          <div class="slbl">My Details</div>
+          <div class="a-row">
+            <div style="display:flex;gap:10px;align-items:center;"><span style="font-size:21px;">🎂</span>
+              <div>
+                <div style="font-size:10px;color:var(--td);">Birthday</div>
+                <div style="font-size:14px;font-weight:700;">15 March</div>
+              </div>
+            </div>
+            <div style="font-size:11px;color:var(--td);text-align:right;">Yearly blessings<br>from Gaushala</div>
+          </div>
+          <div class="a-row">
+            <div style="display:flex;gap:10px;align-items:center;"><span style="font-size:21px;">💐</span>
+              <div>
+                <div style="font-size:10px;color:var(--td);">Anniversary</div>
+                <div style="font-size:14px;font-weight:700;">20 November</div>
+              </div>
+            </div>
+            <div style="font-size:11px;color:var(--td);text-align:right;">Yearly blessings<br>sent on WhatsApp</div>
+          </div>
+          <div style="display:flex;gap:10px;align-items:center;padding:10px 0;"><span style="font-size:21px;">📲</span>
+            <div>
+              <div style="font-size:10px;color:var(--td);">WhatsApp</div>
+              <div style="font-size:14px;font-weight:700;">+91 9876 543 210</div>
+            </div>
+          </div>
+        </div>
+        <!-- What you receive -->
+        <div class="nr fu3" style="padding:16px;">
+          <div class="slbl">You Receive Every Year</div>
+          <div class="a-row"><span style="font-size:20px;">📲</span>
+            <div style="flex:1;margin-left:10px;">
+              <div style="font-size:13px;font-weight:600;">WhatsApp Birthday Wish</div>
+              <div style="font-size:11px;color:var(--tl);margin-top:1px;">Personal message from Gaushala on your
+                birthday</div>
+            </div><span style="color:var(--wa);font-size:10px;font-weight:700;flex-shrink:0;">AUTO</span>
+          </div>
+          <div class="a-row"><span style="font-size:20px;">💐</span>
+            <div style="flex:1;margin-left:10px;">
+              <div style="font-size:13px;font-weight:600;">WhatsApp Anniversary Wish</div>
+              <div style="font-size:11px;color:var(--tl);margin-top:1px;">Anniversary blessings for you and your family
+              </div>
+            </div><span style="color:var(--wa);font-size:10px;font-weight:700;flex-shrink:0;">AUTO</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;padding:10px 0;"><span style="font-size:20px;">📘</span>
+            <div style="flex:1;">
+              <div style="font-size:13px;font-weight:600;">Facebook Page Blessing</div>
+              <div style="font-size:11px;color:var(--tl);margin-top:1px;">Featured in Gaushala's Facebook birthday post
+              </div>
+            </div><span style="color:var(--fb);font-size:10px;font-weight:700;flex-shrink:0;">AUTO</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════
+  ADMIN LOGIN
+══════════════════════════════════════ -->
+    <div id="s-alog" class="screen" style="display:none;">
+      <div
+        style="min-height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:28px;">
+        <div style="width:100%;max-width:340px;">
+          <div style="text-align:center;margin-bottom:30px;">
+            <div class="sk-seal"
+              style="width:68px;height:68px;margin:0 auto 14px;display:flex;align-items:center;justify-content:center;font-size:32px;">
+              🔐</div>
+            <h2 style="font-family:'Playfair Display',serif;font-size:24px;font-weight:800;">Admin Panel</h2>
+            <p style="color:var(--tl);font-size:13px;margin-top:4px;">Sri Krishan Balaram Gaushala</p>
+          </div>
+          <div class="nr" style="padding:24px;border-radius:20px;">
+            <div class="slbl">Username</div>
+            <input id="al-u" class="n-inp" type="text" placeholder="admin" style="margin-bottom:16px;">
+            <div class="slbl">Password</div>
+            <input id="al-p" class="n-inp" type="password" placeholder="••••••••" style="margin-bottom:22px;">
+            <button class="btn-saffron" style="width:100%;padding:15px;font-size:15px;" onclick="aLogin()">Login to
+              Dashboard →</button>
+            <p style="text-align:center;margin-top:10px;color:var(--td);font-size:11px;">Demo: admin / gaushala</p>
+          </div>
+          <button class="btn-ghost" style="width:100%;padding:12px;margin-top:12px;font-size:13px;"
+            onclick="nav('choose')">← Back to Home</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════
+  ADMIN PANEL
+══════════════════════════════════════ -->
+    <div id="s-admin">
+
+      <!-- Header -->
+      <div class="a-hdr">
+        <div style="display:flex;align-items:center;gap:11px;">
+          <span style="font-size:28px;filter:drop-shadow(0 2px 9px rgba(255,200,100,.5));">🐄</span>
+          <div>
+            <div
+              style="font-family:'Playfair Display',serif;font-size:14px;color:var(--gd3);font-weight:700;line-height:1.2;">
+              Sri Krishan Balaram Gaushala</div>
+            <div style="font-size:10px;color:rgba(240,210,140,.65);letter-spacing:.3px;">Admin Dashboard &nbsp;•&nbsp;
+              Civil Lines, Ludhiana</div>
+          </div>
+        </div>
+        <button
+          style="background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.18);border-radius:8px;padding:6px 12px;color:rgba(240,218,158,.8);font-size:11px;cursor:pointer;font-family:'Poppins',sans-serif;"
+          onclick="nav('choose')">Logout</button>
+      </div>
+
+      <!-- Body -->
+      <div class="a-body" id="a-body">
+
+        <!-- ─── TAB: HOME ─── -->
+        <div class="tab-p" id="tp-home">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:18px;">
+            <div>
+              <h2 style="font-family:'Playfair Display',serif;font-size:20px;">Dashboard</h2>
+              <p id="dash-date" style="color:var(--tl);font-size:11px;margin-top:2px;"></p>
+            </div>
+            <div class="sk-seal"
+              style="width:38px;height:38px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;">
+              🙏</div>
+          </div>
+          <!-- Stats -->
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:22px;">
+            <div class="nr stat-card">
+              <div class="stat-v" style="color:var(--pr1);" id="st-total">15</div>
+              <div class="stat-l">Total Members</div>
+              <div class="stat-s">12 active</div>
+            </div>
+            <div class="nr stat-card">
+              <div class="stat-v" style="color:var(--gd);">3</div>
+              <div class="stat-l">Birthdays Today</div>
+              <div class="stat-s">WA wishes sent ✓</div>
+            </div>
+            <div class="nr stat-card">
+              <div class="stat-v" style="color:#9c27b0;">1</div>
+              <div class="stat-l">Anniversaries Today</div>
+              <div class="stat-s">WA wishes sent ✓</div>
+            </div>
+            <div class="nr stat-card">
+              <div class="stat-v" style="color:var(--wa);">14</div>
+              <div class="stat-l">WA Sent Today</div>
+              <div class="stat-s">All delivered ✓</div>
+            </div>
+          </div>
+          <!-- Today's Activities -->
+          <div class="slbl">🌅 Today at the Gaushala</div>
+          <div class="nr" style="padding:15px 16px;margin-bottom:18px;border-radius:18px;" id="tl-today"></div>
+          <!-- Upcoming Events -->
+          <div class="slbl">📅 Upcoming Events & Activities</div>
+          <div id="ev-list"></div>
+          <!-- Quick Actions -->
+          <div class="slbl">⚡ Quick Actions</div>
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:18px;">
+            <button class="nr-sm"
+              style="padding:15px 8px;text-align:center;border:none;cursor:pointer;font-family:'Poppins',sans-serif;border-radius:14px;"
+              onclick="setTab('broadcast')"
+              onmousedown="this.style.boxShadow='inset 3px 3px 7px var(--sd),inset -3px -3px 7px var(--sl)'"
+              onmouseup="this.style.boxShadow=''" onmouseleave="this.style.boxShadow=''">
+              <div style="font-size:24px;margin-bottom:4px;">📣</div>
+              <div style="font-size:10px;font-weight:700;color:var(--tl);">Broadcast</div>
+            </button>
+            <button class="nr-sm"
+              style="padding:15px 8px;text-align:center;border:none;cursor:pointer;font-family:'Poppins',sans-serif;border-radius:14px;"
+              onclick="setTab('facebook')"
+              onmousedown="this.style.boxShadow='inset 3px 3px 7px var(--sd),inset -3px -3px 7px var(--sl)'"
+              onmouseup="this.style.boxShadow=''" onmouseleave="this.style.boxShadow=''">
+              <div style="font-size:24px;margin-bottom:4px;">📘</div>
+              <div style="font-size:10px;font-weight:700;color:var(--tl);">FB Post</div>
+            </button>
+            <button class="nr-sm"
+              style="padding:15px 8px;text-align:center;border:none;cursor:pointer;font-family:'Poppins',sans-serif;border-radius:14px;"
+              onclick="setTab('upload')"
+              onmousedown="this.style.boxShadow='inset 3px 3px 7px var(--sd),inset -3px -3px 7px var(--sl)'"
+              onmouseup="this.style.boxShadow=''" onmouseleave="this.style.boxShadow=''">
+              <div style="font-size:24px;margin-bottom:4px;">📤</div>
+              <div style="font-size:10px;font-weight:700;color:var(--tl);">Upload CSV</div>
+            </button>
+          </div>
+          <!-- Automation Status -->
+          <div class="slbl">🤖 Automation Status</div>
+          <div class="nr" style="padding:14px 16px;border-radius:18px;">
+            <div class="a-row">
+              <div style="display:flex;align-items:center;"><span class="a-dot"
+                  style="background:var(--wa);box-shadow:0 0 6px var(--wa);"></span><span
+                  style="font-size:13px;">WhatsApp Birthday Wishes</span></div><span class="bdg"
+                style="background:rgba(37,211,102,.14);color:var(--wa);border:1px solid rgba(37,211,102,.3);">Active</span>
+            </div>
+            <div class="a-row">
+              <div style="display:flex;align-items:center;"><span class="a-dot"
+                  style="background:var(--wa);box-shadow:0 0 6px var(--wa);"></span><span
+                  style="font-size:13px;">WhatsApp Anniversary Wishes</span></div><span class="bdg"
+                style="background:rgba(37,211,102,.14);color:var(--wa);border:1px solid rgba(37,211,102,.3);">Active</span>
+            </div>
+            <div class="a-row">
+              <div style="display:flex;align-items:center;"><span class="a-dot"
+                  style="background:var(--fb);box-shadow:0 0 6px var(--fb);"></span><span
+                  style="font-size:13px;">Facebook Auto-Posts</span></div><span class="bdg"
+                style="background:rgba(24,119,242,.14);color:var(--fb);border:1px solid rgba(24,119,242,.3);">Active</span>
+            </div>
+            <div class="a-row" style="border-bottom:none;">
+              <div style="display:flex;align-items:center;"><span class="a-dot"
+                  style="background:var(--ok1);box-shadow:0 0 6px var(--ok1);animation:pulse 2s ease infinite;"></span><span
+                  style="font-size:13px;">Daily Cron — 7:00 AM IST</span></div><span class="bdg"
+                style="background:rgba(67,160,71,.14);color:var(--ok1);border:1px solid rgba(67,160,71,.3);">Running</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- ─── TAB: MEMBERS ─── -->
+        <div class="tab-p" id="tp-members">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
+            <div>
+              <h2 style="font-family:'Playfair Display',serif;font-size:20px;">Members</h2>
+              <p id="m-count" style="color:var(--tl);font-size:12px;margin-top:1px;"></p>
+            </div>
+          </div>
+          <!-- Search -->
+          <div style="position:relative;margin-bottom:10px;">
+            <span
+              style="position:absolute;left:14px;top:50%;transform:translateY(-50%);font-size:14px;pointer-events:none;">🔍</span>
+            <input id="m-search" class="n-inp" type="text" placeholder="Search name or number…"
+              style="padding-left:40px;" oninput="renderMembers()">
+          </div>
+          <!-- City chips -->
+          <div style="display:flex;gap:8px;overflow-x:auto;padding-bottom:4px;margin-bottom:16px;" id="city-chips">
+          </div>
+          <!-- List -->
+          <div id="m-list"></div>
+        </div>
+
+        <!-- ─── TAB: BROADCAST ─── -->
+        <div class="tab-p" id="tp-broadcast">
+          <h2 style="font-family:'Playfair Display',serif;font-size:20px;margin-bottom:3px;">WhatsApp Broadcast</h2>
+          <p style="color:var(--tl);font-size:12px;margin-bottom:18px;">Send messages to all or filtered devotees</p>
+          <!-- Template chips -->
+          <div class="slbl">Choose Template</div>
+          <div style="display:flex;gap:8px;overflow-x:auto;padding-bottom:4px;margin-bottom:16px;" id="tmpl-chips">
+          </div>
+          <!-- Editor -->
+          <div class="slbl">Message Content</div>
+          <textarea id="bc-msg" class="n-ta" rows="6" placeholder="Type your message…"
+            oninput="updatePreview()"></textarea>
+          <div style="font-size:11px;color:var(--td);margin-top:4px;margin-bottom:16px;">Use <strong>{name}</strong> for
+            personalisation</div>
+          <!-- Recipients -->
+          <div class="slbl">Recipients</div>
+          <div style="display:flex;gap:10px;margin-bottom:18px;">
+            <button class="chip on" id="rc-all" onclick="setRcpt('all',this)">All Members (15)</button>
+            <button class="chip" id="rc-act" onclick="setRcpt('active',this)">Active Only (12)</button>
+          </div>
+          <!-- WA Preview -->
+          <div class="slbl">WhatsApp Preview</div>
+          <div class="wa-bbl" style="margin-bottom:18px;">
+            <div
+              style="display:flex;align-items:center;gap:9px;margin-bottom:9px;padding-bottom:9px;border-bottom:1px solid rgba(255,255,255,.1);">
+              <div
+                style="width:36px;height:36px;border-radius:50%;background:#128c7e;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;">
+                🐄</div>
+              <div>
+                <div style="color:#fff;font-weight:700;font-size:12px;">Sri Krishan Balaram Gaushala</div>
+                <div style="color:rgba(255,255,255,.4);font-size:10px;">Official Number</div>
+              </div>
+            </div>
+            <div class="wa-msg">
+              <p id="bc-preview" style="color:#fff;font-size:12px;line-height:1.7;white-space:pre-line;margin:0;"></p>
+            </div>
+          </div>
+          <!-- Success -->
+          <div id="bc-success"
+            style="display:none;background:rgba(46,125,50,.12);border:1px solid rgba(67,160,71,.28);border-radius:14px;padding:18px;text-align:center;margin-bottom:14px;">
+            <div style="font-size:36px;margin-bottom:6px;">✅</div>
+            <div style="color:var(--ok1);font-weight:700;font-size:14px;" id="bc-success-msg"></div>
+            <button
+              style="background:none;border:none;color:var(--td);font-size:12px;cursor:pointer;margin-top:8px;font-family:'Poppins',sans-serif;text-decoration:underline;"
+              onclick="resetBc()">Send another</button>
+          </div>
+          <button class="btn-green" id="bc-btn" style="width:100%;padding:15px;font-size:15px;" onclick="sendBc()">
+            📲 Send to <span id="bc-cnt">15</span> Devotees
+          </button>
+        </div>
+
+        <!-- ─── TAB: FACEBOOK ─── -->
+        <div class="tab-p" id="tp-facebook">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:14px;">
+            <div>
+              <h2 style="font-family:'Playfair Display',serif;font-size:20px;margin-bottom:2px;">Facebook Posts</h2>
+              <p style="color:var(--tl);font-size:12px;">Auto-post blessings on Gaushala Page</p>
+            </div>
+            <button id="fb-auto-btn" onclick="toggleFbAuto()"
+              style="padding:6px 14px;border-radius:20px;font-size:11px;font-weight:700;cursor:pointer;font-family:'Poppins',sans-serif;transition:all .2s;flex-shrink:0;">🟢
+              Auto: ON</button>
+          </div>
+          <div id="fb-auto-banner"
+            style="background:rgba(24,119,242,.1);border:1px solid rgba(24,119,242,.28);border-radius:12px;padding:12px 14px;margin-bottom:14px;display:flex;gap:10px;align-items:flex-start;">
+            <span style="font-size:20px;flex-shrink:0;">📘</span>
+            <p style="font-size:12px;color:#42a5f5;line-height:1.65;margin:0;">Birthday &amp; anniversary blessings are
+              automatically posted at <strong>7:00 AM IST</strong> daily. Only consented devotees are named.</p>
+          </div>
+          <!-- Compose toggle -->
+          <button class="nr-sm" id="compose-btn"
+            style="width:100%;padding:12px;margin-bottom:14px;border:none;cursor:pointer;font-size:13px;font-weight:700;color:var(--pr);border-radius:12px;font-family:'Poppins',sans-serif;text-align:center;"
+            onclick="toggleCompose()">+ Create Manual Post</button>
+          <!-- Compose box -->
+          <div id="compose-box" style="display:none;">
+            <div class="nr" style="padding:16px;margin-bottom:14px;border-radius:18px;">
+              <div class="slbl">Post Content</div>
+              <textarea id="fb-post-txt" class="n-ta" rows="5"
+                placeholder="Write your post…&#10;&#10;Tip: #JaiGauMata #GauSeva #Ludhiana"></textarea>
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 0;">
+                <div>
+                  <div class="slbl" style="margin-top:0;">Date</div><input type="date" id="fb-post-dt" class="n-inp">
+                </div>
+                <div>
+                  <div class="slbl" style="margin-top:0;">Time</div><input type="time" id="fb-post-tm" class="n-inp"
+                    value="07:00">
+                </div>
+              </div>
+              <button class="btn-brass" style="width:100%;padding:12px;font-size:14px;" onclick="scheduleFbPost()">📅
+                Schedule Post</button>
+            </div>
+          </div>
+          <div class="slbl">Schedule & History</div>
+          <div id="fb-post-list"></div>
+        </div>
+
+        <!-- ─── TAB: UPLOAD ─── -->
+        <div class="tab-p" id="tp-upload">
+          <h2 style="font-family:'Playfair Display',serif;font-size:20px;margin-bottom:4px;">Bulk Upload</h2>
+          <p style="color:var(--tl);font-size:12px;margin-bottom:18px;">Import multiple devotees at once via CSV</p>
+          <!-- Sample download -->
+          <div class="nr-sm"
+            style="padding:14px;margin-bottom:14px;display:flex;justify-content:space-between;align-items:center;">
+            <div>
+              <div style="font-size:13px;font-weight:700;">📄 Sample CSV Template</div>
+              <div style="font-size:11px;color:var(--tl);margin-top:2px;">name, whatsapp, dob, anniversary, city</div>
+            </div>
+            <button class="btn-brass" style="padding:8px 14px;font-size:11px;" onclick="dlSample()">⬇ Download</button>
+          </div>
+          <!-- Drop zone -->
+          <div class="dropz" id="dropz" onclick="document.getElementById('csv-in').click()" ondragover="dzOver(event)"
+            ondragleave="dzLeave()" ondrop="dzDrop(event)">
+            <div style="font-size:46px;margin-bottom:10px;">📤</div>
+            <div style="font-size:15px;font-weight:700;color:var(--tx);margin-bottom:5px;">Tap to upload or drag & drop
+            </div>
+            <div style="font-size:12px;color:var(--tl);">CSV files only &nbsp;•&nbsp; Max 5MB</div>
+            <input type="file" id="csv-in" accept=".csv" style="display:none" onchange="fileChosen(event)">
+          </div>
+          <!-- Preview -->
+          <div id="up-preview" style="display:none;margin-top:16px;">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+              <div style="font-size:14px;font-weight:700;" id="up-count"></div>
+              <button
+                style="background:none;border:none;color:var(--td);font-size:12px;cursor:pointer;text-decoration:underline;font-family:'Poppins',sans-serif;"
+                onclick="clearUp()">Clear</button>
+            </div>
+            <div
+              style="overflow-x:auto;-webkit-overflow-scrolling:touch;margin-bottom:14px;border-radius:12px;box-shadow:4px 4px 10px var(--sd),-4px -4px 10px var(--sl);">
+              <table id="up-table"
+                style="width:100%;border-collapse:collapse;font-size:12px;min-width:340px;background:var(--bg1);border-radius:12px;overflow:hidden;">
+              </table>
+            </div>
+            <button class="btn-saffron" id="imp-btn" style="width:100%;padding:14px;font-size:14px;"
+              onclick="doImport()">✅ Import Members</button>
+          </div>
+          <!-- Column guide -->
+          <div class="slbl" style="margin-top:22px;">CSV Column Reference</div>
+          <div class="nr" style="padding:14px;border-radius:16px;" id="col-guide"></div>
+        </div>
+
+      </div><!-- /a-body -->
+
+      <!-- Bottom Nav -->
+      <nav class="a-nav" id="a-nav">
+        <button class="nav-i on" data-tab="home" onclick="setTab('home')"><span class="nav-ic">📊</span><span
+            class="nav-lb">Dashboard</span></button>
+        <button class="nav-i" data-tab="members" onclick="setTab('members')"><span class="nav-ic">👥</span><span
+            class="nav-lb">Members</span></button>
+        <button class="nav-i" data-tab="broadcast" onclick="setTab('broadcast')"><span class="nav-ic">📣</span><span
+            class="nav-lb">Broadcast</span></button>
+        <button class="nav-i" data-tab="facebook" onclick="setTab('facebook')"><span class="nav-ic">📘</span><span
+            class="nav-lb">Facebook</span></button>
+        <button class="nav-i" data-tab="upload" onclick="setTab('upload')"><span class="nav-ic">📤</span><span
+            class="nav-lb">Upload</span></button>
+      </nav>
+
+    </div><!-- /s-admin -->
+  </div><!-- /app -->
+
+  <script>
+    /* ═══════════════════════════════════
+       DATA
+    ═══════════════════════════════════ */
+    let MEMBERS = [
+      { id: 1, name: "Rajesh Kumar Sharma", wa: "9876543210", dob: "1975-03-15", ann: "2000-11-20", city: "Ludhiana", joined: "2024-01-10", fb: true, active: true },
+      { id: 2, name: "Sunita Devi Gupta", wa: "9812345678", dob: "1982-06-22", ann: "2005-02-14", city: "Ludhiana", joined: "2024-02-15", fb: false, active: true },
+      { id: 3, name: "Harpreet Singh Arora", wa: "9988776655", dob: "1968-12-01", ann: "1993-05-30", city: "Ludhiana", joined: "2024-03-01", fb: true, active: true },
+      { id: 4, name: "Meena Kumari Jain", wa: "9876501234", dob: "1990-01-08", ann: null, city: "Ludhiana", joined: "2024-03-20", fb: true, active: true },
+      { id: 5, name: "Vikram Malhotra", wa: "9871234567", dob: "1965-07-19", ann: "1990-04-25", city: "Ludhiana", joined: "2024-04-05", fb: false, active: true },
+      { id: 6, name: "Priya Sharma", wa: "9855432100", dob: "1993-11-30", ann: "2020-12-01", city: "Chandigarh", joined: "2024-04-18", fb: true, active: true },
+      { id: 7, name: "Deepak Verma", wa: "9876009876", dob: "1978-05-05", ann: "2002-01-15", city: "Ludhiana", joined: "2024-05-02", fb: true, active: true },
+      { id: 8, name: "Anita Bansal", wa: "9811234509", dob: "1985-09-14", ann: "2010-03-08", city: "Ludhiana", joined: "2024-05-20", fb: false, active: false },
+      { id: 9, name: "Suresh Chandra Agarwal", wa: "9956781234", dob: "1970-04-28", ann: "1995-06-10", city: "Phagwara", joined: "2024-06-01", fb: true, active: true },
+      { id: 10, name: "Kavita Nanda", wa: "9988001122", dob: "1988-08-03", ann: "2015-07-22", city: "Jalandhar", joined: "2024-06-15", fb: true, active: true },
+      { id: 11, name: "Mohit Kapoor", wa: "9812009988", dob: "1995-02-17", ann: null, city: "Ludhiana", joined: "2024-07-01", fb: false, active: true },
+      { id: 12, name: "Renu Bhatia", wa: "9876123456", dob: "1973-10-25", ann: "1998-12-05", city: "Ludhiana", joined: "2024-07-18", fb: true, active: true },
+      { id: 13, name: "Anil Kumar Sood", wa: "9988112233", dob: "1960-03-22", ann: "1985-11-14", city: "Ludhiana", joined: "2024-08-05", fb: true, active: true },
+      { id: 14, name: "Pooja Mehta", wa: "9876543000", dob: "1998-12-09", ann: "2022-02-20", city: "Ludhiana", joined: "2024-08-20", fb: true, active: true },
+      { id: 15, name: "Ramesh Lal Aggarwal", wa: "9815678901", dob: "1955-06-01", ann: "1978-05-15", city: "Moga", joined: "2024-09-10", fb: false, active: true },
+    ];
+
+    const EVENTS_DATA = [
+      { title: "Morning Gau Aarti", time: "6:00 AM", date: "Daily", type: "daily", icon: "🪔", desc: "Daily morning prayer and Gau Mata aarti" },
+      { title: "Cow Feeding & Care Seva", time: "8:00 AM", date: "Daily", type: "daily", icon: "🐄", desc: "Morning cow feeding, grooming and care" },
+      { title: "Gau Niwas Cleaning", time: "10:00 AM", date: "Daily", type: "daily", icon: "🧹", desc: "Volunteer-led shelter cleaning programme" },
+      { title: "Evening Gau Aarti", time: "7:00 PM", date: "Daily", type: "daily", icon: "🪔", desc: "Evening prayer and aarti for Gau Mata" },
+      { title: "Weekly Community Gau Seva", time: "9:00 AM", date: "Every Monday", type: "weekly", icon: "🤝", desc: "Open community volunteer seva programme" },
+      { title: "Monthly Cow Health Camp", time: "10:00 AM", date: "15 Jun 2026", type: "health", icon: "💊", desc: "Free veterinary checkup by Dr. Ramesh Sharma" },
+      { title: "Gau Sevak Volunteer Day", time: "8:00 AM", date: "20 Jun 2026", type: "upcoming", icon: "🤲", desc: "50+ volunteers expected for grand Gau Seva day" },
+      { title: "Monthly Committee Meeting", time: "11:00 AM", date: "21 Jun 2026", type: "meeting", icon: "📋", desc: "Accounts review & monthly planning session" },
+      { title: "Member Registration Drive", time: "9:00 AM", date: "1 Jul 2026", type: "upcoming", icon: "📝", desc: "Special drive to onboard new devotees digitally" },
+      { title: "Guru Purnima Celebration", time: "6:00 AM", date: "10 Jul 2026", type: "festival", icon: "🌕", desc: "Grand puja, bhajan kirtan & prasad distribution" },
+      { title: "Hariyali Teej Puja", time: "8:00 AM", date: "24 Jul 2026", type: "festival", icon: "🌿", desc: "Special Gau Puja on auspicious Teej festival" },
+      { title: "Janmashtami Mahotsav", time: "All Day", date: "15 Aug 2026", type: "festival", icon: "🎊", desc: "Grandest celebration — midnight abhishek, 1000+ devotees" },
+      { title: "Annual General Meeting", time: "10:00 AM", date: "20 Sep 2026", type: "meeting", icon: "🏛️", desc: "Annual financial review and trustee meeting" },
+      { title: "Gopashtami Festival", time: "All Day", date: "3 Nov 2026", type: "festival", icon: "🎉", desc: "Sacred cow worship festival — main annual event" },
+    ];
+
+    const TODAY_TL = [
+      { time: "6:00 AM", title: "Morning Gau Aarti", done: true, now: false, icon: "🪔" },
+      { time: "8:00 AM", title: "Cow Feeding Seva", done: true, now: false, icon: "🐄" },
+      { time: "10:00 AM", title: "Gau Niwas Cleaning", done: false, now: true, icon: "🧹" },
+      { time: "2:00 PM", title: "Volunteer Coordination", done: false, now: false, icon: "📞" },
+      { time: "7:00 PM", title: "Evening Gau Aarti", done: false, now: false, icon: "🪔" },
+    ];
+
+    const FB_POSTS = [
+      { id: 1, type: "birthday", when: "Today 7:00 AM", content: "🎂 Jai Shri Krishna! 🙏\n\nSri Krishan Balaram Gaushala sends heartfelt birthday blessings to all our dear devotees celebrating today!\n\nMay Gau Mata bless you with health, happiness and prosperity. 🐄✨\n\n#JaiGauMata #GauSeva #Birthday #Ludhiana", status: "sent", count: 3 },
+      { id: 2, type: "anniversary", when: "Today 7:05 AM", content: "💐 Jai Shri Krishna! 🙏\n\nWarm anniversary blessings from Sri Krishan Balaram Gaushala! 🐄❤️\n\n#Anniversary #GauMata #Ludhiana", status: "sent", count: 1 },
+      { id: 3, type: "birthday", when: "Tomorrow 7:00 AM", content: "🎂 Birthday blessings — auto-scheduled for tomorrow's celebrants", status: "scheduled", count: 2 },
+      { id: 4, type: "event", when: "Jun 20, 8:00 AM", content: "🤲 Gau Sevak Volunteer Day — Jun 20\n\nJoin us! 50+ volunteers welcome.\n\n#GauSeva #Volunteer #Ludhiana", status: "scheduled", count: 0 },
+    ];
+
+    const TMPLS = [
+      { id: "bday", lbl: "🎂 Birthday", body: "🙏 Jai Gau Mata!\n\nDear {name}ji,\n\nSri Krishan Balaram Gaushala, Civil Lines, Ludhiana wishes you a very Happy Birthday! 🎂✨\n\nMay Gau Mata's divine blessings fill your life with health, happiness and prosperity always.\n\n— Anand Tayal Ji\nSri Krishan Balaram Gaushala" },
+      { id: "ann", lbl: "💐 Anniversary", body: "🙏 Jai Shri Krishna!\n\nDear {name}ji,\n\nOn your special anniversary, Sri Krishan Balaram Gaushala sends heartfelt blessings to you and your family. 💐\n\nMay Gau Mata bless this sacred bond forever. 🐄\n\n— Anand Tayal Ji" },
+      { id: "fest", lbl: "🪔 Festival", body: "🙏 Jai Gau Mata!\n\nDear {name}ji,\n\nWarm festival greetings from Sri Krishan Balaram Gaushala, Ludhiana! 🪔\n\nMay Gau Mata's divine blessings shower upon you and your family.\n\n— Anand Tayal Ji" },
+      { id: "custom", lbl: "✏️ Custom", body: "" },
+    ];
+
+    /* ═══════════════════════════════════
+       RUNTIME STATE
+    ═══════════════════════════════════ */
+    let currentTab = 'home';
+    let expandedId = null;
+    let filterCity = 'all';
+    let fbAutoOn = true;
+    let composeOpen = false;
+    let uploadRows = null;
+    let activeTmpl = 'bday';
+    let rcptMode = 'all';
+    let toastTimer = null;
+
+    /* ═══════════════════════════════════
+       HELPERS
+    ═══════════════════════════════════ */
+    const $ = id => document.getElementById(id);
+    const APAL = ["#b71c1c", "#6a1b9a", "#1565c0", "#2e7d32", "#bf360c", "#00695c", "#4a148c", "#33691e", "#880e4f", "#01579b"];
+    function avCol(n) { let h = 0; for (let c of n) h = c.charCodeAt(0) + ((h << 5) - h); return APAL[Math.abs(h) % APAL.length]; }
+    function avIn(n) { return n.split(' ').slice(0, 2).map(w => w[0]).join('').toUpperCase(); }
+    function fmtD(d) { return d ? new Date(d).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' }) : '—'; }
+    function fmtMD(d) { if (!d) return '—'; const dt = new Date(d); return dt.toLocaleDateString('en-IN', { day: '2-digit', month: 'long' }); }
+
+    /* ═══════════════════════════════════
+       TOAST
+    ═══════════════════════════════════ */
+    function toast(msg, type = 'ok') {
+      const el = $('toast');
+      el.textContent = msg;
+      el.style.background = type === 'err' ? '#c62828' : type === 'info' ? '#1565c0' : '#2e7d32';
+      el.style.color = '#fff';
+      el.classList.add('show');
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => el.classList.remove('show'), 3000);
+    }
+
+    /* ═══════════════════════════════════
+       NAVIGATION
+    ═══════════════════════════════════ */
+    function nav(id) {
+      // Hide ALL screens
+      const screens = ['s-splash', 's-choose', 's-register', 's-devotee', 's-alog'];
+      screens.forEach(sid => {
+        const el = $(sid);
+        if (el) el.style.display = 'none';
+      });
+      const adm = $('s-admin');
+      if (adm) adm.style.display = 'none';
+
+      if (id === 'admin') {
+        adm.style.display = 'flex';
+        adm.classList.add('active-admin');
+        initAdmin();
+      } else {
+        const el = $(('s-' + id));
+        if (el) {
+          // centered screens
+          if (['choose', 'alog'].includes(id)) {
+            el.style.display = 'block';
+          } else {
+            el.style.display = 'block';
+          }
+          el.scrollTop = 0;
+        }
+      }
+    }
+
+    /* ═══════════════════════════════════
+       SPLASH INIT
+    ═══════════════════════════════════ */
+    window.addEventListener('DOMContentLoaded', function () {
+      // Show only splash
+      const screens = ['s-choose', 's-register', 's-devotee', 's-alog'];
+      screens.forEach(sid => { const e = $(sid); if (e) e.style.display = 'none'; });
+      $('s-admin').style.display = 'none';
+      $('s-splash').style.display = 'block';
+
+      // Hide all tab panes
+      ['tp-home', 'tp-members', 'tp-broadcast', 'tp-facebook', 'tp-upload'].forEach(tp => {
+        const e = $(tp); if (e) e.style.display = 'none';
+      });
+
+      setTimeout(function () {
+        $('splash-loader').style.display = 'none';
+        $('splash-btn').style.display = 'block';
+      }, 1800);
+    });
+
+    /* ═══════════════════════════════════
+       ADMIN
+    ═══════════════════════════════════ */
+    function initAdmin() {
+      const d = new Date();
+      const el = $('dash-date');
+      if (el) el.textContent = d.toLocaleDateString('en-IN', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+      if ($('st-total')) $('st-total').textContent = MEMBERS.length;
+      renderTimeline();
+      renderEvents();
+      setTab('home');
+    }
+
+    function setTab(id) {
+      currentTab = id;
+      // Hide all panes
+      ['tp-home', 'tp-members', 'tp-broadcast', 'tp-facebook', 'tp-upload'].forEach(tp => {
+        const e = $(tp); if (e) e.style.display = 'none';
+      });
+      // Show target pane
+      const pane = $('tp-' + id);
+      if (pane) { pane.style.display = 'block'; }
+      // Update nav buttons
+      document.querySelectorAll('#a-nav .nav-i').forEach(b => {
+        b.classList.toggle('on', b.dataset.tab === id);
+      });
+      // Scroll body to top
+      const body = $('a-body');
+      if (body) body.scrollTop = 0;
+      // Init tab
+      if (id === 'members') renderMembers();
+      if (id === 'broadcast') initBroadcast();
+      if (id === 'facebook') renderFbPosts();
+      if (id === 'upload') renderColGuide();
+    }
+
+    /* ═══════════════════════════════════
+       REGISTER
+    ═══════════════════════════════════ */
+    function regS1() {
+      const name = $('r-name').value.trim();
+      const wa = $('r-wa').value.trim();
+      const dob = $('r-dob').value;
+      if (!name || !wa || !dob) { toast('Please fill all required fields', 'err'); return; }
+      if (!/^\d{10}$/.test(wa)) { toast('Enter valid 10-digit WhatsApp number', 'err'); return; }
+      $('otp-wa-num').textContent = wa;
+      $('reg-s1').style.display = 'none';
+      $('reg-s2').style.display = 'block';
+      $('reg-title').textContent = 'Verify WhatsApp OTP';
+      $('pb2').style.width = '100%';
+      $('pb2-lbl').style.color = 'var(--pr1)';
+      document.querySelectorAll('.otp-d').forEach(d => d.value = '');
+      document.querySelectorAll('.otp-d')[0].focus();
+      toast('OTP sent via WhatsApp!');
+    }
+
+    // OTP input auto-advance
+    document.addEventListener('DOMContentLoaded', function () {
+      const boxes = document.querySelectorAll('.otp-d');
+      boxes.forEach((box, i) => {
+        box.addEventListener('input', function () {
+          if (!/^\d$/.test(this.value)) { this.value = ''; return; }
+          if (i < boxes.length - 1) boxes[i + 1].focus();
+        });
+        box.addEventListener('keydown', function (e) {
+          if (e.key === 'Backspace' && !this.value && i > 0) boxes[i - 1].focus();
+        });
+      });
+    });
+
+    function regVerify() {
+      const vals = [...document.querySelectorAll('.otp-d')].map(b => b.value).join('');
+      if (vals.length < 5) { toast('Enter complete 5-digit OTP', 'err'); return; }
+      const btn = $('otp-btn');
+      btn.innerHTML = '<span class="spin"></span> Verifying…';
+      btn.disabled = true;
+      setTimeout(function () {
+        btn.innerHTML = '✓ Verify & Register';
+        btn.disabled = false;
+        const name = $('r-name').value.trim();
+        $('reg-success-name').textContent = name;
+        $('dev-name').textContent = name.split(' ')[0];
+        $('reg-wa-msg').textContent = '🙏 Jai Gau Mata!\n\nDear ' + name + 'ji,\n\nWelcome to our divine Gau Seva family! 🐄\n\nYou will receive special blessings on your Birthday and Anniversary from Sri Krishan Balaram Gaushala, Civil Lines, Ludhiana.\n\n— Anand Tayal Ji';
+        $('reg-s2').style.display = 'none';
+        $('reg-s3').style.display = 'block';
+        $('reg-progress').style.display = 'none';
+        $('reg-title').textContent = 'Welcome! 🙏';
+      }, 1100);
+    }
+
+    /* ═══════════════════════════════════
+       ADMIN LOGIN
+    ═══════════════════════════════════ */
+    function aLogin() {
+      const u = $('al-u').value.trim();
+      const p = $('al-p').value;
+      if (!u || !p) { toast('Enter credentials', 'err'); return; }
+      if ((u === 'admin' || u === 'anand') && p === 'gaushala') nav('admin');
+      else toast('Invalid. Try: admin / gaushala', 'err');
+    }
+
+    /* ═══════════════════════════════════
+       TODAY TIMELINE
+    ═══════════════════════════════════ */
+    function renderTimeline() {
+      const el = $('tl-today');
+      if (!el) return;
+      el.innerHTML = TODAY_TL.map((e, i) => `
+    <div class="tl-row" style="${i < TODAY_TL.length - 1 ? 'border-bottom:1px solid rgba(180,128,40,.14);' : ''}">
+      <div style="width:60px;flex-shrink:0;">
+        <span style="font-size:10px;font-weight:700;color:${e.done ? 'var(--td)' : e.now ? 'var(--pr1)' : 'var(--tl)'};">${e.time}</span>
+      </div>
+      <div class="tl-dot" style="background:${e.done ? 'var(--td)' : e.now ? 'var(--pr1)' : 'rgba(180,128,40,.28)'};${e.now ? 'box-shadow:0 0 0 4px rgba(184,78,0,.18),0 0 0 3px var(--bg);' : ''}"></div>
+      <div style="flex:1;padding-top:2px;">
+        <div style="display:flex;align-items:center;gap:7px;">
+          <span>${e.icon}</span>
+          <span style="font-size:13px;font-weight:${e.now ? 700 : 600};color:${e.done ? 'var(--td)' : 'var(--tx)'};">${e.title}</span>
+          ${e.done ? '<span style="margin-left:auto;font-size:10px;color:var(--ok1);font-weight:700;">Done ✓</span>' : ''}
+          ${e.now ? '<span style="margin-left:auto;font-size:10px;background:rgba(184,78,0,.14);color:var(--pr1);border-radius:10px;padding:1px 8px;font-weight:700;">● Now</span>' : ''}
+        </div>
+      </div>
+    </div>`).join('');
+    }
+
+    /* ═══════════════════════════════════
+       EVENTS LIST
+    ═══════════════════════════════════ */
+    const EV_COLS = {
+      festival: { bdr: '#e65100', bg: 'rgba(230,81,0,.12)', dot: '#e65100' },
+      daily: { bdr: 'var(--gd1)', bg: 'rgba(200,150,8,.1)', dot: 'var(--gd1)' },
+      weekly: { bdr: 'var(--wa)', bg: 'rgba(37,211,102,.1)', dot: 'var(--wa)' },
+      upcoming: { bdr: 'var(--pr1)', bg: 'rgba(184,78,0,.1)', dot: 'var(--pr1)' },
+      meeting: { bdr: 'var(--fb)', bg: 'rgba(24,119,242,.1)', dot: 'var(--fb)' },
+      health: { bdr: '#7b1fa2', bg: 'rgba(123,31,162,.1)', dot: '#7b1fa2' },
+    };
+    function renderEvents() {
+      const el = $('ev-list');
+      if (!el) return;
+      el.innerHTML = EVENTS_DATA.map(ev => {
+        const c = EV_COLS[ev.type] || EV_COLS.upcoming;
+        return `<div class="ev-card" style="border-left-color:${c.bdr};">
+      <div class="ev-ico" style="background:${c.bg};border:1px solid ${c.bdr}44;">
+        <span>${ev.icon}</span>
+      </div>
+      <div style="flex:1;min-width:0;">
+        <div style="font-size:13px;font-weight:700;margin-bottom:2px;">${ev.title}</div>
+        <div style="font-size:11px;color:var(--tl);margin-bottom:6px;line-height:1.4;">${ev.desc}</div>
+        <div style="display:flex;gap:7px;flex-wrap:wrap;">
+          <span style="font-size:10px;background:${c.bg};color:${c.dot};border:1px solid ${c.bdr}44;border-radius:20px;padding:2px 9px;font-weight:700;">${ev.date}</span>
+          <span style="font-size:10px;background:rgba(180,128,40,.1);color:var(--tl);border-radius:20px;padding:2px 9px;font-weight:600;">⏰ ${ev.time}</span>
+        </div>
+      </div>
+    </div>`;
+      }).join('');
+    }
+
+    /* ═══════════════════════════════════
+       MEMBERS
+    ═══════════════════════════════════ */
+    function renderMembers() {
+      const q = ($('m-search') || { value: '' }).value.toLowerCase();
+      const filtered = MEMBERS.filter(m => {
+        return (m.name.toLowerCase().includes(q) || m.wa.includes(q)) && (filterCity === 'all' || m.city === filterCity);
+      });
+      const cnt = $('m-count');
+      if (cnt) cnt.textContent = filtered.length + ' of ' + MEMBERS.length + ' devotees';
+      const el = $('m-list');
+      if (!el) return;
+      el.innerHTML = filtered.length ? filtered.map(m => `
+    <div onclick="toggleMember(${m.id})" style="background:var(--bg);box-shadow:${expandedId === m.id ? 'inset 4px 4px 10px var(--sd),inset -4px -4px 10px var(--sl)' : '4px 4px 10px var(--sd),-4px -4px 10px var(--sl)'};border-radius:14px;padding:13px 14px;margin-bottom:9px;cursor:pointer;transition:box-shadow .18s;${expandedId === m.id ? 'background:var(--bg1);' : ''}">
+      <div style="display:flex;gap:11px;align-items:center;">
+        <div class="av" style="width:44px;height:44px;background:${avCol(m.name)};font-size:13px;">${avIn(m.name)}</div>
+        <div style="flex:1;min-width:0;">
+          <div style="font-size:14px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${m.name}</div>
+          <div style="font-size:11px;color:var(--tl);">+91 ${m.wa} &nbsp;·&nbsp; ${m.city}</div>
+        </div>
+        <div style="text-align:right;flex-shrink:0;">
+          ${m.dob ? `<div style="font-size:10px;color:var(--td);">🎂 ${fmtMD(m.dob)}</div>` : ''}
+          ${m.ann ? `<div style="font-size:10px;color:var(--td);">💐 ${fmtMD(m.ann)}</div>` : ''}
+          <span style="font-size:9px;padding:2px 7px;border-radius:8px;font-weight:700;background:${m.active ? 'rgba(46,125,50,.14)' : 'rgba(180,128,40,.1)'};color:${m.active ? 'var(--ok1)' : 'var(--td)'};">${m.active ? 'Active' : 'Inactive'}</span>
+        </div>
+      </div>
+      ${expandedId === m.id ? `
+      <div style="border-top:1px solid rgba(180,128,40,.18);margin-top:12px;padding-top:12px;">
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:10px;">
+          <div style="background:rgba(180,128,40,.1);border-radius:9px;padding:8px 10px;"><div style="font-size:9px;color:var(--td);margin-bottom:2px;">JOINED</div><div style="font-size:11px;font-weight:700;">${fmtD(m.joined)}</div></div>
+          <div style="background:rgba(180,128,40,.1);border-radius:9px;padding:8px 10px;"><div style="font-size:9px;color:var(--td);margin-bottom:2px;">FB CONSENT</div><div style="font-size:11px;font-weight:700;color:${m.fb ? 'var(--ok1)' : 'var(--td)'};">${m.fb ? '✓ Yes' : '✗ No'}</div></div>
+          <div style="background:rgba(180,128,40,.1);border-radius:9px;padding:8px 10px;"><div style="font-size:9px;color:var(--td);margin-bottom:2px;">STATUS</div><div style="font-size:11px;font-weight:700;color:${m.active ? 'var(--ok1)' : 'var(--td)'};">${m.active ? 'Active' : 'Inactive'}</div></div>
+        </div>
+        <button onclick="removeMember(event,${m.id})" style="background:rgba(198,40,40,.12);border:1px solid rgba(198,40,40,.28);border-radius:9px;padding:7px 14px;color:#ef5350;font-size:12px;cursor:pointer;font-family:'Poppins',sans-serif;font-weight:600;">🗑 Remove Member</button>
+      </div>`: ''}
+    </div>`).join('') : `<div style="text-align:center;color:var(--td);padding:40px 20px;font-size:14px;">No members found</div>`;
+
+      // City chips
+      const cities = ['all', ...new Set(MEMBERS.map(m => m.city))];
+      const cc = $('city-chips');
+      if (cc) cc.innerHTML = cities.map(c => `<button class="chip ${filterCity === c ? 'on' : ''}" onclick="setCityF('${c}',this)">${c === 'all' ? 'All Cities' : c}</button>`).join('');
+    }
+
+    function toggleMember(id) {
+      expandedId = (expandedId === id) ? null : id;
+      renderMembers();
+    }
+    function removeMember(e, id) {
+      e.stopPropagation();
+      MEMBERS = MEMBERS.filter(m => m.id !== id);
+      expandedId = null;
+      renderMembers();
+      if ($('st-total')) $('st-total').textContent = MEMBERS.length;
+      toast('Member removed');
+    }
+    function setCityF(c) {
+      filterCity = c;
+      renderMembers();
+    }
+
+    /* ═══════════════════════════════════
+       BROADCAST
+    ═══════════════════════════════════ */
+    function initBroadcast() {
+      const tc = $('tmpl-chips');
+      if (tc) tc.innerHTML = TMPLS.map(t => `<button class="chip ${activeTmpl === t.id ? 'on' : ''}" onclick="selTmpl('${t.id}',this)">${t.lbl}</button>`).join('');
+      const t = TMPLS.find(x => x.id === activeTmpl);
+      const msg = $('bc-msg');
+      if (msg && t) msg.value = t.body;
+      updatePreview();
+      const cnt = rcptMode === 'all' ? MEMBERS.length : MEMBERS.filter(m => m.active).length;
+      if ($('bc-cnt')) $('bc-cnt').textContent = cnt;
+    }
+    function selTmpl(id) {
+      activeTmpl = id;
+      document.querySelectorAll('#tmpl-chips .chip').forEach(c => c.classList.toggle('on', c.getAttribute('onclick').includes("'" + id + "'")));
+      const t = TMPLS.find(x => x.id === id);
+      if ($('bc-msg') && t) $('bc-msg').value = t.body;
+      updatePreview();
+    }
+    function updatePreview() {
+      const msg = $('bc-msg');
+      const prev = $('bc-preview');
+      if (msg && prev) prev.textContent = (msg.value || '(empty)').replace(/\{name\}/g, 'Devotee');
+    }
+    function setRcpt(mode, el) {
+      rcptMode = mode;
+      document.querySelectorAll('#tp-broadcast .chip').forEach(c => c.classList.remove('on'));
+      if (el) el.classList.add('on');
+      const cnt = mode === 'all' ? MEMBERS.length : MEMBERS.filter(m => m.active).length;
+      if ($('bc-cnt')) $('bc-cnt').textContent = cnt;
+    }
+    function sendBc() {
+      const msg = ($('bc-msg') || { value: '' }).value.trim();
+      if (!msg) { toast('Write a message first', 'err'); return; }
+      const btn = $('bc-btn');
+      btn.innerHTML = '<span class="spin"></span> Sending…'; btn.disabled = true;
+      const cnt = rcptMode === 'all' ? MEMBERS.length : MEMBERS.filter(m => m.active).length;
+      setTimeout(() => {
+        btn.innerHTML = '📲 Send to <span id="bc-cnt">' + cnt + '</span> Devotees';
+        btn.disabled = false;
+        $('bc-success-msg').textContent = '✅ Sent to ' + cnt + ' devotees on WhatsApp!';
+        $('bc-success').style.display = 'block';
+        $('bc-btn').style.display = 'none';
+        toast('Sent to ' + cnt + ' devotees!');
+      }, 1800);
+    }
+    function resetBc() {
+      $('bc-success').style.display = 'none';
+      $('bc-btn').style.display = 'block';
+    }
+
+    /* ═══════════════════════════════════
+       FACEBOOK POSTS
+    ═══════════════════════════════════ */
+    const FBTC = { birthday: 'var(--pr1)', anniversary: '#9c27b0', event: 'var(--fb)', manual: 'var(--ok)', scheduled: '#f9a825' };
+    function renderFbPosts() {
+      const auto = $('fb-auto-btn');
+      if (auto) {
+        auto.style.background = fbAutoOn ? 'rgba(24,119,242,.14)' : 'rgba(180,128,40,.1)';
+        auto.style.color = fbAutoOn ? 'var(--fb)' : 'var(--tl)';
+        auto.style.border = fbAutoOn ? '1px solid rgba(24,119,242,.35)' : '1px solid rgba(180,128,40,.25)';
+        auto.textContent = fbAutoOn ? '🟢 Auto: ON' : '🔴 Auto: OFF';
+      }
+      const banner = $('fb-auto-banner');
+      if (banner) banner.style.display = fbAutoOn ? 'flex' : 'none';
+      const el = $('fb-post-list');
+      if (!el) return;
+      el.innerHTML = FB_POSTS.map(p => `
+    <div class="fb-card">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+        <div style="display:flex;gap:7px;align-items:center;">
+          <span class="bdg" style="background:${(FBTC[p.type] || 'var(--pr1)')}1a;color:${FBTC[p.type] || 'var(--pr1)'};border:1px solid ${(FBTC[p.type] || 'var(--pr1)')}44;">${p.type}</span>
+          <span style="font-size:11px;color:var(--tl);">${p.when}</span>
+        </div>
+        <span class="bdg" style="background:${p.status === 'sent' ? 'rgba(46,125,50,.14)' : 'rgba(249,168,37,.14)'};color:${p.status === 'sent' ? 'var(--ok1)' : '#f9a825'};border:1px solid ${p.status === 'sent' ? 'rgba(67,160,71,.3)' : 'rgba(249,168,37,.3)'};">
+          ${p.status === 'sent' ? '✓ Sent' : '⏰ Scheduled'}
+        </span>
+      </div>
+      <p style="color:var(--tm);font-size:12px;line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">${p.content}</p>
+      ${p.count ? `<div style="margin-top:5px;font-size:11px;color:var(--td);">🎂 ${p.count} devotees covered</div>` : ''}
+    </div>`).join('');
+    }
+    function toggleFbAuto() {
+      fbAutoOn = !fbAutoOn;
+      renderFbPosts();
+      toast('Automation ' + (fbAutoOn ? 'enabled' : 'paused'), fbAutoOn ? 'ok' : 'err');
+    }
+    function toggleCompose() {
+      composeOpen = !composeOpen;
+      $('compose-box').style.display = composeOpen ? 'block' : 'none';
+      $('compose-btn').textContent = composeOpen ? '✕ Cancel' : '+ Create Manual Post';
+    }
+    function scheduleFbPost() {
+      const txt = ($('fb-post-txt') || { value: '' }).value.trim();
+      if (!txt) { toast('Write a post first', 'err'); return; }
+      const dt = ($('fb-post-dt') || { value: '' }).value;
+      const tm = ($('fb-post-tm') || { value: '07:00' }).value;
+      FB_POSTS.unshift({ id: Date.now(), type: 'manual', when: dt ? dt + ' ' + tm : tm, content: txt, status: 'scheduled', count: 0 });
+      $('fb-post-txt').value = '';
+      toggleCompose();
+      renderFbPosts();
+      toast('Post scheduled!');
+    }
+
+    /* ═══════════════════════════════════
+       UPLOAD
+    ═══════════════════════════════════ */
+    function renderColGuide() {
+      const el = $('col-guide');
+      if (!el) return;
+      const cols = [{ k: 'name', req: true, d: 'Full devotee name' }, { k: 'whatsapp', req: true, d: '10-digit (no +91)' }, { k: 'dob', req: false, d: 'YYYY-MM-DD format' }, { k: 'anniversary', req: false, d: 'YYYY-MM-DD format' }, { k: 'city', req: false, d: 'City name' }];
+      el.innerHTML = cols.map((f, i) => `
+    <div style="display:flex;gap:10px;align-items:center;padding:7px 0;${i < cols.length - 1 ? 'border-bottom:1px solid rgba(180,128,40,.15);' : ''}">
+      <code style="background:rgba(184,78,0,.12);padding:2px 8px;border-radius:5px;font-size:11px;color:var(--pr1);flex-shrink:0;">${f.k}</code>
+      <span style="font-size:10px;color:${f.req ? 'var(--pr)' : 'var(--td)'};font-weight:700;flex-shrink:0;width:54px;">${f.req ? 'Required' : 'Optional'}</span>
+      <span style="font-size:12px;color:var(--tl);">${f.d}</span>
+    </div>`).join('');
+    }
+    function dlSample() {
+      const csv = 'name,whatsapp,dob,anniversary,city\nAmit Sharma,9876543211,1980-04-12,2005-06-15,Ludhiana\nGeeta Devi,9812345679,1975-08-20,,Ludhiana\nRakesh Gupta,9988776656,1990-11-03,2015-02-14,Chandigarh';
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(new Blob([csv], { type: 'text/csv' }));
+      a.download = 'gaushala_members_sample.csv'; a.click();
+      toast('Sample CSV downloaded!');
+    }
+    function dzOver(e) { e.preventDefault(); $('dropz').classList.add('drag'); }
+    function dzLeave() { $('dropz').classList.remove('drag'); }
+    function dzDrop(e) { e.preventDefault(); dzLeave(); const f = e.dataTransfer.files[0]; if (f) parseCSV(f); }
+    function fileChosen(e) { const f = e.target.files[0]; if (f) parseCSV(f); }
+    function parseCSV(file) {
+      if (!file.name.endsWith('.csv')) { toast('Upload a CSV file', 'err'); return; }
+      const r = new FileReader();
+      r.onload = e => {
+        const lines = e.target.result.trim().split('\n');
+        const hdrs = lines[0].split(',').map(h => h.trim());
+        const rows = lines.slice(1).filter(l => l.trim()).map(line => {
+          const vals = line.split(',').map(v => v.trim());
+          const obj = {}; hdrs.forEach((h, i) => obj[h] = vals[i] || ''); return obj;
+        });
+        uploadRows = rows;
+        showUpPreview(rows);
+      };
+      r.readAsText(file);
+    }
+    function showUpPreview(rows) {
+      $('up-preview').style.display = 'block';
+      $('up-count').textContent = rows.length + ' rows ready to import';
+      const tbl = $('up-table');
+      const preview = rows.slice(0, 5);
+      tbl.innerHTML = `
+    <thead><tr style="background:rgba(184,78,0,.15);">
+      ${['Name', 'WhatsApp', 'DOB', 'City'].map(h => `<th style="padding:8px 10px;text-align:left;font-size:11px;font-weight:700;color:var(--pr1);white-space:nowrap;">${h}</th>`).join('')}
+    </tr></thead>
+    <tbody>${preview.map((r, i) => `
+      <tr style="border-bottom:1px solid rgba(180,128,40,.15);background:${i % 2 === 0 ? 'transparent' : 'rgba(255,246,210,.4)'};">
+        <td style="padding:7px 10px;font-size:12px;font-weight:600;">${r.name || '—'}</td>
+        <td style="padding:7px 10px;font-size:12px;color:var(--tl);">${r.whatsapp || '—'}</td>
+        <td style="padding:7px 10px;font-size:12px;color:var(--tl);">${r.dob || '—'}</td>
+        <td style="padding:7px 10px;font-size:12px;color:var(--tl);">${r.city || '—'}</td>
+      </tr>`).join('')}</tbody>`;
+      if (rows.length > 5) {
+        const note = document.createElement('p');
+        note.style.cssText = 'color:var(--td);font-size:11px;text-align:center;padding:6px 0;';
+        note.textContent = '+ ' + (rows.length - 5) + ' more rows';
+        tbl.insertAdjacentElement('afterend', note);
+      }
+    }
+    function clearUp() {
+      uploadRows = null;
+      $('up-preview').style.display = 'none';
+      $('csv-in').value = '';
+    }
+    function doImport() {
+      if (!uploadRows || !uploadRows.length) return;
+      const btn = $('imp-btn');
+      btn.innerHTML = '<span class="spin"></span> Importing…'; btn.disabled = true;
+      setTimeout(() => {
+        const added = uploadRows.map((row, i) => ({
+          id: MEMBERS.length + i + 1, name: row.name || 'Unknown', wa: row.whatsapp || '',
+          dob: row.dob || null, ann: row.anniversary || null, city: row.city || 'Ludhiana',
+          joined: new Date().toISOString().slice(0, 10), fb: false, active: true
+        }));
+        MEMBERS = [...MEMBERS, ...added];
+        if ($('st-total')) $('st-total').textContent = MEMBERS.length;
+        btn.innerHTML = '✅ Import Members'; btn.disabled = false;
+        clearUp();
+        toast('✅ ' + added.length + ' members imported!');
+      }, 1400);
+    }
+  </script>
+</body>
+
+</html>
