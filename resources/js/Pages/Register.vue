@@ -17,7 +17,7 @@
       </div>
 
       <!-- Form (Registration) -->
-      <div v-if="!registered">
+      <div v-if="!registered">        
         <div style="margin-bottom:14px;">
           <div class="slbl" style="margin-top:0;">Full Name *</div>
           <input v-model="form.name" class="n-inp" type="text" placeholder="e.g. Rajesh Kumar Sharma">
@@ -28,6 +28,11 @@
             <span style="position:absolute;left:15px;top:50%;transform:translateY(-50%);font-weight:700;font-size:13px;color:var(--tl);pointer-events:none;">+91</span>
             <input v-model="form.whatsapp" class="n-inp" type="tel" placeholder="10-digit number" style="padding-left:48px;" maxlength="10" inputmode="numeric">
           </div>
+        </div>
+        <div style="margin-bottom:14px;">
+          <div class="slbl" style="margin-top:0;">Profile Photo</div>
+          <input type="file" @change="handlePhotoUpload" accept="image/*" class="n-inp file-upload-input" style="padding:10px;">
+          <div v-if="photoError" style="font-size:10px;color:var(--er);margin-top:4px;">{{ photoError }}</div>
         </div>
 
         <!-- Married toggle -->
@@ -128,7 +133,24 @@ const form = ref({
   password: '',
   password_confirmation: '',
   fb_consent: true,
+  photo: null,
 });
+
+const photoError = ref('');
+
+function handlePhotoUpload(e) {
+  photoError.value = '';
+  const file = e.target.files[0];
+  if (file) {
+    if (file.size > 5 * 1024 * 1024) {
+      photoError.value = 'Photo size must be less than 5MB.';
+      e.target.value = '';
+      form.value.photo = null;
+      return;
+    }
+    form.value.photo = file;
+  }
+}
 
 const welcomeMsg = computed(() =>
   `🙏 Jai Gau Mata!\n\nDear ${form.value.name} Ji,\n\nWelcome to our divine Gau Seva family! 🐄\n\n May Gau Mata bless your bond with eternal love and togetherness. \n\n— Krishan Balram Gaushala, Singla Enclave, Village Dullon Khurd, Pakhowal Road, Ludhiana`
@@ -164,12 +186,19 @@ async function registerDevotee() {
   
   const dobClean = form.value.dobRaw.trim();
   if (!dobClean) { errorMsg.value = 'Please enter your date of birth'; return; }
-  if (!validateDateStr(dobClean)) { errorMsg.value = 'Enter Date of Birth in DD-MM-YYYY format (e.g. 15-08-1995)'; return; }
+  let dClean = dobClean;
+  const dMatch = dClean.match(/^(\d{2})(\d{2})(\d{4})$/);
+  if (dMatch) dClean = `${dMatch[1]}-${dMatch[2]}-${dMatch[3]}`;
+  
+  if (!validateDateStr(dClean)) { errorMsg.value = 'Enter Date of Birth in DD-MM-YYYY format (e.g. 15-08-1995)'; return; }
 
   if (isMarried.value) {
-    const annClean = form.value.anniversaryRaw.trim();
-    if (!annClean) { errorMsg.value = 'Please enter your anniversary date'; return; }
-    if (!validateDateStr(annClean)) { errorMsg.value = 'Enter Anniversary Date in DD-MM-YYYY format (e.g. 24-11-2018)'; return; }
+    let aClean = form.value.anniversaryRaw.trim();
+    const aMatch = aClean.match(/^(\d{2})(\d{2})(\d{4})$/);
+    if (aMatch) aClean = `${aMatch[1]}-${aMatch[2]}-${aMatch[3]}`;
+    
+    if (!aClean) { errorMsg.value = 'Please enter your anniversary date'; return; }
+    if (!validateDateStr(aClean)) { errorMsg.value = 'Enter Anniversary Date in DD-MM-YYYY format (e.g. 24-11-2018)'; return; }
   }
 
   if (!form.value.password || form.value.password.length < 6) {
@@ -183,17 +212,34 @@ async function registerDevotee() {
 
   registering.value = true;
   try {
-    const payload = {
-      name: form.value.name,
-      whatsapp: form.value.whatsapp,
-      dob: parseUIDate(dobClean),
-      anniversary: isMarried.value ? parseUIDate(form.value.anniversaryRaw.trim()) : null,
-      fb_consent: form.value.fb_consent,
-      password: form.value.password,
-      password_confirmation: form.value.password_confirmation,
-    };
+    const formData = new FormData();
+    formData.append('name', form.value.name);
+    formData.append('whatsapp', form.value.whatsapp);
     
-    await axios.post(route('register.store'), payload);
+    // Support DDMMYYYY formatted dynamically to DD-MM-YYYY
+    let dClean = dobClean;
+    const dMatch = dClean.match(/^(\d{2})(\d{2})(\d{4})$/);
+    if (dMatch) dClean = `${dMatch[1]}-${dMatch[2]}-${dMatch[3]}`;
+    formData.append('dob', parseUIDate(dClean));
+    
+    if (isMarried.value) {
+      let aClean = form.value.anniversaryRaw.trim();
+      const aMatch = aClean.match(/^(\d{2})(\d{2})(\d{4})$/);
+      if (aMatch) aClean = `${aMatch[1]}-${aMatch[2]}-${aMatch[3]}`;
+      formData.append('anniversary', parseUIDate(aClean));
+    }
+    
+    formData.append('fb_consent', form.value.fb_consent ? '1' : '0');
+    formData.append('password', form.value.password);
+    formData.append('password_confirmation', form.value.password_confirmation);
+    
+    if (form.value.photo) {
+      formData.append('photo', form.value.photo);
+    }
+    
+    await axios.post(route('register.store'), formData, {
+      headers: { 'Content-Type': 'multipart/form-data' }
+    });
     store.setDevotee({ name: form.value.name, whatsapp: form.value.whatsapp });
     registered.value = true;
   } catch (e) {

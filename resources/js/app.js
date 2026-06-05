@@ -36,7 +36,10 @@ createInertiaApp({
 
 // ── SPA Page Transition ──────────────────────────────────────────────────────
 // Fade-out on navigate start, fade-in after the new page mounts
-router.on('before', () => {
+router.on('before', (event) => {
+    // Do not fade out the page for form submissions or partial reloads
+    if (event.detail.visit.preserveState) return;
+
     const app = document.getElementById('app');
     if (app) {
         app.style.transition = 'opacity 0.13s ease, transform 0.13s ease';
@@ -45,12 +48,16 @@ router.on('before', () => {
     }
 });
 
-router.on('navigate', () => {
+// Always ensure the page becomes visible again after any request finishes
+router.on('finish', () => {
     const app = document.getElementById('app');
     if (app) {
         requestAnimationFrame(() => {
             app.style.opacity = '1';
             app.style.transform = 'translateY(0)';
+            setTimeout(() => {
+                app.style.transition = '';
+            }, 150);
         });
     }
 });

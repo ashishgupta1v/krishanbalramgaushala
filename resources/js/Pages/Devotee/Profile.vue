@@ -5,12 +5,24 @@
 
       <!-- Top Bar -->
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:22px;">
-        <div>
-          <div style="font-size:11px;color:var(--tl);">🙏 Jai Gau Mata</div>
-          <h2 style="font-family:'Playfair Display',serif;font-size:20px;">Namaste, <span style="color:var(--pr);">{{ firstName }} Ji</span>!</h2>
+        <div style="display:flex;align-items:center;gap:12px;">
+          <img v-if="devotee.photo_url" :src="devotee.photo_url" alt="Profile" style="width:44px;height:44px;border-radius:50%;object-fit:cover;border:2px solid var(--pr1);" />
+          <div v-else style="width:44px;height:44px;border-radius:50%;background:var(--pr1);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:18px;">
+            {{ devotee.avatar_initials }}
+          </div>
+          <div>
+            <div style="font-size:11px;color:var(--tl);">🙏 Jai Gau Mata</div>
+            <h2 style="font-family:'Playfair Display',serif;font-size:20px;">Namaste, <span style="color:var(--pr);">{{ firstName }} Ji</span>!</h2>
+          </div>
         </div>
         <div style="display:flex;gap:8px;">
-          <button class="btn-ghost" style="padding:7px 12px;font-size:11px;color:var(--er);border-color:rgba(239,83,80,.2);" @click="handleLogout">Sign Out 🚪</button>
+          <button class="btn-ghost" style="padding:8px 10px;color:var(--er);border-color:rgba(239,83,80,.2);display:flex;align-items:center;justify-content:center;" @click="handleLogout" title="Sign Out">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+              <polyline points="16 17 21 12 16 7"></polyline>
+              <line x1="21" y1="12" x2="9" y2="12"></line>
+            </svg>
+          </button>
         </div>
       </div>
 
@@ -89,13 +101,22 @@
               <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
                 <div>
                   <div style="font-size:11px;font-weight:600;color:var(--tl);margin-bottom:4px;">Date of Birth</div>
-                  <input v-model="form.dob" class="n-inp" type="date">
+                  <input v-model="form.dob" class="n-inp" type="text" placeholder="DD-MM-YYYY">
+                  <div v-if="$page.props.errors.dob" style="font-size:10px;color:var(--er);margin-top:4px;">{{ $page.props.errors.dob }}</div>
                 </div>
                 <div>
                   <div style="font-size:11px;font-weight:600;color:var(--tl);margin-bottom:4px;">Anniversary Date</div>
-                  <input v-model="form.anniversary" class="n-inp" type="date">
+                  <input v-model="form.anniversary" class="n-inp" type="text" placeholder="DD-MM-YYYY">
+                  <div v-if="$page.props.errors.anniversary" style="font-size:10px;color:var(--er);margin-top:4px;">{{ $page.props.errors.anniversary }}</div>
                 </div>
               </div>
+              <div style="margin-top:6px;">
+                <div style="font-size:11px;font-weight:600;color:var(--tl);margin-bottom:4px;">Profile Photo</div>
+                <input type="file" @change="handlePhotoUpload" accept="image/*" class="n-inp file-upload-input" style="padding:10px;">
+                <div v-if="photoError" style="font-size:10px;color:var(--er);margin-top:4px;">{{ photoError }}</div>
+                <div v-if="$page.props.errors.photo" style="font-size:10px;color:var(--er);margin-top:4px;">{{ $page.props.errors.photo }}</div>
+              </div>
+              <div v-if="$page.props.errors.name" style="font-size:10px;color:var(--er);margin-top:4px;">{{ $page.props.errors.name }}</div>
               <div style="margin-top:6px;">
                 <button class="btn-saffron" style="width:100%;padding:10px;font-size:13px;" :disabled="saving" @click="saveProfile">
                   <span v-if="saving" class="spin"/>
@@ -178,12 +199,40 @@ const props = defineProps({
 
 const editing = ref(false);
 const saving = ref(false);
+
+function formatForInput(dateStr) {
+  if (!dateStr) return '';
+  const d = new Date(dateStr);
+  if (isNaN(d.getTime())) return dateStr;
+  const day = String(d.getDate()).padStart(2, '0');
+  const month = String(d.getMonth() + 1).padStart(2, '0');
+  const year = d.getFullYear();
+  return `${day}-${month}-${year}`;
+}
+
 const form = ref({
   name: props.devotee.name || '',
-  dob: props.devotee.dob ? props.devotee.dob.substring(0, 10) : '',
-  anniversary: props.devotee.anniversary ? props.devotee.anniversary.substring(0, 10) : '',
+  dob: formatForInput(props.devotee.dob),
+  anniversary: formatForInput(props.devotee.anniversary),
   fb_consent: true,
+  photo: null,
 });
+
+const photoError = ref('');
+
+function handlePhotoUpload(e) {
+  photoError.value = '';
+  const file = e.target.files[0];
+  if (file) {
+    if (file.size > 5 * 1024 * 1024) {
+      photoError.value = 'Photo size must be less than 5MB.';
+      e.target.value = '';
+      form.value.photo = null;
+      return;
+    }
+    form.value.photo = file;
+  }
+}
 
 const firstName = computed(() => props.devotee.name?.split(' ')[0] || 'Devotee');
 const memberSince = computed(() => {
@@ -194,16 +243,45 @@ const memberSince = computed(() => {
 
 function formatDate(dateStr) {
   if (!dateStr) return '';
-  const d = new Date(dateStr);
-  return d.toLocaleDateString('en-IN', { day: 'numeric', month: 'long' });
+  try {
+    const d = new Date(dateStr);
+    if (isNaN(d.getTime())) return dateStr;
+    return d.toLocaleDateString('en-IN', { day: 'numeric', month: 'long' });
+  } catch (e) {
+    return dateStr;
+  }
+}
+
+function formatBeforeSubmit(val) {
+  if (!val) return val;
+  val = String(val).trim();
+  // If user entered exactly 8 digits (DDMMYYYY), convert to DD-MM-YYYY
+  const match = val.match(/^(\d{2})(\d{2})(\d{4})$/);
+  if (match) {
+    return `${match[1]}-${match[2]}-${match[3]}`;
+  }
+  return val;
 }
 
 function saveProfile() {
   saving.value = true;
-  router.put(route('devotee.profile.update'), form.value, {
+  
+  const payload = {
+    ...form.value,
+    dob: formatBeforeSubmit(form.value.dob),
+    anniversary: formatBeforeSubmit(form.value.anniversary),
+    _method: 'put' // Required for file uploads via inertia putting
+  };
+
+  router.post(route('devotee.profile.update'), payload, {
     onSuccess: () => {
       editing.value = false;
       saving.value = false;
+      // Re-initialize form to get freshly updated server formatting
+      form.value.name = props.devotee.name || '';
+      form.value.dob = formatForInput(props.devotee.dob);
+      form.value.anniversary = formatForInput(props.devotee.anniversary);
+      form.value.photo = null; // Clear the file input reference
     },
     onError: () => {
       saving.value = false;
@@ -233,4 +311,3 @@ function handleLogout() {
   border: 1px solid rgba(255,255,255,0.5) !important;
 }
 </style>
-

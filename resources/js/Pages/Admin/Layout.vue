@@ -31,10 +31,13 @@
       </div>
 
       <!-- Logout (Sidebar bottom) -->
-      <div style="padding:16px;border-top:1px solid rgba(255,255,255,.1);">
-        <button class="admin-sidebar-btn" @click="logout" style="color:var(--gd2);">
-          <span>🔐</span>
-          <span>Sign Out</span>
+      <div style="padding:16px;border-top:1px solid rgba(255,255,255,.1);display:flex;justify-content:center;">
+        <button class="admin-sidebar-btn" @click="logout" style="color:var(--gd2);justify-content:center;padding:12px;" title="Sign Out">
+          <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+            <polyline points="16 17 21 12 16 7"></polyline>
+            <line x1="21" y1="12" x2="9" y2="12"></line>
+          </svg>
         </button>
       </div>
     </aside>
@@ -57,7 +60,13 @@
             <div style="font-size:10px;color:rgba(240,210,140,.65);letter-spacing:.3px;">Admin Dashboard &nbsp;•&nbsp; Pakhowal Road, Ludhiana</div>
           </div>
         </div>
-        <button @click="logout" style="background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.18);border-radius:8px;padding:6px 12px;color:rgba(240,218,158,.8);font-size:11px;cursor:pointer;font-family:'Poppins',sans-serif;white-space:nowrap;">Logout</button>
+        <button @click="logout" style="background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.18);border-radius:8px;padding:8px 10px;color:rgba(240,218,158,.8);display:flex;align-items:center;justify-content:center;cursor:pointer;" title="Sign Out">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+            <polyline points="16 17 21 12 16 7"></polyline>
+            <line x1="21" y1="12" x2="9" y2="12"></line>
+          </svg>
+        </button>
       </div>
 
       <!-- Scrollable Content Area -->
