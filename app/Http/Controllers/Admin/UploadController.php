@@ -38,27 +38,129 @@ class UploadController extends Controller
     {
         $request->validate(['rows' => 'required|array|min:1']);
 
-        $imported = 0;
-        foreach ($request->rows as $row) {
-            if (empty($row['name']) || empty($row['whatsapp'])) continue;
-            if (!preg_match('/^\d{10}$/', $row['whatsapp'])) continue;
+        $errors = [];
+        $validatedRows = [];
 
-            Devotee::updateOrCreate(
-                ['whatsapp' => $row['whatsapp']],
-                [
-                    'id'          => (string) Str::uuid(),
-                    'name'        => $row['name'],
-                    'dob'         => !empty($row['dob']) ? $row['dob'] : null,
-                    'anniversary' => !empty($row['anniversary']) ? $row['anniversary'] : null,
-                    'city'        => $row['city'] ?? 'Ludhiana',
-                    'fb_consent'  => false,
-                    'status'      => 'active',
-                    'joined_at'   => now(),
-                ]
-            );
-            $imported++;
+        foreach ($request->rows as $index => $row) {
+            $rowNum = $index + 1;
+            
+            $name = !empty($row['name']) ? trim($row['name']) : null;
+            if (empty($name)) {
+                $errors[] = "Row {$rowNum}: The 'name' field is required.";
+                continue;
+            }
+
+            if (empty($row['whatsapp'])) {
+                $errors[] = "Row {$rowNum} (Name: {$name}): The 'whatsapp' field is required.";
+                continue;
+            }
+
+            $whatsapp = preg_replace('/\D/', '', $row['whatsapp']);
+            if (strlen($whatsapp) !== 10) {
+                $errors[] = "Row {$rowNum} (Name: {$name}): WhatsApp number must be exactly 10 digits.";
+                continue;
+            }
+
+            $dob = null;
+            if (!empty($row['dob'])) {
+                $dob = $this->parseAndNormalizeDate($row['dob']);
+                if (!$dob) {
+                    $errors[] = "Row {$rowNum} (Name: {$name}): Date of Birth '{$row['dob']}' is invalid or not in an accepted format (use DD-MM-YYYY or YYYY-MM-DD).";
+                }
+            }
+
+            $anniversary = null;
+            if (!empty($row['anniversary'])) {
+                $anniversary = $this->parseAndNormalizeDate($row['anniversary']);
+                if (!$anniversary) {
+                    $errors[] = "Row {$rowNum} (Name: {$name}): Anniversary Date '{$row['anniversary']}' is invalid or not in an accepted format (use DD-MM-YYYY or YYYY-MM-DD).";
+                }
+            }
+
+            if (empty($errors)) {
+                $validatedRows[] = [
+                    'name'        => $name,
+                    'whatsapp'    => $whatsapp,
+                    'dob'         => $dob,
+                    'anniversary' => $anniversary,
+                    'city'        => !empty($row['city']) ? trim($row['city']) : 'Ludhiana',
+                ];
+            }
         }
 
+        if (!empty($errors)) {
+            $displayErrors = array_slice($errors, 0, 15);
+            if (count($errors) > 15) {
+                $displayErrors[] = "... and " . (count($errors) - 15) . " more errors.";
+            }
+            throw \Illuminate\Validation\ValidationException::withMessages([
+                'rows' => $displayErrors
+            ]);
+        }
+
+        $imported = 0;
+        \Illuminate\Support\Facades\DB::transaction(function () use ($validatedRows, &$imported) {
+            foreach ($validatedRows as $data) {
+                Devotee::updateOrCreate(
+                    ['whatsapp' => $data['whatsapp']],
+                    [
+                        'id'          => (string) Str::uuid(),
+                        'name'        => $data['name'],
+                        'dob'         => $data['dob'],
+                        'anniversary' => $data['anniversary'],
+                        'city'        => $data['city'],
+                        'fb_consent'  => false,
+                        'status'      => 'active',
+                        'joined_at'   => now(),
+                    ]
+                );
+                $imported++;
+            }
+        });
+
         return back()->with('success', "{$imported} members imported successfully!");
+    }
+
+    /**
+     * Normalize custom date inputs (DD-MM-YYYY, DD/MM/YYYY, etc.) to YYYY-MM-DD.
+     */
+    private function parseAndNormalizeDate(?string $dateStr): ?string
+    {
+        if (empty($dateStr)) {
+            return null;
+        }
+
+        $dateStr = trim($dateStr);
+        $formats = [
+            'Y-m-d',
+            'd-m-Y',
+            'd/m/Y',
+            'Y/m/d',
+            'd.m.Y',
+            'Y.m.d',
+        ];
+
+        foreach ($formats as $format) {
+            try {
+                $d = \Carbon\Carbon::createFromFormat($format, $dateStr);
+                if ($d && $d->format($format) === $dateStr) {
+                    return $d->format('Y-m-d');
+                }
+            } catch (\Exception $e) {
+                // Ignore exception and try next format
+            }
+        }
+
+        // Standard PHP strtotime fallback
+        try {
+            $time = strtotime($dateStr);
+            if ($time !== false) {
+                return date('Y-m-d', $time);
+            }
+        } catch (\Exception $e) {
+            // Ignore
+        }
+
+        return null;
     }
 }

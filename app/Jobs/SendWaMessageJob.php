@@ -43,14 +43,31 @@ class SendWaMessageJob implements ShouldQueue
         $result = $gateway->sendMessage($this->devotee->whatsapp, $compiledMessage);
 
         if ($this->broadcastId) {
+            $status = $result['success'] ? 'sent' : 'failed';
             BroadcastLog::create([
                 'id'            => (string) Str::uuid(),
                 'broadcast_id'  => $this->broadcastId,
                 'devotee_id'    => $this->devotee->id,
-                'status'        => $result['success'] ? 'sent' : 'failed',
+                'status'        => $status,
                 'error_message' => $result['error'] ?? null,
                 'sent_at'       => now(),
             ]);
+
+            // Update parent Broadcast counts and check completion
+            $broadcast = \App\Domain\Messaging\Broadcast::find($this->broadcastId);
+            if ($broadcast) {
+                $column = $status === 'sent' ? 'sent_count' : 'failed_count';
+                $broadcast->increment($column);
+                
+                $broadcast->refresh();
+                $processed = $broadcast->sent_count + $broadcast->failed_count;
+                if ($processed >= $broadcast->total_count) {
+                    $broadcast->update([
+                        'status'  => 'done',
+                        'sent_at' => now(),
+                    ]);
+                }
+            }
         }
 
         if ($this->wishLogId) {

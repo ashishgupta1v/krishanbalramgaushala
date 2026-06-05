@@ -56,11 +56,13 @@ class BroadcastController extends Controller
         // Dispatch background queue jobs
         $devotees->each(fn ($d) => SendWaMessageJob::dispatch($d, $request->message, $broadcast->id));
 
-        // Mark broadcast as done (since in sync queue it finishes instantly, or is marked sending)
-        $broadcast->update([
-            'status'  => 'done',
-            'sent_at' => now(),
-        ]);
+        // If recipient list is empty, mark as done immediately
+        if ($devotees->isEmpty()) {
+            $broadcast->update([
+                'status'  => 'done',
+                'sent_at' => now(),
+            ]);
+        }
 
         return response()->json([
             'success' => true,
