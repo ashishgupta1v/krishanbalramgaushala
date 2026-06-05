@@ -3,7 +3,7 @@
     
     <!-- Transparent Background Watermark -->
     <div style="position:fixed;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none;z-index:0;">
-      <img src="/gomata.png" alt="Gomata Watermark" style="width:min(500px, 90vw);height:auto;opacity:0.16;mix-blend-mode:multiply;filter:grayscale(10%);" />
+      <img src="/gomata.png" alt="Gomata Watermark" style="width:min(350px, 80vw);height:auto;opacity:0.24;mix-blend-mode:multiply;filter:grayscale(10%);" />
     </div>
 
     <div class="devo-profile-container page" style="position:relative;z-index:1;padding:24px 20px 40px;margin:0 auto;">
@@ -218,3 +218,19 @@ function handleLogout() {
   router.post(route('devotee.logout'));
 }
 </script>
+
+<style scoped>
+.sk-leather, :deep(.sk-leather) {
+  background: linear-gradient(150deg, rgba(255,255,255,0.85), rgba(247,244,234,0.85) 50%, rgba(239,230,208,0.85)) !important;
+  backdrop-filter: blur(12px) !important;
+  -webkit-backdrop-filter: blur(12px) !important;
+  border: 1px solid rgba(255,255,255,0.5) !important;
+}
+.nr, :deep(.nr) {
+  background: rgba(255, 255, 255, 0.8) !important;
+  backdrop-filter: blur(12px) !important;
+  -webkit-backdrop-filter: blur(12px) !important;
+  border: 1px solid rgba(255,255,255,0.5) !important;
+}
+</style>
+
