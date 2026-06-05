@@ -2,7 +2,9 @@
   <div style="position:fixed;inset:0;overflow-y:auto;overflow-x:hidden;background:var(--bg);background-image:radial-gradient(ellipse 65% 55% at 18% 18%,rgba(210,148,8,.17) 0%,transparent 55%),radial-gradient(ellipse 55% 60% at 82% 82%,rgba(180,96,0,.12) 0%,transparent 55%);">
     
     <!-- Transparent Background Watermark -->
-    <div style="position:fixed;inset:0;pointer-events:none;z-index:0;background-image:url('/gomata.png');background-repeat:no-repeat;background-position:center;background-size:min(600px, 90%);opacity:0.08;filter:grayscale(10%);"></div>
+    <div style="position:fixed;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none;z-index:0;">
+      <img src="/gomata.png" alt="Gomata Watermark" style="width:min(500px, 90vw);height:auto;opacity:0.16;mix-blend-mode:multiply;filter:grayscale(10%);" />
+    </div>
 
     <div class="devo-profile-container page" style="position:relative;z-index:1;padding:24px 20px 40px;margin:0 auto;">
 
