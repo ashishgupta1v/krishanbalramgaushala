@@ -6,7 +6,10 @@
 
     <!-- Content -->
     <div style="position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;">
-      <div style="font-size:78px;margin-bottom:8px;filter:drop-shadow(0 4px 18px rgba(180,76,0,.38));animation:pulse 2.5s ease infinite;">🐄</div>
+      <!-- Logo -->
+      <div style="width: 130px; height: 130px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 20px; background: linear-gradient(145deg, var(--bg1), var(--bg)); box-shadow: 8px 8px 20px var(--sd), -8px -8px 20px var(--sl); padding: 5px; border: 1px solid rgba(255,255,255,0.75); animation: pulse 2.5s ease infinite;">
+        <img src="/logo.jpg" alt="Krishan Balram Gaushala Logo" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover; box-shadow: inset 2px 2px 5px rgba(0,0,0,0.15);" />
+      </div>
       <div class="fu" style="font-family:'Playfair Display',serif;font-size:11px;font-weight:700;letter-spacing:3.5px;color:var(--gd1);text-transform:uppercase;margin-bottom:4px;">GauSeva Connect</div>
       <h1 class="fu2" style="font-family:'Playfair Display',serif;font-size:28px;font-weight:800;color:var(--tx);line-height:1.18;text-align:center;">Krishan Balram</h1>
       <h2 class="fu3" style="font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:var(--pr);margin-bottom:5px;">Gaushala</h2>

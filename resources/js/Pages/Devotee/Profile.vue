@@ -21,7 +21,11 @@
         <div style="display:flex;flex-direction:column;gap:18px;">
           <!-- Hero Card -->
           <div class="sk-leather fu" style="padding:22px;text-align:center;border-radius:20px;overflow:hidden;">
-            <div style="font-size:54px;margin-bottom:8px;filter:drop-shadow(0 4px 14px rgba(180,80,0,.3));">🐄</div>
+            <div style="display:flex;justify-content:center;margin-bottom:12px;">
+              <div style="width: 100px; height: 100px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: linear-gradient(145deg, var(--bg1), var(--bg)); box-shadow: 4px 4px 12px var(--sd), -4px -4px 12px var(--sl); padding: 4px; border: 1px solid rgba(255,255,255,0.7);">
+                <img src="/logo.jpg" alt="Krishan Balram Gaushala Logo" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;" />
+              </div>
+            </div>
             <div style="font-family:'Playfair Display',serif;font-size:18px;font-weight:700;">Krishan Balram Gaushala</div>
             <div style="font-size:10px;color:var(--tl);margin:3px 0 12px;line-height:1.4;">Singla Enclave, Village Dullon Khurd, Pakhowal Road, Ludhiana<br>Member since {{ memberSince }}</div>
             <div style="display:inline-flex;align-items:center;gap:7px;background:rgba(46,125,50,.12);border:1px solid rgba(67,160,71,.3);border-radius:20px;padding:5px 16px;">
