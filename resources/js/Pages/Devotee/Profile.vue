@@ -1,10 +1,5 @@
 <template>
   <div style="position:fixed;inset:0;overflow-y:auto;overflow-x:hidden;background:var(--bg);background-image:radial-gradient(ellipse 65% 55% at 18% 18%,rgba(210,148,8,.17) 0%,transparent 55%),radial-gradient(ellipse 55% 60% at 82% 82%,rgba(180,96,0,.12) 0%,transparent 55%);">
-    
-    <!-- Transparent Background Watermark -->
-    <div style="position:fixed;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none;z-index:0;">
-      <img src="/gomata.png" alt="Gomata Watermark" style="width:min(350px, 80vw);height:auto;opacity:0.24;mix-blend-mode:multiply;filter:grayscale(10%);" />
-    </div>
 
     <div class="devo-profile-container page" style="position:relative;z-index:1;padding:24px 20px 40px;margin:0 auto;">
 
@@ -26,17 +21,22 @@
         <!-- Left Column: Hero, Details, Automations -->
         <div style="display:flex;flex-direction:column;gap:18px;">
           <!-- Hero Card -->
-          <div class="sk-leather fu" style="padding:22px;text-align:center;border-radius:20px;overflow:hidden;">
-            <div style="display:flex;justify-content:center;margin-bottom:12px;">
-              <div style="width: 100px; height: 100px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: linear-gradient(145deg, var(--bg1), var(--bg)); box-shadow: 4px 4px 12px var(--sd), -4px -4px 12px var(--sl); padding: 4px; border: 1px solid rgba(255,255,255,0.7);">
-                <img src="/logo.jpg" alt="Krishan Balram Gaushala Logo" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;" />
+          <div class="sk-leather fu" style="position:relative;padding:22px;text-align:center;border-radius:20px;overflow:hidden;">
+            <!-- Transparent Background Watermark inside the card -->
+            <img src="/gomata.png" alt="Gomata Watermark" style="position:absolute;top:50%;left:52%;transform:translate(-50%,-50%);width:min(400px, 90%);height:auto;opacity:0.15;mix-blend-mode:multiply;pointer-events:none;z-index:1;filter:grayscale(10%);" />
+            
+            <div style="position:relative;z-index:2;">
+              <div style="display:flex;justify-content:center;margin-bottom:12px;">
+                <div style="width: 100px; height: 100px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: linear-gradient(145deg, var(--bg1), var(--bg)); box-shadow: 4px 4px 12px var(--sd), -4px -4px 12px var(--sl); padding: 4px; border: 1px solid rgba(255,255,255,0.7);">
+                  <img src="/logo.jpg" alt="Krishan Balram Gaushala Logo" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;" />
+                </div>
               </div>
-            </div>
-            <div style="font-family:'Playfair Display',serif;font-size:18px;font-weight:700;">Krishan Balram Gaushala</div>
-            <div style="font-size:10px;color:var(--tl);margin:3px 0 12px;line-height:1.4;">Singla Enclave, Village Dullon Khurd, Pakhowal Road, Ludhiana<br>Member since {{ memberSince }}</div>
-            <div style="display:inline-flex;align-items:center;gap:7px;background:rgba(46,125,50,.12);border:1px solid rgba(67,160,71,.3);border-radius:20px;padding:5px 16px;">
-              <span style="width:8px;height:8px;background:var(--ok1);border-radius:50%;box-shadow:0 0 7px var(--ok1);"/>
-              <span style="color:var(--ok1);font-size:12px;font-weight:700;">Active Devotee</span>
+              <div style="font-family:'Playfair Display',serif;font-size:18px;font-weight:700;">Krishan Balram Gaushala</div>
+              <div style="font-size:10px;color:var(--tl);margin:3px 0 12px;line-height:1.4;">Singla Enclave, Village Dullon Khurd, Pakhowal Road, Ludhiana<br>Member since {{ memberSince }}</div>
+              <div style="display:inline-flex;align-items:center;gap:7px;background:rgba(46,125,50,.12);border:1px solid rgba(67,160,71,.3);border-radius:20px;padding:5px 16px;">
+                <span style="width:8px;height:8px;background:var(--ok1);border-radius:50%;box-shadow:0 0 7px var(--ok1);"/>
+                <span style="color:var(--ok1);font-size:12px;font-weight:700;">Active Devotee</span>
+              </div>
             </div>
           </div>
 
