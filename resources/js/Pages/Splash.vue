@@ -23,9 +23,14 @@
       <div v-if="loading" style="width:36px;height:36px;border:3px solid rgba(180,100,0,.18);border-top-color:var(--pr1);border-radius:50%;animation:spin .9s linear infinite;"/>
 
       <!-- Enter button -->
-      <button v-else class="btn-saffron fu si" style="font-size:16px;padding:16px 50px;" @click="enter" :data-prefetch="route('choose')">
+      <button v-else class="btn-saffron fu si" style="font-size:16px;padding:16px 30px;white-space:nowrap;max-width:100%;" @click="enter" :data-prefetch="route('choose')">
         🙏 &nbsp; Jai Gau Mata - Enter
       </button>
+    </div>
+
+    <!-- Credits Footer -->
+    <div class="fu4" style="position:absolute; bottom:10px; left:0; right:0; text-align:center; font-size:11px; color:var(--tl); z-index:10; font-family:'Poppins',sans-serif; letter-spacing:0.5px;">
+      Made with <span style="color:#e74c3c;font-size:13px;">❤️</span> by <a href="https://ashishgupta.dev/" target="_blank" rel="noopener noreferrer" style="color:var(--gd1); text-decoration:none; font-weight:700;">AG</a>
     </div>
   </div>
 </template>

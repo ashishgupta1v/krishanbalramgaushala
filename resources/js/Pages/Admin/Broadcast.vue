@@ -7,7 +7,7 @@
       <div class="desktop-grid-2" style="align-items:start;">
         
         <!-- Left Pane: Editor & Options -->
-        <div>
+        <div style="min-width: 0; width: 100%;">
           <!-- Template chips — horizontal scroll on mobile -->
           <div class="slbl" style="margin-top:0;">Choose Template</div>
           <div class="chip-row" style="margin-bottom:16px;">
@@ -33,7 +33,7 @@
         </div>
 
         <!-- Right Pane: WhatsApp Live Preview -->
-        <div>
+        <div style="min-width: 0; width: 100%;">
           <!-- WA Preview -->
           <div class="slbl" style="margin-top:0;">WhatsApp Preview</div>
           <div class="wa-bbl" style="margin-bottom:18px;">
@@ -45,7 +45,7 @@
               </div>
             </div>
             <div class="wa-msg">
-              <p style="color:#fff;font-size:12px;line-height:1.7;white-space:pre-line;margin:0;">{{ preview }}</p>
+              <p style="color:#fff;font-size:12px;line-height:1.7;white-space:pre-line;margin:0;word-break:break-word;">{{ preview }}</p>
             </div>
           </div>
 
