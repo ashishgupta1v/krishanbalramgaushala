@@ -29,6 +29,17 @@
         <input ref="csvInput" type="file" accept=".csv" style="display:none;" @change="onFileChosen">
       </div>
 
+      <!-- Validation Errors Display -->
+      <div v-if="$page.props.errors.rows" class="nr" style="padding:16px;margin-bottom:18px;background:rgba(198,40,40,.06);border:1px solid rgba(198,40,40,.25);border-radius:16px;color:var(--er);">
+        <div style="font-weight:700;font-size:13px;margin-bottom:6px;display:flex;align-items:center;gap:6px;">
+          <span>⚠️</span>
+          <span>Import Failed — Please correct the following errors:</span>
+        </div>
+        <ul style="margin:0;padding-left:20px;font-size:11px;line-height:1.65;list-style-type:disc;font-family:'Poppins',sans-serif;">
+          <li v-for="(err, idx) in [].concat($page.props.errors.rows)" :key="idx">{{ err }}</li>
+        </ul>
+      </div>
+
       <!-- Column guide -->
       <div class="slbl">Column Reference</div>
       <div class="nr" style="padding:14px;margin-bottom:18px;border-radius:16px;">

@@ -35,6 +35,27 @@ class HandleInertiaRequests extends Middleware
                 'authenticated' => session('admin_authenticated', false),
                 'username'      => session('admin_username'),
             ],
+            'auth' => [
+                'devotee' => function () {
+                    $id = session('gaushala_devotee_id');
+                    if (!$id) return null;
+                    
+                    $devotee = \App\Domain\Devotee\Devotee::find($id);
+                    if (!$devotee) return null;
+                    
+                    return [
+                        'id'              => $devotee->id,
+                        'name'            => $devotee->name,
+                        'whatsapp'        => $devotee->whatsapp,
+                        'photo_url'       => $devotee->photo_url,
+                        'avatar_initials' => $devotee->avatar_initials,
+                        'city'            => $devotee->city,
+                        'dob'             => $devotee->dob?->format('Y-m-d'),
+                        'anniversary'     => $devotee->anniversary?->format('Y-m-d'),
+                        'fb_consent'      => $devotee->fb_consent,
+                    ];
+                }
+            ],
         ]);
     }
 }
