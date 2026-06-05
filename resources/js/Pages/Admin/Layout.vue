@@ -71,11 +71,7 @@
 
       <!-- Scrollable Content Area -->
       <div class="admin-scroll-area">
-        <Transition name="page-fade" mode="out-in">
-          <div :key="currentTab">
-            <slot />
-          </div>
-        </Transition>
+        <slot />
       </div>
 
       <!-- MOBILE BOTTOM NAVIGATION -->
@@ -133,7 +129,6 @@ function goTab(tabId) {
   router.visit(route(routeMap[tabId]), {
     preserveScroll: false,
     preserveState: false,
-    only: [],
   });
 }
 
