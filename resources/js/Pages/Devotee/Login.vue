@@ -2,11 +2,6 @@
   <div style="position:fixed;inset:0;overflow-y:auto;overflow-x:hidden;background:var(--bg);background-image:radial-gradient(ellipse 65% 55% at 18% 18%,rgba(210,148,8,.17) 0%,transparent 55%),radial-gradient(ellipse 55% 60% at 82% 82%,rgba(180,96,0,.12) 0%,transparent 55%);">
     <div class="devo-card-container page" style="padding:24px 20px 50px;max-width:480px;margin:0 auto;">
 
-      <!-- Back -->
-      <div style="margin-bottom:20px;">
-        <button class="btn-ghost" style="padding:7px 16px;font-size:12px;" @click="back">← Back</button>
-      </div>
-
       <!-- Header -->
       <div style="text-align:center;margin-bottom:30px;">
         <div style="display:flex;justify-content:center;margin-bottom:12px;">

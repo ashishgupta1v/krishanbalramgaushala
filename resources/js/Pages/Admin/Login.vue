@@ -21,7 +21,6 @@
           <span v-else>Login to Dashboard →</span>
         </button>
       </div>
-      <button class="btn-ghost" style="width:100%;padding:12px;margin-top:12px;font-size:13px;" @click="back">← Back to Home</button>
     </div>
   </div>
 </template>

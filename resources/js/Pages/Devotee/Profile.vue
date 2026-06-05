@@ -10,7 +10,6 @@
           <h2 style="font-family:'Playfair Display',serif;font-size:20px;">Namaste, <span style="color:var(--pr);">{{ firstName }} Ji</span>!</h2>
         </div>
         <div style="display:flex;gap:8px;">
-          <button class="btn-ghost" style="padding:7px 12px;font-size:11px;" @click="back">← Back</button>
           <button class="btn-ghost" style="padding:7px 12px;font-size:11px;color:var(--er);border-color:rgba(239,83,80,.2);" @click="handleLogout">Sign Out 🚪</button>
         </div>
       </div>
