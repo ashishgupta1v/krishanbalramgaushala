@@ -25,7 +25,13 @@ class DevoteeController extends Controller
             'anniversary' => 'nullable|date',
             'fb_consent'  => 'boolean',
             'password'    => 'required|string|min:6|confirmed',
+            'photo'       => 'nullable|image|max:5120',
         ]);
+
+        $photoPath = null;
+        if ($request->hasFile('photo')) {
+            $photoPath = $request->file('photo')->store('devotees', 'public');
+        }
 
         $devotee = Devotee::create([
             'id'          => (string) Str::uuid(),
@@ -37,6 +43,7 @@ class DevoteeController extends Controller
             'status'      => 'active',
             'joined_at'   => now(),
             'password'    => Hash::make($validated['password']),
+            'photo_path'  => $photoPath,
         ]);
 
         // Store in session
@@ -156,7 +163,16 @@ class DevoteeController extends Controller
             'dob'         => 'required|date',
             'anniversary' => 'nullable|date',
             'fb_consent'  => 'boolean',
+            'photo'       => 'nullable|image|max:5120',
         ]);
+
+        if ($request->hasFile('photo')) {
+            if ($devotee->photo_path) {
+                \Illuminate\Support\Facades\Storage::disk('public')->delete($devotee->photo_path);
+            }
+            $validated['photo_path'] = $request->file('photo')->store('devotees', 'public');
+        }
+        unset($validated['photo']);
 
         $devotee->update($validated);
 

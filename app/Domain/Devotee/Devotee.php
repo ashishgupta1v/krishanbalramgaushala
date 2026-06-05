@@ -13,11 +13,16 @@ class Devotee extends Model
 
     protected $fillable = [
         'name', 'whatsapp', 'dob', 'anniversary',
-        'city', 'fb_consent', 'status', 'joined_at', 'password',
+        'city', 'fb_consent', 'status', 'joined_at', 'password', 'photo_path',
     ];
 
     protected $hidden = [
         'password',
+    ];
+
+    protected $appends = [
+        'avatar_initials',
+        'photo_url',
     ];
 
     protected $casts = [
@@ -169,5 +174,13 @@ class Devotee extends Model
             return strtoupper($parts[0][0] . $parts[1][0]);
         }
         return strtoupper(substr($this->name, 0, 2));
+    }
+
+    public function getPhotoUrlAttribute(): ?string
+    {
+        if ($this->photo_path) {
+            return asset('storage/' . $this->photo_path);
+        }
+        return null;
     }
 }
