@@ -9,7 +9,11 @@
 
       <!-- Header -->
       <div style="text-align:center;margin-bottom:24px;">
-        <div style="font-size:44px;margin-bottom:8px;">🐄</div>
+        <div style="display:flex;justify-content:center;margin-bottom:12px;">
+          <div style="width: 80px; height: 80px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: linear-gradient(145deg, var(--bg1), var(--bg)); box-shadow: 4px 4px 10px var(--sd), -4px -4px 10px var(--sl); padding: 3px; border: 1px solid rgba(255,255,255,0.75);">
+            <img src="/logo.jpg" alt="Krishan Balram Gaushala Logo" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;" />
+          </div>
+        </div>
         <h1 style="font-family:'Playfair Display',serif;font-size:22px;font-weight:800;">
           {{ registered ? 'Welcome! 🙏' : 'Join Gau Seva Family' }}
         </h1>
@@ -97,7 +101,9 @@
         <!-- WA Message Preview -->
         <div class="wa-bbl" style="max-width:320px;margin:0 auto 28px;text-align:left;">
           <div style="display:flex;align-items:center;gap:10px;margin-bottom:9px;padding-bottom:9px;border-bottom:1px solid rgba(255,255,255,.1);">
-            <div style="width:38px;height:38px;border-radius:50%;background:#128c7e;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;">🐄</div>
+            <div style="width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;padding:1px;background:var(--bg);border:1px solid rgba(255,255,255,0.5);">
+              <img src="/logo.jpg" alt="logo" style="width:100%;height:100%;border-radius:50%;object-fit:cover;" />
+            </div>
             <div>
               <div style="color:#fff;font-weight:700;font-size:12px;">Krishan Balram Gaushala</div>
               <div style="color:rgba(255,255,255,.45);font-size:10px;">Official • Just now</div>

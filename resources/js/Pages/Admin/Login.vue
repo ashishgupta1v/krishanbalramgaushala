@@ -2,7 +2,11 @@
   <div style="position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:28px;background:var(--bg);">
     <div style="width:100%;max-width:340px;">
       <div style="text-align:center;margin-bottom:30px;">
-        <div class="sk-seal" style="width:68px;height:68px;margin:0 auto 14px;display:flex;align-items:center;justify-content:center;font-size:32px;">🔐</div>
+        <div style="display:flex;justify-content:center;margin-bottom:14px;">
+          <div style="width: 80px; height: 80px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: linear-gradient(145deg, var(--bg1), var(--bg)); box-shadow: 4px 4px 10px var(--sd), -4px -4px 10px var(--sl); padding: 3px; border: 1px solid rgba(255,255,255,0.75);">
+            <img src="/logo.jpg" alt="Krishan Balram Gaushala Logo" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;" />
+          </div>
+        </div>
         <h1 style="font-family:'Playfair Display',serif;font-size:24px;font-weight:800;">Admin Panel</h1>
         <p style="color:var(--tl);font-size:13px;margin-top:4px;">Krishan Balram Gaushala</p>
       </div>

@@ -9,7 +9,11 @@
 
       <!-- Header -->
       <div style="text-align:center;margin-bottom:30px;">
-        <div style="font-size:44px;margin-bottom:8px;">🔑</div>
+        <div style="display:flex;justify-content:center;margin-bottom:12px;">
+          <div style="width: 80px; height: 80px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: linear-gradient(145deg, var(--bg1), var(--bg)); box-shadow: 4px 4px 10px var(--sd), -4px -4px 10px var(--sl); padding: 3px; border: 1px solid rgba(255,255,255,0.7);">
+            <img src="/logo.jpg" alt="Krishan Balram Gaushala Logo" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;" />
+          </div>
+        </div>
         <h1 style="font-family:'Playfair Display',serif;font-size:22px;font-weight:800;">Devotee Sign In</h1>
         <p style="color:var(--tl);font-size:12px;margin-top:3px;">Krishan Balram Gaushala, Ludhiana</p>
       </div>
@@ -42,7 +46,7 @@
 
       <div style="text-align:center;margin-top:20px;">
         <span style="font-size:12px;color:var(--tl);">New Devotee? </span>
-        <Link :href="route('register')" style="font-size:12px;color:var(--pr1);font-weight:700;text-decoration:none;">Join Seva Family here</Link>
+        <Link :href="route('register')" style="font-size:12px;color:var(--pr1);font-weight:700;text-decoration:none;">Join Gaushala Family here</Link>
       </div>
 
     </div>
