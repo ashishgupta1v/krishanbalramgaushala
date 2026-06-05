@@ -12,10 +12,10 @@
     <link rel="manifest" href="/manifest.json">
     <link rel="icon" href="/favicon.ico">
     <link rel="apple-touch-icon" href="/icons/icon-192.png">
-    <!-- Preload critical logo asset for instant display -->
-    <link rel="preload" href="/logo.webp" as="image" type="image/webp">
-    <link rel="preload" href="/logo1.png" as="image" type="image/png">
-    <!-- Apple PWA support -->
+    <!-- Preload critical logo — WebP only (widely supported, avoids type mismatch) -->
+    <link rel="preload" href="/logo.webp" as="image">
+    <!-- PWA support — both standards -->
+    <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <meta name="apple-mobile-web-app-title" content="GauSeva">
