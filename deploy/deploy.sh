@@ -10,8 +10,8 @@ cd /var/www/krishanbalramgaushala
 php artisan down || true
 
 # 3. Pull latest changes
-echo "📥 Pulling latest codebase from origin main..."
-git pull origin main
+echo "📥 Pulling latest codebase from origin..."
+git pull origin $(git branch --show-current)
 
 # 4. Install Composer dependencies
 echo "📦 Installing PHP packages..."
