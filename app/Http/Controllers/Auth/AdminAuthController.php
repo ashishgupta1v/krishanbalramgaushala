@@ -11,10 +11,10 @@ use Inertia\Response;
 
 class AdminAuthController extends Controller
 {
-    public function showLogin(): Response
+    public function showLogin()
     {
         if (session('admin_authenticated')) {
-            return Inertia::location(route('admin.dashboard'));
+            return redirect()->route('admin.dashboard');
         }
         return Inertia::render('Admin/Login');
     }
