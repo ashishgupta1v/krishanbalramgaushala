@@ -545,6 +545,27 @@ body::after {
   100% { background-position: 200% 0; }
 }
 
+/* ══ SPA PAGE TRANSITIONS ══ */
+/* These are used by the Inertia Transition wrapper in app.js */
+@keyframes pageIn {
+  from { opacity: 0; transform: translateY(12px) scale(.99); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+@keyframes pageOut {
+  from { opacity: 1; transform: translateY(0) scale(1); }
+  to   { opacity: 0; transform: translateY(-8px) scale(.99); }
+}
+
+/* Inertia progress bar override for a thicker, more noticeable bar */
+#nprogress .bar {
+  height: 3px !important;
+  background: linear-gradient(90deg, var(--pr), var(--pr2)) !important;
+}
+#nprogress .peg {
+  box-shadow: 0 0 10px var(--pr2), 0 0 5px var(--pr2) !important;
+}
+
+
 .fu  { animation: fadeUp .35s ease both; }
 .fu2 { animation: fadeUp .35s .08s ease both; }
 .fu3 { animation: fadeUp .35s .16s ease both; }

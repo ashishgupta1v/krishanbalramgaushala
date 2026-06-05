@@ -19,6 +19,7 @@
           class="admin-sidebar-btn"
           :class="{ active: currentTab === tab.id }"
           @click="goTab(tab.id)"
+          :data-prefetch="tabRoute(tab.id)"
         >
           <span style="font-size:18px;">{{ tab.icon }}</span>
           <span>{{ tab.label }}</span>
@@ -51,9 +52,13 @@
         <button @click="logout" style="background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.18);border-radius:8px;padding:6px 12px;color:rgba(240,218,158,.8);font-size:11px;cursor:pointer;font-family:'Poppins',sans-serif;">Logout</button>
       </div>
 
-      <!-- Main Content Slots -->
+      <!-- Main Content Slots with smooth transition -->
       <div style="flex:1;overflow-y:auto;overflow-x:hidden;min-height:0;">
-        <slot />
+        <Transition name="page-fade" mode="out-in">
+          <div :key="currentTab" class="page-content-wrapper">
+            <slot />
+          </div>
+        </Transition>
       </div>
 
       <!-- MOBILE BOTTOM NAVIGATION (visible only on mobile) -->
@@ -63,6 +68,7 @@
           class="nav-i"
           :class="{ on: currentTab === tab.id }"
           @click="goTab(tab.id)"
+          :data-prefetch="tabRoute(tab.id)"
         >
           <span class="nav-ic">{{ tab.icon }}</span>
           <span class="nav-lb">{{ tab.label }}</span>
@@ -91,20 +97,49 @@ const tabs = [
   { id: 'upload',    icon: '📤', label: 'Upload' },
 ];
 
+const routeMap = {
+  dashboard: 'admin.dashboard',
+  members:   'admin.members',
+  broadcast: 'admin.broadcast',
+  facebook:  'admin.facebook',
+  events:    'admin.events',
+  wishes:    'admin.wishes',
+  upload:    'admin.upload',
+};
+
+function tabRoute(id) {
+  try { return route(routeMap[id]); } catch { return ''; }
+}
+
 function goTab(tabId) {
-  const routeMap = {
-    dashboard: 'admin.dashboard',
-    members:   'admin.members',
-    broadcast: 'admin.broadcast',
-    facebook:  'admin.facebook',
-    events:    'admin.events',
-    wishes:    'admin.wishes',
-    upload:    'admin.upload',
-  };
-  router.visit(route(routeMap[tabId]), { preserveScroll: false });
+  if (currentTab.value === tabId) return; // already on this tab, skip
+  router.visit(route(routeMap[tabId]), {
+    preserveScroll: false,
+    preserveState: false,
+    only: [],
+  });
 }
 
 function logout() {
   router.post(route('admin.logout'));
 }
 </script>
+
+<style scoped>
+/* Smooth page content transition */
+.page-fade-enter-active {
+  animation: pageSlideIn 0.22s ease both;
+}
+.page-fade-leave-active {
+  animation: pageSlideOut 0.15s ease both;
+}
+
+@keyframes pageSlideIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes pageSlideOut {
+  from { opacity: 1; transform: translateY(0); }
+  to   { opacity: 0; transform: translateY(-6px); }
+}
+</style>
