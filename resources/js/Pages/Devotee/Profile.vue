@@ -27,7 +27,10 @@
             <div style="position:relative;z-index:2;">
               <div style="display:flex;justify-content:center;margin-bottom:12px;">
                 <div style="width: 100px; height: 100px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: linear-gradient(145deg, var(--bg1), var(--bg)); box-shadow: 4px 4px 12px var(--sd), -4px -4px 12px var(--sl); padding: 4px; border: 1px solid rgba(255,255,255,0.7);">
-                  <img src="/logo.jpg" alt="Krishan Balram Gaushala Logo" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;" />
+                  <picture>
+                    <source srcset="/logo.webp" type="image/webp">
+                    <img src="/logo1.png" alt="Krishan Balram Gaushala Logo" width="100" height="100" style="width:100%;height:100%;object-fit:contain;" loading="eager" decoding="async" />
+                  </picture>
                 </div>
               </div>
               <div style="font-family:'Playfair Display',serif;font-size:18px;font-weight:700;">Krishan Balram Gaushala</div>

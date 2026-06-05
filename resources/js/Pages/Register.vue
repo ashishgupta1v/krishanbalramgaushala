@@ -6,7 +6,10 @@
       <div style="text-align:center;margin-bottom:24px;">
         <div style="display:flex;justify-content:center;margin-bottom:12px;">
           <div style="width: 80px; height: 80px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: linear-gradient(145deg, var(--bg1), var(--bg)); box-shadow: 4px 4px 10px var(--sd), -4px -4px 10px var(--sl); padding: 3px; border: 1px solid rgba(255,255,255,0.75);">
-            <img src="/logo.jpg" alt="Krishan Balram Gaushala Logo" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;" />
+            <picture>
+              <source srcset="/logo.webp" type="image/webp">
+              <img src="/logo1.png" alt="Krishan Balram Gaushala Logo" width="80" height="80" style="width:100%;height:100%;object-fit:contain;" loading="eager" decoding="async" />
+            </picture>
           </div>
         </div>
         <h1 style="font-family:'Playfair Display',serif;font-size:22px;font-weight:800;">
@@ -86,7 +89,10 @@
         <div class="wa-bbl" style="max-width:320px;margin:0 auto 28px;text-align:left;">
           <div style="display:flex;align-items:center;gap:10px;margin-bottom:9px;padding-bottom:9px;border-bottom:1px solid rgba(255,255,255,.1);">
             <div style="width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;padding:1px;background:var(--bg);border:1px solid rgba(255,255,255,0.5);">
-              <img src="/logo.jpg" alt="logo" style="width:100%;height:100%;border-radius:50%;object-fit:cover;" />
+              <picture>
+                <source srcset="/logo.webp" type="image/webp">
+                <img src="/logo1.png" alt="logo" width="38" height="38" style="width:100%;height:100%;object-fit:contain;" loading="eager" decoding="async" />
+              </picture>
             </div>
             <div>
               <div style="color:#fff;font-weight:700;font-size:12px;">Krishan Balram Gaushala</div>

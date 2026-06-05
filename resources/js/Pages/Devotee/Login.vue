@@ -6,7 +6,10 @@
       <div style="text-align:center;margin-bottom:30px;">
         <div style="display:flex;justify-content:center;margin-bottom:12px;">
           <div style="width: 80px; height: 80px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: linear-gradient(145deg, var(--bg1), var(--bg)); box-shadow: 4px 4px 10px var(--sd), -4px -4px 10px var(--sl); padding: 3px; border: 1px solid rgba(255,255,255,0.7);">
-            <img src="/logo.jpg" alt="Krishan Balram Gaushala Logo" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;" />
+            <picture>
+              <source srcset="/logo.webp" type="image/webp">
+              <img src="/logo1.png" alt="Krishan Balram Gaushala Logo" width="80" height="80" style="width:100%;height:100%;object-fit:contain;" loading="eager" decoding="async" />
+            </picture>
           </div>
         </div>
         <h1 style="font-family:'Playfair Display',serif;font-size:22px;font-weight:800;">Devotee Sign In</h1>

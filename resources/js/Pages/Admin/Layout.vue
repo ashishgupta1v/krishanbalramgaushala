@@ -5,7 +5,10 @@
     <aside class="admin-sidebar">
       <div style="padding:24px 18px 18px;border-bottom:1px solid rgba(255,255,255,.15);text-align:center;display:flex;flex-direction:column;align-items:center;">
         <div style="width: 90px; height: 90px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 12px; background: linear-gradient(145deg, var(--bg1), var(--bg)); box-shadow: inset 2px 2px 6px rgba(0,0,0,0.1), 4px 4px 10px rgba(0,0,0,0.15); padding: 3px; border: 1px solid rgba(255,255,255,0.2);">
-          <img src="/logo.jpg" alt="Logo" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;" />
+          <picture>
+            <source srcset="/logo.webp" type="image/webp">
+            <img src="/logo1.png" alt="Logo" width="90" height="90" style="width:100%;height:100%;object-fit:contain;" loading="eager" decoding="async" />
+          </picture>
         </div>
         <h2 style="font-family:'Playfair Display',serif;font-size:16px;color:#fff;font-weight:800;line-height:1.2;">Krishan Balram</h2>
         <h3 style="font-family:'Playfair Display',serif;font-size:14px;color:var(--gd2);font-weight:700;margin-top:2px;">Gaushala</h3>
@@ -42,7 +45,10 @@
       <div class="a-hdr">
         <div style="display:flex;align-items:center;gap:11px;">
           <div style="width: 38px; height: 38px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: linear-gradient(145deg, var(--bg1), var(--bg)); box-shadow: 2px 2px 6px rgba(0,0,0,0.15); padding: 2px; border: 1px solid rgba(255,255,255,0.6); flex-shrink:0;">
-            <img src="/logo.jpg" alt="Logo" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;" />
+            <picture>
+              <source srcset="/logo.webp" type="image/webp">
+              <img src="/logo1.png" alt="Logo" width="38" height="38" style="width:100%;height:100%;object-fit:contain;" loading="eager" decoding="async" />
+            </picture>
           </div>
           <div>
             <div style="font-family:'Playfair Display',serif;font-size:14px;color:var(--gd3);font-weight:700;line-height:1.2;">Krishan Balram Gaushala</div>

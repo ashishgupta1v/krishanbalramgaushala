@@ -12,6 +12,9 @@
     <link rel="manifest" href="/manifest.json">
     <link rel="icon" href="/favicon.ico">
     <link rel="apple-touch-icon" href="/icons/icon-192.png">
+    <!-- Preload critical logo asset for instant display -->
+    <link rel="preload" href="/logo.webp" as="image" type="image/webp">
+    <link rel="preload" href="/logo1.png" as="image" type="image/png">
     <!-- Apple PWA support -->
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
