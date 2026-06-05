@@ -23,7 +23,7 @@
       <div v-if="loading" style="width:36px;height:36px;border:3px solid rgba(180,100,0,.18);border-top-color:var(--pr1);border-radius:50%;animation:spin .9s linear infinite;"/>
 
       <!-- Enter button -->
-      <button v-else class="btn-saffron fu si" style="font-size:16px;padding:16px 50px;" @click="enter" :data-prefetch="route('choose')">
+      <button v-else class="btn-saffron fu si" style="font-size:16px;padding:16px 30px;white-space:nowrap;max-width:100%;" @click="enter" :data-prefetch="route('choose')">
         🙏 &nbsp; Jai Gau Mata - Enter
       </button>
     </div>
