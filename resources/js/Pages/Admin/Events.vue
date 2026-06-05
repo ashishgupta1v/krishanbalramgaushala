@@ -2,12 +2,12 @@
   <AdminLayout>
     <div class="page">
       <!-- Title Bar -->
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;">
-        <div>
-          <h2 style="font-family:'Playfair Display',serif;font-size:20px;">Interactive Event & Calendar Manager</h2>
-          <p style="color:var(--tl);font-size:12px;margin-top:1px;">Manage upcoming festivals, prayers, meetings, and veterinary checks dynamically</p>
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:12px;margin-bottom:18px;">
+        <div style="min-width:260px;flex:1;">
+          <h2 style="font-family:'Playfair Display',serif;font-size:20px;line-height:1.25;">Interactive Event & Calendar Manager</h2>
+          <p style="color:var(--tl);font-size:12px;margin-top:4px;line-height:1.4;">Manage upcoming festivals, prayers, meetings, and veterinary checks dynamically</p>
         </div>
-        <button class="btn-saffron" @click="openCreateModal" style="padding:8px 16px;font-size:12px;">➕ Add Event</button>
+        <button class="btn-saffron" @click="openCreateModal" style="padding:10px 18px;font-size:12px;white-space:nowrap;flex-shrink:0;height:fit-content;margin-top:2px;">➕ Add Event</button>
       </div>
 
       <!-- Events Grid / Table -->
