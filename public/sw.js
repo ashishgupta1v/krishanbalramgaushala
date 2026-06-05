@@ -60,6 +60,15 @@ self.addEventListener('fetch', (event) => {
                        url.hostname.includes('fonts.googleapis.com');
   if (!isOwnOrigin && !isGoogleFont) return;
 
+  // Exclude admin panel, webhooks, and devotee profile from service worker
+  if (
+    url.pathname.startsWith('/admin') ||
+    url.pathname.startsWith('/webhook') ||
+    url.pathname === '/profile'
+  ) {
+    return;
+  }
+
   // 1. Vite build assets (hashed filenames) → Cache-First, long TTL
   if (url.pathname.startsWith('/build/assets/')) {
     event.respondWith(

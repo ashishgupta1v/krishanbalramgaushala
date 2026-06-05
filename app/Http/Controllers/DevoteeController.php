@@ -113,7 +113,7 @@ class DevoteeController extends Controller
         return response()->json(['success' => true, 'message' => 'Password reset successfully. Please Sign In.']);
     }
 
-    public function profile(Request $request): Response
+    public function profile(Request $request)
     {
         $id = session('gaushala_devotee_id');
         $devotee = $id ? Devotee::find($id) : null;
