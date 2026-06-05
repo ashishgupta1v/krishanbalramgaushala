@@ -1,93 +1,116 @@
-const CACHE_NAME = 'gauseva-connect-v1';
-const ASSETS_TO_CACHE = [
+/* ════════════════════════════════════════════════════════════
+   GauSeva Connect — Service Worker
+   Robust offline-first strategy with safe cache.addAll()
+   ════════════════════════════════════════════════════════════ */
+
+const CACHE_NAME   = 'gauseva-v3';
+const CACHE_STATIC = 'gauseva-static-v3';
+
+// Critical shell — ONLY files we know exist
+const SHELL_URLS = [
   '/',
-  '/choose',
-  '/register',
   '/manifest.json',
   '/favicon.ico',
+  '/logo.webp',
   '/icons/icon-192.png',
   '/icons/icon-512.png',
-  '/icons/screenshot-splash.png'
 ];
 
-// Install Event - Pre-cache core shell assets
+// ── INSTALL: pre-cache shell with individual try-catch ──────
 self.addEventListener('install', (event) => {
   self.skipWaiting();
   event.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => {
-      return cache.addAll(ASSETS_TO_CACHE);
+    caches.open(CACHE_NAME).then(async (cache) => {
+      // Cache each URL individually so one failure doesn't break all
+      const results = await Promise.allSettled(
+        SHELL_URLS.map(url =>
+          cache.add(url).catch(err => {
+            console.warn('[SW] Failed to cache', url, err.message);
+          })
+        )
+      );
+      const ok = results.filter(r => r.status === 'fulfilled').length;
+      console.log(`[SW] Installed. Cached ${ok}/${SHELL_URLS.length} shell assets.`);
     })
   );
 });
 
-// Activate Event - Clean up old caches and claim clients
+// ── ACTIVATE: remove old caches ─────────────────────────────
 self.addEventListener('activate', (event) => {
   event.waitUntil(
-    caches.keys().then((cacheNames) => {
-      return Promise.all(
-        cacheNames.map((cache) => {
-          if (cache !== CACHE_NAME) {
-            return caches.delete(cache);
-          }
-        })
-      );
-    }).then(() => self.clients.claim())
+    caches.keys().then(keys =>
+      Promise.all(
+        keys
+          .filter(k => k !== CACHE_NAME && k !== CACHE_STATIC)
+          .map(k => caches.delete(k))
+      )
+    ).then(() => self.clients.claim())
   );
 });
 
-// Fetch Event - Handle offline routing and static caching
+// ── FETCH: network-first for pages, cache-first for assets ──
 self.addEventListener('fetch', (event) => {
   const req = event.request;
   const url = new URL(req.url);
 
-  // 1. Skip non-GET requests or browser extension/other schemes
-  if (req.method !== 'GET' || !req.url.startsWith(self.location.origin) && !req.url.startsWith('https://fonts.')) {
-    return;
-  }
+  // Skip non-GET and cross-origin (except Google Fonts)
+  if (req.method !== 'GET') return;
+  const isOwnOrigin = url.origin === self.location.origin;
+  const isGoogleFont = url.hostname.includes('fonts.gstatic.com') ||
+                       url.hostname.includes('fonts.googleapis.com');
+  if (!isOwnOrigin && !isGoogleFont) return;
 
-  // 2. Google Fonts API & Static assets (fonts, images, style, scripts) - Stale-While-Revalidate
-  const isFont = url.hostname.includes('fonts.gstatic.com') || url.hostname.includes('fonts.googleapis.com');
-  const isStaticAsset = url.pathname.includes('/build/assets/') || url.pathname.includes('/icons/');
-
-  if (isFont || isStaticAsset) {
+  // 1. Vite build assets (hashed filenames) → Cache-First, long TTL
+  if (url.pathname.startsWith('/build/assets/')) {
     event.respondWith(
-      caches.open(CACHE_NAME).then((cache) => {
-        return cache.match(req).then((cachedResponse) => {
-          const fetchPromise = fetch(req).then((networkResponse) => {
-            cache.put(req, networkResponse.clone());
-            return networkResponse;
-          });
-          return cachedResponse || fetchPromise;
-        });
+      caches.open(CACHE_STATIC).then(async (cache) => {
+        const cached = await cache.match(req);
+        if (cached) return cached;
+        const res = await fetch(req);
+        if (res.ok) cache.put(req, res.clone());
+        return res;
       })
     );
     return;
   }
 
-  // 3. Application Shell Pages (Home, Choose, Register, Profile) - Network-First with Cache Fallback
-  event.respondWith(
-    fetch(req)
-      .then((response) => {
-        // Cache successful page requests
-        if (response.status === 200) {
-          const responseClone = response.clone();
-          caches.open(CACHE_NAME).then((cache) => {
-            cache.put(req, responseClone);
-          });
-        }
-        return response;
+  // 2. Static images / fonts → Stale-While-Revalidate
+  if (
+    isGoogleFont ||
+    /\.(png|jpg|jpeg|webp|gif|ico|svg|woff2?|ttf|eot)$/.test(url.pathname)
+  ) {
+    event.respondWith(
+      caches.open(CACHE_NAME).then(async (cache) => {
+        const cached = await cache.match(req);
+        const fetchPromise = fetch(req).then(res => {
+          if (res.ok) cache.put(req, res.clone());
+          return res;
+        }).catch(() => cached);
+        return cached || fetchPromise;
       })
-      .catch(() => {
-        // Fallback to cache if offline
-        return caches.match(req).then((cachedResponse) => {
-          if (cachedResponse) {
-            return cachedResponse;
+    );
+    return;
+  }
+
+  // 3. HTML pages → Network-First, fall back to cache or /
+  if (req.headers.get('accept')?.includes('text/html')) {
+    event.respondWith(
+      fetch(req)
+        .then(res => {
+          if (res.ok) {
+            const clone = res.clone();
+            caches.open(CACHE_NAME).then(c => c.put(req, clone));
           }
-          // If offline and request is an HTML page/navigation, try returning cached root or splash
-          if (req.headers.get('accept')?.includes('text/html')) {
-            return caches.match('/');
-          }
-        });
-      })
-  );
+          return res;
+        })
+        .catch(async () => {
+          const cached = await caches.match(req);
+          return cached || caches.match('/') || new Response('Offline', { status: 503 });
+        })
+    );
+    return;
+  }
+
+  // 4. Everything else (API, JSON, etc.) → Network only, no caching
+  // Do nothing — let the browser handle it normally
 });

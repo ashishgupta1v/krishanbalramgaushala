@@ -7,8 +7,11 @@
     <!-- Content -->
     <div style="position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;">
       <!-- Logo -->
-      <div style="width: 130px; height: 130px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 20px; background: linear-gradient(145deg, var(--bg1), var(--bg)); box-shadow: 8px 8px 20px var(--sd), -8px -8px 20px var(--sl); padding: 5px; border: 1px solid rgba(255,255,255,0.75); animation: pulse 2.5s ease infinite;">
-        <img src="/logo.jpg" alt="Krishan Balram Gaushala Logo" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover; box-shadow: inset 2px 2px 5px rgba(0,0,0,0.15);" />
+      <div style="width:130px;height:130px;display:flex;align-items:center;justify-content:center;margin-bottom:20px;animation:pulse 2.5s ease infinite;">
+        <picture>
+          <source srcset="/logo.webp" type="image/webp">
+          <img src="/logo1.png" alt="Krishan Balram Gaushala Logo" width="130" height="130" class="logo-img" style="width:130px;height:130px;" loading="eager" decoding="async" />
+        </picture>
       </div>
       <div class="fu" style="font-family:'Playfair Display',serif;font-size:11px;font-weight:700;letter-spacing:3.5px;color:var(--gd1);text-transform:uppercase;margin-bottom:4px;">GauSeva Connect</div>
       <h1 class="fu2" style="font-family:'Playfair Display',serif;font-size:28px;font-weight:800;color:var(--tx);line-height:1.18;text-align:center;">Krishan Balram</h1>
@@ -20,8 +23,8 @@
       <div v-if="loading" style="width:36px;height:36px;border:3px solid rgba(180,100,0,.18);border-top-color:var(--pr1);border-radius:50%;animation:spin .9s linear infinite;"/>
 
       <!-- Enter button -->
-      <button v-else class="btn-saffron fu si" style="font-size:16px;padding:16px 50px;" @click="enter">
-        🙏 &nbsp; Jai Gau Mata — Enter
+      <button v-else class="btn-saffron fu si" style="font-size:16px;padding:16px 50px;" @click="enter" :data-prefetch="route('choose')">
+        🙏 &nbsp; Jai Gau Mata - Enter
       </button>
     </div>
   </div>

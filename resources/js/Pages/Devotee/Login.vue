@@ -2,17 +2,13 @@
   <div style="position:fixed;inset:0;overflow-y:auto;overflow-x:hidden;background:var(--bg);background-image:radial-gradient(ellipse 65% 55% at 18% 18%,rgba(210,148,8,.17) 0%,transparent 55%),radial-gradient(ellipse 55% 60% at 82% 82%,rgba(180,96,0,.12) 0%,transparent 55%);">
     <div class="devo-card-container page" style="padding:24px 20px 50px;max-width:480px;margin:0 auto;">
 
-      <!-- Back -->
-      <div style="margin-bottom:20px;">
-        <button class="btn-ghost" style="padding:7px 16px;font-size:12px;" @click="back">← Back</button>
-      </div>
-
       <!-- Header -->
       <div style="text-align:center;margin-bottom:30px;">
         <div style="display:flex;justify-content:center;margin-bottom:12px;">
-          <div style="width: 80px; height: 80px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: linear-gradient(145deg, var(--bg1), var(--bg)); box-shadow: 4px 4px 10px var(--sd), -4px -4px 10px var(--sl); padding: 3px; border: 1px solid rgba(255,255,255,0.7);">
-            <img src="/logo.jpg" alt="Krishan Balram Gaushala Logo" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;" />
-          </div>
+          <picture>
+            <source srcset="/logo.webp" type="image/webp">
+            <img src="/logo1.png" alt="Krishan Balram Gaushala Logo" width="80" height="80" class="logo-img" style="width:80px;height:80px;" loading="eager" decoding="async" />
+          </picture>
         </div>
         <h1 style="font-family:'Playfair Display',serif;font-size:22px;font-weight:800;">Devotee Sign In</h1>
         <p style="color:var(--tl);font-size:12px;margin-top:3px;">Krishan Balram Gaushala, Ludhiana</p>

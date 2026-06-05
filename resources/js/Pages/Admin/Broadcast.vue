@@ -8,20 +8,20 @@
         
         <!-- Left Pane: Editor & Options -->
         <div>
-          <!-- Template chips -->
+          <!-- Template chips — horizontal scroll on mobile -->
           <div class="slbl" style="margin-top:0;">Choose Template</div>
-          <div style="display:flex;gap:8px;overflow-x:auto;padding-bottom:4px;margin-bottom:16px;">
+          <div class="chip-row" style="margin-bottom:16px;">
             <button v-for="t in templates" :key="t.key" class="chip" :class="{ on: activeTmpl === t.key }" @click="selectTemplate(t)">{{ t.label }}</button>
           </div>
 
           <!-- Message editor -->
           <div class="slbl">Message Content</div>
-          <textarea v-model="messageBody" class="n-ta" rows="6" placeholder="Type your message…" @input="updatePreview"/>
+          <textarea v-model="messageBody" class="n-ta" rows="6" placeholder="Type your message…" style="min-height:120px;" @input="updatePreview"/>
           <div style="font-size:11px;color:var(--td);margin-top:4px;margin-bottom:16px;">Use <strong>{name}</strong> for personalisation</div>
 
           <!-- Recipients -->
           <div class="slbl">Recipients</div>
-          <div style="display:flex;gap:10px;margin-bottom:24px;">
+          <div class="chip-row" style="margin-bottom:24px;">
             <button class="chip" :class="{ on: rcptMode === 'all' }" @click="rcptMode = 'all'">All Devotees ({{ totalCount }})</button>
             <button class="chip" :class="{ on: rcptMode === 'active' }" @click="rcptMode = 'active'">Active Only ({{ activeCount }})</button>
           </div>
