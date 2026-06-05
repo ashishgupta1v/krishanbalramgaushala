@@ -35,27 +35,27 @@ sudo apt install -y nginx certbot python3-certbot-nginx
 
 # 7. Configure Directory Structure
 echo "📁 Setting up application directory..."
-sudo mkdir -p /var/web
-sudo chown -R $USER:www-data /var/web
+sudo mkdir -p /var/www
+sudo chown -R $USER:www-data /var/www
 
 # Check if application repository is already cloned, if not clone or suggest
-if [ ! -d "/var/web/krishanbalramgaushala" ]; then
-    echo "⚠️ Application directory /var/web/krishanbalramgaushala not found."
-    echo "Please clone your Git repository into /var/web/krishanbalramgaushala:"
-    echo "  git clone <YOUR_REPO_URL> /var/web/krishanbalramgaushala"
+if [ ! -d "/var/www/krishanbalramgaushala" ]; then
+    echo "⚠️ Application directory /var/www/krishanbalramgaushala not found."
+    echo "Please clone your Git repository into /var/www/krishanbalramgaushala:"
+    echo "  git clone <YOUR_REPO_URL> /var/www/krishanbalramgaushala"
     echo "For now, creating a placeholder directory..."
-    mkdir -p /var/web/krishanbalramgaushala
+    mkdir -p /var/www/krishanbalramgaushala
 fi
 
 # 8. Set up SQLite Database (if used)
 echo "🗄️ Preparing SQLite database container..."
-mkdir -p /var/web/krishanbalramgaushala/database || true
-touch /var/web/krishanbalramgaushala/database/database.sqlite || true
-chown -R www-data:www-data /var/web/krishanbalramgaushala/database
+mkdir -p /var/www/krishanbalramgaushala/database || true
+touch /var/www/krishanbalramgaushala/database/database.sqlite || true
+chown -R www-data:www-data /var/www/krishanbalramgaushala/database
 
 # 9. Register Nginx Server Block Configuration
 echo "🌐 Registering Nginx configuration..."
-sudo cp /var/web/krishanbalramgaushala/deploy/nginx.conf /etc/nginx/sites-available/krishanbalramgaushala
+sudo cp /var/www/krishanbalramgaushala/deploy/nginx.conf /etc/nginx/sites-available/krishanbalramgaushala
 sudo ln -sf /etc/nginx/sites-available/krishanbalramgaushala /etc/nginx/sites-enabled/
 sudo rm -f /etc/nginx/sites-enabled/default || true
 sudo nginx -t
@@ -63,20 +63,20 @@ sudo systemctl restart nginx
 
 # 10. Register Supervisor Queue Worker
 echo "⚙️ Registering Supervisor daemon..."
-sudo cp /var/web/krishanbalramgaushala/deploy/supervisor.conf /etc/supervisor/conf.d/gaushala-worker.conf
+sudo cp /var/www/krishanbalramgaushala/deploy/supervisor.conf /etc/supervisor/conf.d/gaushala-worker.conf
 sudo supervisorctl reread
 sudo supervisorctl update
 sudo supervisorctl start all
 
 # 11. Register Daily Automated Milestones Cron Job
 echo "🕒 Registering cron runner for automatic blessings..."
-CRON_JOB="* * * * * cd /var/web/krishanbalramgaushala && php artisan schedule:run >> /dev/null 2>&1"
+CRON_JOB="* * * * * cd /var/www/krishanbalramgaushala && php artisan schedule:run >> /dev/null 2>&1"
 (crontab -l 2>/dev/null | grep -F "$CRON_JOB") || (crontab -l 2>/dev/null; echo "$CRON_JOB") | crontab -
 
 echo ""
 echo "=== Setup Base Completed! ==="
 echo "Next Steps to do manually:"
-echo "1. Put your production .env inside /var/web/krishanbalramgaushala/.env"
+echo "1. Put your production .env inside /var/www/krishanbalramgaushala/.env"
 echo "2. Run php artisan key:generate"
 echo "3. Run certbot --nginx -d YOUR_DOMAIN to secure your site with HTTPS"
-echo "4. Execute the deploy script to finish first installation: bash /var/web/krishanbalramgaushala/deploy/deploy.sh"
+echo "4. Execute the deploy script to finish first installation: bash /var/www/krishanbalramgaushala/deploy/deploy.sh"

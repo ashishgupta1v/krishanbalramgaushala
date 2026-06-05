@@ -4,7 +4,7 @@ set -e
 echo "🚀 Starting GauSeva Connect Deployment..."
 
 # 1. Navigate to web directory
-cd /var/web/krishanbalramgaushala
+cd /var/www/krishanbalramgaushala
 
 # 2. Prevent active devotee access during build
 php artisan down || true
@@ -34,8 +34,8 @@ php artisan view:cache
 
 # 8. Set correct permissions for Nginx user (www-data)
 echo "🔒 Securing files permissions..."
-sudo chown -R www-data:www-data /var/web/krishanbalramgaushala
-sudo chmod -R 775 /var/web/krishanbalramgaushala/storage /var/web/krishanbalramgaushala/bootstrap/cache
+sudo chown -R www-data:www-data /var/www/krishanbalramgaushala
+sudo chmod -R 775 /var/www/krishanbalramgaushala/storage /var/www/krishanbalramgaushala/bootstrap/cache
 
 # 9. Restart queue workers managed by Supervisor
 echo "⚙️ Restarting background queue workers..."
