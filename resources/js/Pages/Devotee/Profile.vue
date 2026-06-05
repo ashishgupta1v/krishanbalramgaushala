@@ -120,15 +120,11 @@
             </div>
             <div style="display:flex;align-items:center;gap:10px;padding:10px 0;">
               <span style="font-size:20px;">📘</span>
-              <div style="flex:1;">
+              <div style="flex:1;margin-left:10px;">
                 <div style="font-size:13px;font-weight:600;">Facebook Page Blessing</div>
                 <div style="font-size:11px;color:var(--tl);margin-top:1px;">Featured in Gaushala's Facebook birthday post</div>
               </div>
-              <button @click="toggleFbConsentDirect" style="background:none;border:none;cursor:pointer;flex-shrink:0;">
-                <span :style="`color:${form.fb_consent ? 'var(--fb)' : 'var(--td)'};font-size:11px;font-weight:700;` ">
-                  {{ form.fb_consent ? '✅ ENABLED' : '❌ DISABLED' }}
-                </span>
-              </button>
+              <span style="color:var(--fb);font-size:10px;font-weight:700;flex-shrink:0;">AUTO</span>
             </div>
           </div>
         </div>
@@ -156,23 +152,7 @@
             </div>
           </div>
 
-          <!-- Beloved Cows Directory -->
-          <div class="nr fu" style="padding:16px;">
-            <div class="slbl">Beloved Cows Directory</div>
-            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
-              <div v-for="cow in cows" :key="cow.name" class="nr-sm" style="overflow:hidden;background:var(--bg1);border-radius:12px;box-shadow:none;">
-                <!-- Dynamic Emoji Illustration in place of image, styled inside Neumorphic circle -->
-                <div style="height:90px;display:flex;align-items:center;justify-content:center;font-size:42px;background:var(--bg2);box-shadow:inset 2px 2px 6px var(--sd);border-top-left-radius:12px;border-top-right-radius:12px;">
-                  {{ cow.emoji }}
-                </div>
-                <div style="padding:10px;text-align:center;">
-                  <h4 style="font-family:'Playfair Display',serif;font-size:13px;font-weight:800;color:var(--tx);margin:0;">{{ cow.name }}</h4>
-                  <div style="font-size:9px;color:var(--pr);font-weight:700;text-transform:uppercase;letter-spacing:.3px;margin:2px 0 4px;">{{ cow.breed }}</div>
-                  <p style="font-size:10px;color:var(--tl);line-height:1.3;margin:0;">{{ cow.bio }}</p>
-                </div>
-              </div>
-            </div>
-          </div>
+
         </div>
 
       </div>
@@ -199,7 +179,7 @@ const form = ref({
   name: props.devotee.name || '',
   dob: props.devotee.dob ? props.devotee.dob.substring(0, 10) : '',
   anniversary: props.devotee.anniversary ? props.devotee.anniversary.substring(0, 10) : '',
-  fb_consent: props.devotee.fb_consent ?? false,
+  fb_consent: true,
 });
 
 const firstName = computed(() => props.devotee.name?.split(' ')[0] || 'Devotee');
@@ -228,22 +208,10 @@ function saveProfile() {
   });
 }
 
-function toggleFbConsentDirect() {
-  form.value.fb_consent = !form.value.fb_consent;
-  saveProfile();
-}
-
 function back() { router.visit(route('choose')); }
 
 function handleLogout() {
   store.clear();
   router.post(route('devotee.logout'));
 }
-
-const cows = [
-  { name: 'Nandini', breed: 'Pure Gir Cow', bio: 'Gentle, dark eyes, loves fresh feed.', emoji: '🐄' },
-  { name: 'Gauri', breed: 'Sahiwal Breed', bio: 'Rescued in 2021, gives sweet milk.', emoji: '🐂' },
-  { name: 'Ganga', breed: 'Tharparkar Breed', bio: 'Quiet nature, loves head rubs.', emoji: '🐮' },
-  { name: 'Balaram', breed: 'Young Calf', bio: 'Playful calf, loves running in courtyard.', emoji: '🌾' },
-];
 </script>
