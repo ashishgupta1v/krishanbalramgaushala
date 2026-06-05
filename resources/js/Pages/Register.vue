@@ -67,18 +67,7 @@
           </div>
         </div>
 
-        <!-- FB Consent -->
-        <div class="nr-sm" style="padding:14px;margin-bottom:24px;">
-          <label style="display:flex;align-items:flex-start;gap:11px;cursor:pointer;">
-            <input v-model="form.fb_consent" type="checkbox" class="n-chk">
-            <div>
-              <div style="font-size:13px;font-weight:600;">📘 Facebook Blessings</div>
-              <div style="font-size:11px;color:var(--tl);margin-top:3px;line-height:1.5;">Allow Gaushala to feature my name in birthday & anniversary posts on their Facebook page</div>
-            </div>
-          </label>
-        </div>
-
-        <button class="btn-saffron" style="width:100%;padding:15px;font-size:15px;" :disabled="registering" @click="registerDevotee">
+        <button class="btn-saffron" style="width:100%;padding:15px;font-size:15px;margin-top:10px;" :disabled="registering" @click="registerDevotee">
           <span v-if="registering" class="spin"/>
           <span v-else>✓ Register Now →</span>
         </button>
