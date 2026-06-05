@@ -1,6 +1,10 @@
 <template>
   <div style="position:fixed;inset:0;overflow-y:auto;overflow-x:hidden;background:var(--bg);background-image:radial-gradient(ellipse 65% 55% at 18% 18%,rgba(210,148,8,.17) 0%,transparent 55%),radial-gradient(ellipse 55% 60% at 82% 82%,rgba(180,96,0,.12) 0%,transparent 55%);">
-    <div class="devo-profile-container page" style="padding:24px 20px 40px;margin:0 auto;">
+    
+    <!-- Transparent Background Watermark -->
+    <div style="position:fixed;inset:0;pointer-events:none;z-index:0;background-image:url('/gomata.png');background-repeat:no-repeat;background-position:center;background-size:min(600px, 90%);opacity:0.08;filter:grayscale(10%);"></div>
+
+    <div class="devo-profile-container page" style="position:relative;z-index:1;padding:24px 20px 40px;margin:0 auto;">
 
       <!-- Top Bar -->
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:22px;">
@@ -108,7 +112,6 @@
                 <div style="font-size:13px;font-weight:600;">WhatsApp Birthday Wish</div>
                 <div style="font-size:11px;color:var(--tl);margin-top:1px;">Personal message from Gaushala on your birthday</div>
               </div>
-              <span style="color:var(--wa);font-size:10px;font-weight:700;flex-shrink:0;">AUTO</span>
             </div>
             <div class="a-row" v-if="devotee.anniversary">
               <span style="font-size:20px;">💐</span>
@@ -116,7 +119,6 @@
                 <div style="font-size:13px;font-weight:600;">WhatsApp Anniversary Wish</div>
                 <div style="font-size:11px;color:var(--tl);margin-top:1px;">Anniversary blessings for you and your family</div>
               </div>
-              <span style="color:var(--wa);font-size:10px;font-weight:700;flex-shrink:0;">AUTO</span>
             </div>
             <div style="display:flex;align-items:center;gap:10px;padding:10px 0;">
               <span style="font-size:20px;">📘</span>
@@ -124,7 +126,6 @@
                 <div style="font-size:13px;font-weight:600;">Facebook Page Blessing</div>
                 <div style="font-size:11px;color:var(--tl);margin-top:1px;">Featured in Gaushala's Facebook birthday post</div>
               </div>
-              <span style="color:var(--fb);font-size:10px;font-weight:700;flex-shrink:0;">AUTO</span>
             </div>
           </div>
         </div>
