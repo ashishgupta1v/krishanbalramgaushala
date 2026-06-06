@@ -8,6 +8,7 @@
 
 /* ══ DESIGN TOKENS ══ */
 :root {
+  color-scheme: only light;
   --bg:   #f7f4ea; /* Elegant light warm sand background */
   --bg1:  #ffffff; /* Pure white cards for soft, professional crispness */
   --bg2:  #efe6d0; /* Muted gold-cream for inner panels */

@@ -37,11 +37,16 @@
 
 <script setup>
 import { ref, onMounted } from 'vue';
-import { router } from '@inertiajs/vue3';
+import { router, usePage } from '@inertiajs/vue3';
 
 const loading = ref(true);
 
 onMounted(() => {
+  const page = usePage();
+  if (page.props.auth?.devotee) {
+    router.visit(route('devotee.profile'));
+    return;
+  }
   setTimeout(() => { loading.value = false; }, 1800);
 });
 

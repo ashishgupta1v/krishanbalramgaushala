@@ -60,12 +60,17 @@
 
 <script setup>
 import { onMounted } from 'vue';
-import { router } from '@inertiajs/vue3';
+import { router, usePage } from '@inertiajs/vue3';
 import { useDevoteeStore } from '@/Stores/devotee';
 
 const store = useDevoteeStore();
 
 onMounted(() => {
+  const page = usePage();
+  if (page.props.auth?.devotee) {
+    router.visit(route('devotee.profile'));
+    return;
+  }
   store.loadFromStorage();
 });
 

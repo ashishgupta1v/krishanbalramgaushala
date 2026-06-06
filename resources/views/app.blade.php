@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta name="color-scheme" content="only light">
     <meta name="theme-color" content="#b84e00">
     <meta name="description" content="GauSeva Connect — Register and connect with Krishan Balram Gaushala, Pakhowal Road, Ludhiana. Receive blessings on your birthday and anniversary via WhatsApp.">
     <meta property="og:title" content="GauSeva Connect — Krishan Balram Gaushala">

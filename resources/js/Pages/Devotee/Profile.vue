@@ -102,12 +102,12 @@
                 <div>
                   <div style="font-size:11px;font-weight:600;color:var(--tl);margin-bottom:4px;">Date of Birth</div>
                   <input v-model="form.dob" class="n-inp" type="text" placeholder="DD-MM-YYYY">
-                  <div v-if="$page.props.errors.dob" style="font-size:10px;color:var(--er);margin-top:4px;">{{ $page.props.errors.dob }}</div>
+                  <div v-if="errors.dob || $page.props.errors.dob" style="font-size:10px;color:var(--er);margin-top:4px;">{{ errors.dob || $page.props.errors.dob }}</div>
                 </div>
                 <div>
                   <div style="font-size:11px;font-weight:600;color:var(--tl);margin-bottom:4px;">Anniversary Date</div>
                   <input v-model="form.anniversary" class="n-inp" type="text" placeholder="DD-MM-YYYY">
-                  <div v-if="$page.props.errors.anniversary" style="font-size:10px;color:var(--er);margin-top:4px;">{{ $page.props.errors.anniversary }}</div>
+                  <div v-if="errors.anniversary || $page.props.errors.anniversary" style="font-size:10px;color:var(--er);margin-top:4px;">{{ errors.anniversary || $page.props.errors.anniversary }}</div>
                 </div>
               </div>
               <div style="margin-top:6px;">
@@ -252,9 +252,32 @@ function formatDate(dateStr) {
   }
 }
 
+const errors = ref({});
+
+function validateDateStr(val) {
+  if (!val) return false;
+  const regex = /^(\d{2})-(\d{2})-(\d{4})$/;
+  if (!regex.test(val)) return false;
+  const [, d, m, y] = val.match(regex);
+  const day = parseInt(d, 10);
+  const month = parseInt(m, 10);
+  const year = parseInt(y, 10);
+  if (day < 1 || day > 31 || month < 1 || month > 12) return false;
+  const currentYear = new Date().getFullYear();
+  if (year < 1900 || year > currentYear + 1) return false;
+  const dateObj = new Date(year, month - 1, day);
+  return dateObj.getFullYear() === year && dateObj.getMonth() === month - 1 && dateObj.getDate() === day;
+}
+
+function parseUIDate(val) {
+  if (!val) return null;
+  const parts = val.split('-');
+  return `${parts[2]}-${parts[1]}-${parts[0]}`; // YYYY-MM-DD
+}
+
 function formatBeforeSubmit(val) {
   if (!val) return val;
-  val = String(val).trim();
+  val = String(val).trim().replace(/[\/\.\s]/g, '-');
   // If user entered exactly 8 digits (DDMMYYYY), convert to DD-MM-YYYY
   const match = val.match(/^(\d{2})(\d{2})(\d{4})$/);
   if (match) {
@@ -264,12 +287,31 @@ function formatBeforeSubmit(val) {
 }
 
 function saveProfile() {
+  errors.value = {};
+  
+  const dobVal = formatBeforeSubmit(form.value.dob);
+  const anniversaryVal = formatBeforeSubmit(form.value.anniversary);
+  
+  if (!dobVal) {
+    errors.value.dob = 'Date of birth is required.';
+  } else if (!validateDateStr(dobVal)) {
+    errors.value.dob = 'Enter Date of Birth in DD-MM-YYYY format (e.g. 15-08-1995).';
+  }
+  
+  if (anniversaryVal && !validateDateStr(anniversaryVal)) {
+    errors.value.anniversary = 'Enter Anniversary Date in DD-MM-YYYY format (e.g. 24-11-2018).';
+  }
+  
+  if (Object.keys(errors.value).length > 0) {
+    return;
+  }
+  
   saving.value = true;
   
   const payload = {
     ...form.value,
-    dob: formatBeforeSubmit(form.value.dob),
-    anniversary: formatBeforeSubmit(form.value.anniversary),
+    dob: parseUIDate(dobVal),
+    anniversary: parseUIDate(anniversaryVal),
     _method: 'put' // Required for file uploads via inertia putting
   };
 

@@ -11,8 +11,11 @@ use Illuminate\Support\Facades\Hash;
 
 class DevoteeController extends Controller
 {
-    public function create(): Response
+    public function create()
     {
+        if (session('gaushala_devotee_id')) {
+            return redirect()->route('devotee.profile');
+        }
         return Inertia::render('Register');
     }
 
@@ -48,12 +51,16 @@ class DevoteeController extends Controller
 
         // Store in session
         session(['gaushala_devotee_id' => $devotee->id]);
+        cookie()->queue(cookie()->forever('gaushala_devotee_remember', $devotee->id));
 
         return response()->json(['success' => true, 'devotee' => $devotee]);
     }
 
-    public function showLogin(): Response
+    public function showLogin()
     {
+        if (session('gaushala_devotee_id')) {
+            return redirect()->route('devotee.profile');
+        }
         return Inertia::render('Devotee/Login');
     }
 
@@ -73,6 +80,7 @@ class DevoteeController extends Controller
         }
 
         session(['gaushala_devotee_id' => $devotee->id]);
+        cookie()->queue(cookie()->forever('gaushala_devotee_remember', $devotee->id));
 
         return response()->json(['success' => true, 'devotee' => $devotee]);
     }
@@ -80,6 +88,7 @@ class DevoteeController extends Controller
     public function logout(Request $request)
     {
         session()->forget('gaushala_devotee_id');
+        cookie()->queue(cookie()->forget('gaushala_devotee_remember'));
         return redirect()->route('splash');
     }
 
