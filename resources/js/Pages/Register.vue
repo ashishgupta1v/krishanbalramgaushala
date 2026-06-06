@@ -184,7 +184,7 @@ async function registerDevotee() {
   if (!form.value.name.trim()) { errorMsg.value = 'Please enter your full name'; return; }
   if (!/^\d{10}$/.test(form.value.whatsapp)) { errorMsg.value = 'Enter valid 10-digit WhatsApp number'; return; }
   
-  const dobClean = form.value.dobRaw.trim();
+  const dobClean = form.value.dobRaw.trim().replace(/[\/\.\s]/g, '-');
   if (!dobClean) { errorMsg.value = 'Please enter your date of birth'; return; }
   let dClean = dobClean;
   const dMatch = dClean.match(/^(\d{2})(\d{2})(\d{4})$/);
@@ -193,11 +193,11 @@ async function registerDevotee() {
   if (!validateDateStr(dClean)) { errorMsg.value = 'Enter Date of Birth in DD-MM-YYYY format (e.g. 15-08-1995)'; return; }
 
   if (isMarried.value) {
-    let aClean = form.value.anniversaryRaw.trim();
+    let aClean = form.value.anniversaryRaw.trim().replace(/[\/\.\s]/g, '-');
+    if (!aClean) { errorMsg.value = 'Please enter your anniversary date'; return; }
     const aMatch = aClean.match(/^(\d{2})(\d{2})(\d{4})$/);
     if (aMatch) aClean = `${aMatch[1]}-${aMatch[2]}-${aMatch[3]}`;
     
-    if (!aClean) { errorMsg.value = 'Please enter your anniversary date'; return; }
     if (!validateDateStr(aClean)) { errorMsg.value = 'Enter Anniversary Date in DD-MM-YYYY format (e.g. 24-11-2018)'; return; }
   }
 
@@ -223,7 +223,7 @@ async function registerDevotee() {
     formData.append('dob', parseUIDate(dClean));
     
     if (isMarried.value) {
-      let aClean = form.value.anniversaryRaw.trim();
+      let aClean = form.value.anniversaryRaw.trim().replace(/[\/\.\s]/g, '-');
       const aMatch = aClean.match(/^(\d{2})(\d{2})(\d{4})$/);
       if (aMatch) aClean = `${aMatch[1]}-${aMatch[2]}-${aMatch[3]}`;
       formData.append('anniversary', parseUIDate(aClean));
