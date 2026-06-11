@@ -39,7 +39,8 @@
         <div style="margin-bottom:14px;display:flex;align-items:center;gap:8px;padding:4px 2px;">
           <input v-model="isMarried" type="checkbox" class="n-chk" id="married_chk">
           <label for="married_chk" style="font-size:13px;font-weight:600;color:var(--tx);cursor:pointer;user-select:none;display:flex;align-items:center;gap:6px;flex-wrap:wrap;">
-            <span>💍 Married Devotee</span>
+            <Heart style="width:14px;height:14px;color:var(--pr1);fill:var(--pr1);" />
+            <span>Married Devotee</span>
             <span style="font-size:11px;color:var(--tl);font-weight:400;">(Receive anniversary blessings)</span>
           </label>
         </div>
@@ -81,8 +82,10 @@
       </div>
 
       <!-- Success Screen -->
-      <div v-else style="text-align:center;">
-        <div style="font-size:72px;margin-bottom:16px;animation:pulse 2s ease infinite;">✅</div>
+      <div v-else style="text-align:center;display:flex;flex-direction:column;align-items:center;">
+        <div style="width:72px;height:72px;border-radius:50%;background:rgba(46,125,50,0.1);color:var(--ok1);display:flex;align-items:center;justify-content:center;margin-bottom:16px;animation:pulse 2s ease infinite;">
+          <Check style="width:36px;height:36px;stroke-width:3;" />
+        </div>
         <h2 style="font-family:'Playfair Display',serif;font-size:24px;font-weight:800;margin-bottom:6px;">Registered!</h2>
         <p style="color:var(--tl);font-size:14px;line-height:1.8;margin-bottom:26px;">
           Welcome, <strong>{{ form.name }} Ji</strong>!<br>
@@ -118,6 +121,7 @@
 import { ref, computed } from 'vue';
 import { router, Link } from '@inertiajs/vue3';
 import { useDevoteeStore } from '@/Stores/devotee';
+import { Heart, Check } from '@lucide/vue';
 
 const store = useDevoteeStore();
 const registered = ref(false);

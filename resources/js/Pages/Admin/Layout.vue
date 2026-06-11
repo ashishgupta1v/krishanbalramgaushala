@@ -25,7 +25,7 @@
           @click="goTab(tab.id)"
           :data-prefetch="tabRoute(tab.id)"
         >
-          <span style="font-size:18px;">{{ tab.icon }}</span>
+          <component :is="tab.icon" style="width:18px;height:18px;flex-shrink:0;" />
           <span>{{ tab.label }}</span>
         </button>
       </div>
@@ -33,11 +33,7 @@
       <!-- Logout (Sidebar bottom) -->
       <div style="padding:16px;border-top:1px solid rgba(255,255,255,.1);display:flex;justify-content:center;">
         <button class="admin-sidebar-btn" @click="logout" style="color:var(--gd2);justify-content:center;padding:12px;" title="Sign Out">
-          <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
-            <polyline points="16 17 21 12 16 7"></polyline>
-            <line x1="21" y1="12" x2="9" y2="12"></line>
-          </svg>
+          <LogOut style="width:20px;height:20px;" />
         </button>
       </div>
     </aside>
@@ -61,11 +57,7 @@
           </div>
         </div>
         <button @click="logout" style="background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.18);border-radius:8px;padding:8px 10px;color:rgba(240,218,158,.8);display:flex;align-items:center;justify-content:center;cursor:pointer;" title="Sign Out">
-          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
-            <polyline points="16 17 21 12 16 7"></polyline>
-            <line x1="21" y1="12" x2="9" y2="12"></line>
-          </svg>
+          <LogOut style="width:18px;height:18px;" />
         </button>
       </div>
 
@@ -83,7 +75,7 @@
           @click="goTab(tab.id)"
           :data-prefetch="tabRoute(tab.id)"
         >
-          <span class="nav-ic">{{ tab.icon }}</span>
+          <component :is="tab.icon" class="nav-ic" style="width:18px;height:18px;flex-shrink:0;" />
           <span class="nav-lb">{{ tab.label }}</span>
         </button>
       </nav>
@@ -94,20 +86,37 @@
 </template>
 
 <script setup>
-import { computed } from 'vue';
+import { computed, markRaw, h } from 'vue';
 import { router, usePage } from '@inertiajs/vue3';
+import { 
+  LayoutDashboard, 
+  Users, 
+  Megaphone, 
+  Calendar, 
+  Heart, 
+  Upload, 
+  LogOut 
+} from '@lucide/vue';
+
+const FacebookIcon = {
+  render() {
+    return h('svg', { viewBox: '0 0 24 24', fill: 'currentColor' }, [
+      h('path', { d: 'M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z' })
+    ]);
+  }
+};
 
 const page = usePage();
 const currentTab = computed(() => page.props.activeTab || 'dashboard');
 
 const tabs = [
-  { id: 'dashboard', icon: '🏠', label: 'Home' },
-  { id: 'members',   icon: '👥', label: 'Members' },
-  { id: 'broadcast', icon: '📣', label: 'Broadcast' },
-  { id: 'facebook',  icon: '📘', label: 'Facebook' },
-  { id: 'events',    icon: '📅', label: 'Events' },
-  { id: 'wishes',    icon: '💝', label: 'Wishes' },
-  { id: 'upload',    icon: '📤', label: 'Upload' },
+  { id: 'dashboard', icon: markRaw(LayoutDashboard), label: 'Home' },
+  { id: 'members',   icon: markRaw(Users), label: 'Members' },
+  { id: 'broadcast', icon: markRaw(Megaphone), label: 'Broadcast' },
+  { id: 'facebook',  icon: markRaw(FacebookIcon), label: 'Facebook' },
+  { id: 'events',    icon: markRaw(Calendar), label: 'Events' },
+  { id: 'wishes',    icon: markRaw(Heart), label: 'Wishes' },
+  { id: 'upload',    icon: markRaw(Upload), label: 'Upload' },
 ];
 
 const routeMap = {

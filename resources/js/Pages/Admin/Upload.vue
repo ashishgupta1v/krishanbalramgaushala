@@ -6,11 +6,19 @@
 
       <!-- Sample download -->
       <div class="nr-sm" style="padding:14px;margin-bottom:14px;display:flex;justify-content:space-between;align-items:center;">
-        <div>
-          <div style="font-size:13px;font-weight:700;">📄 Sample CSV Template</div>
-          <div style="font-size:11px;color:var(--tl);margin-top:2px;">name, whatsapp, dob, anniversary, city</div>
+        <div style="display:flex;align-items:center;gap:12px;">
+          <div style="width:36px;height:36px;border-radius:8px;background:rgba(184,78,0,0.08);color:var(--pr1);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+            <FileSpreadsheet style="width:20px;height:20px;" />
+          </div>
+          <div>
+            <div style="font-size:13px;font-weight:700;">Sample CSV Template</div>
+            <div style="font-size:11px;color:var(--tl);margin-top:2px;">name, whatsapp, dob, anniversary, city</div>
+          </div>
         </div>
-        <button class="btn-brass" style="padding:8px 14px;font-size:11px;" @click="downloadSample">⬇ Download</button>
+        <button class="btn-brass" style="padding:8px 14px;font-size:11px;display:inline-flex;align-items:center;gap:6px;" @click="downloadSample">
+          <Download style="width:12px;height:12px;" />
+          <span>Download</span>
+        </button>
       </div>
 
       <!-- Drop zone -->
@@ -23,7 +31,9 @@
         @dragleave="dragging = false"
         @drop.prevent="onDrop"
       >
-        <div style="font-size:46px;margin-bottom:12px;">📂</div>
+        <div style="color:var(--td);margin-bottom:12px;display:flex;justify-content:center;">
+          <UploadCloud style="width:48px;height:48px;stroke-width:1.5;" />
+        </div>
         <div style="font-size:14px;font-weight:700;color:var(--tm);margin-bottom:5px;">Drop CSV file here</div>
         <div style="font-size:12px;color:var(--td);">or tap to browse</div>
         <input ref="csvInput" type="file" accept=".csv" style="display:none;" @change="onFileChosen">
@@ -32,7 +42,7 @@
       <!-- Validation Errors Display -->
       <div v-if="$page.props.errors.rows" class="nr" style="padding:16px;margin-bottom:18px;background:rgba(198,40,40,.06);border:1px solid rgba(198,40,40,.25);border-radius:16px;color:var(--er);">
         <div style="font-weight:700;font-size:13px;margin-bottom:6px;display:flex;align-items:center;gap:6px;">
-          <span>⚠️</span>
+          <AlertCircle style="width:16px;height:16px;" />
           <span>Import Failed — Please correct the following errors:</span>
         </div>
         <ul style="margin:0;padding-left:20px;font-size:11px;line-height:1.65;list-style-type:disc;font-family:'Poppins',sans-serif;">
@@ -73,9 +83,9 @@
         </div>
         <div style="display:flex;gap:10px;">
           <button class="btn-ghost" style="flex:1;padding:12px;font-size:13px;" @click="clearUpload">Clear</button>
-          <button class="btn-saffron" style="flex:2;padding:12px;font-size:14px;" :disabled="importing" @click="doImport">
+          <button class="btn-saffron" style="flex:2;padding:12px;font-size:14px;display:inline-flex;align-items:center;justify-content:center;gap:6px;" :disabled="importing" @click="doImport">
             <span v-if="importing" class="spin"/>
-            <span v-else>✅ Import {{ rows.length }} Members</span>
+            <span v-else style="display:inline-flex;align-items:center;gap:6px;"><Check style="width:16px;height:16px;" /> Import {{ rows.length }} Members</span>
           </button>
         </div>
       </div>
@@ -87,6 +97,7 @@
 import { ref } from 'vue';
 import { router } from '@inertiajs/vue3';
 import AdminLayout from './Layout.vue';
+import { FileSpreadsheet, Download, UploadCloud, AlertCircle, Check } from '@lucide/vue';
 
 defineProps({ activeTab: { type: String, default: 'upload' } });
 

@@ -32,7 +32,10 @@
           <!-- Logs Feed Card -->
           <div class="nr sk-leather" style="padding:18px;border-radius:18px;display:flex;flex-direction:column;gap:12px;">
             <div style="display:flex;justify-content:space-between;align-items:center;">
-              <span class="slbl" style="margin:0;">🔔 Message Delivery Logs</span>
+              <span class="slbl" style="margin:0;display:inline-flex;align-items:center;gap:6px;">
+                <Bell style="width:14px;height:14px;" />
+                <span>Message Delivery Logs</span>
+              </span>
               
               <!-- Filter Dropdown -->
               <select v-model="filterStatus" style="padding:6px 10px;border:none;border-radius:8px;background:var(--bg);box-shadow:inset 1px 1px 3px var(--sd),inset -1px -1px 3px var(--sl);color:var(--tx);font-family:'Poppins',sans-serif;font-size:10px;outline:none;cursor:pointer;">
@@ -68,7 +71,10 @@
 
               <!-- Expanded Error display if any failures -->
               <div v-if="failedLogsWithErrors.length > 0" style="background:rgba(198,40,40,.06);border:1px solid rgba(198,40,40,.18);border-radius:12px;padding:12px;margin-top:10px;">
-                <div style="font-size:11px;font-weight:700;color:#ef5350;margin-bottom:4px;">⚠️ Error Analytics Details</div>
+                <div style="font-size:11px;font-weight:700;color:#ef5350;margin-bottom:4px;display:inline-flex;align-items:center;gap:6px;">
+                  <AlertTriangle style="width:14px;height:14px;" />
+                  <span>Error Analytics Details</span>
+                </div>
                 <div v-for="fl in failedLogsWithErrors.slice(0, 3)" :key="fl.id" style="font-size:10px;color:var(--tx);margin-bottom:6px;line-height:1.4;">
                   <strong>{{ fl.devotee?.name }}:</strong> {{ fl.error_message || 'Unknown network error' }}
                 </div>
@@ -86,7 +92,10 @@
           
           <!-- Active Selector / Approved Templates List -->
           <div class="nr sk-leather" style="padding:18px;border-radius:18px;">
-            <span class="slbl" style="margin-top:0;margin-bottom:12px;">📁 Approved Meta Templates</span>
+            <span class="slbl" style="margin-top:0;margin-bottom:12px;display:inline-flex;align-items:center;gap:6px;">
+              <FolderOpen style="width:14px;height:14px;" />
+              <span>Approved Meta Templates</span>
+            </span>
             
             <div style="display:flex;flex-direction:column;gap:10px;">
               <div v-for="t in templates" :key="t.id" class="nr-sm" style="padding:12px;background:var(--bg1);border-radius:12px;border:1px solid rgba(180,128,40,.12);">
@@ -127,7 +136,10 @@
 
           <!-- Create / Submit Template Form -->
           <div class="nr sk-leather" style="padding:18px;border-radius:18px;">
-            <span class="slbl" style="margin-top:0;margin-bottom:12px;">📝 Submit New Meta Template</span>
+            <span class="slbl" style="margin-top:0;margin-bottom:12px;display:inline-flex;align-items:center;gap:6px;">
+              <FileEdit style="width:14px;height:14px;" />
+              <span>Submit New Meta Template</span>
+            </span>
             
             <form @submit.prevent="submitTemplate" style="display:flex;flex-direction:column;gap:12px;">
               <div>
@@ -171,6 +183,7 @@
 import { ref, computed } from 'vue';
 import { router } from '@inertiajs/vue3';
 import AdminLayout from './Layout.vue';
+import { Bell, AlertTriangle, FolderOpen, FileEdit } from '@lucide/vue';
 
 const props = defineProps({
   logs:      { type: Array,  default: () => [] },

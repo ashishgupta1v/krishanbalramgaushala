@@ -7,7 +7,9 @@
           <h2 style="font-family:'Playfair Display',serif;font-size:20px;">Dashboard</h2>
           <p style="color:var(--tl);font-size:11px;margin-top:2px;">{{ today }}</p>
         </div>
-        <div class="sk-seal" style="width:38px;height:38px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;">🙏</div>
+        <div class="sk-seal" style="width:38px;height:38px;display:flex;align-items:center;justify-content:center;color:var(--gd1);flex-shrink:0;">
+          <Sparkles style="width:18px;height:18px;" />
+        </div>
       </div>
 
       <!-- Stat cards -->
@@ -39,7 +41,10 @@
         
         <!-- Left column: Upcoming Events & Activities -->
         <div>
-          <div class="slbl" style="margin-top:0;">📅 Upcoming Events & Activities</div>
+          <div class="slbl" style="margin-top:0;display:inline-flex;align-items:center;gap:6px;">
+            <Calendar style="width:14px;height:14px;" />
+            <span>Upcoming Events & Activities</span>
+          </div>
           <div style="display:flex;flex-direction:column;gap:10px;">
             <div v-for="ev in events" :key="ev.id">
               <div class="ev-card" style="margin-bottom:0;" :style="`border-left-color:${evColor(ev.type).bdr};`">
@@ -51,7 +56,9 @@
                   <div style="font-size:11px;color:var(--tl);margin-bottom:6px;line-height:1.4;">{{ ev.description }}</div>
                   <div style="display:flex;gap:7px;flex-wrap:wrap;">
                     <span :style="`font-size:10px;background:${evColor(ev.type).bg};color:${evColor(ev.type).dot};border:1px solid ${evColor(ev.type).bdr}44;border-radius:20px;padding:2px 9px;font-weight:700;`">{{ ev.date_label }}</span>
-                    <span style="font-size:10px;background:rgba(180,128,40,.1);color:var(--tl);border-radius:20px;padding:2px 9px;font-weight:600;">⏰ {{ ev.time_label }}</span>
+                    <span style="font-size:10px;background:rgba(180,128,40,.1);color:var(--tl);border-radius:20px;padding:2px 9px;font-weight:600;display:inline-flex;align-items:center;gap:4px;">
+                      <Clock style="width:10px;height:10px;" /> {{ ev.time_label }}
+                    </span>
                   </div>
                 </div>
               </div>
@@ -67,10 +74,13 @@
           
           <!-- Quick Actions -->
           <div>
-            <div class="slbl" style="margin-top:0;">⚡ Quick Actions</div>
+            <div class="slbl" style="margin-top:0;display:inline-flex;align-items:center;gap:6px;">
+              <Zap style="width:14px;height:14px;" />
+              <span>Quick Actions</span>
+            </div>
             <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;">
-              <button v-for="qa in quickActions" :key="qa.tab" class="nr-sm" style="padding:15px 8px;text-align:center;border:none;cursor:pointer;font-family:'Poppins',sans-serif;border-radius:14px;background:var(--bg1);" @click="goTab(qa.tab)" @mousedown="e=>e.target.style.boxShadow='inset 3px 3px 7px var(--sd),inset -3px -3px 7px var(--sl)'" @mouseup="e=>e.target.style.boxShadow=''" @mouseleave="e=>e.target.style.boxShadow=''">
-                <div style="font-size:24px;margin-bottom:4px;">{{ qa.icon }}</div>
+              <button v-for="qa in quickActions" :key="qa.tab" class="nr-sm" style="padding:15px 8px;text-align:center;border:none;cursor:pointer;font-family:'Poppins',sans-serif;border-radius:14px;background:var(--bg1);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;" @click="goTab(qa.tab)" @mousedown="e=>e.target.style.boxShadow='inset 3px 3px 7px var(--sd),inset -3px -3px 7px var(--sl)'" @mouseup="e=>e.target.style.boxShadow=''" @mouseleave="e=>e.target.style.boxShadow=''">
+                <component :is="qa.icon" style="width:20px;height:20px;color:var(--pr1);" />
                 <div style="font-size:10px;font-weight:700;color:var(--tl);">{{ qa.label }}</div>
               </button>
             </div>
@@ -78,7 +88,10 @@
 
           <!-- Automation Status -->
           <div>
-            <div class="slbl" style="margin-top:0;">🤖 Automation Status</div>
+            <div class="slbl" style="margin-top:0;display:inline-flex;align-items:center;gap:6px;">
+              <Cpu style="width:14px;height:14px;" />
+              <span>Automation Status</span>
+            </div>
             <div class="nr" style="padding:14px 16px;border-radius:18px;">
               <div v-for="(item, i) in automationStatus" :key="i" class="a-row" :style="i===automationStatus.length-1?'border-bottom:none;':''">
                 <div style="display:flex;align-items:center;">
@@ -98,9 +111,18 @@
 </template>
 
 <script setup>
-import { computed } from 'vue';
+import { computed, markRaw, h } from 'vue';
 import { router } from '@inertiajs/vue3';
 import AdminLayout from './Layout.vue';
+import { Sparkles, Calendar, Clock, Zap, Cpu, Megaphone, Upload } from '@lucide/vue';
+
+const FacebookIcon = {
+  render() {
+    return h('svg', { viewBox: '0 0 24 24', fill: 'currentColor' }, [
+      h('path', { d: 'M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z' })
+    ]);
+  }
+};
 
 const props = defineProps({
   stats:    { type: Object, default: () => ({}) },
@@ -122,9 +144,9 @@ const EV_COLS = {
 function evColor(type) { return EV_COLS[type] || EV_COLS.upcoming; }
 
 const quickActions = [
-  { tab: 'broadcast', icon: '📣', label: 'Broadcast' },
-  { tab: 'facebook',  icon: '📘', label: 'FB Post' },
-  { tab: 'upload',    icon: '📤', label: 'Upload CSV' },
+  { tab: 'broadcast', icon: markRaw(Megaphone), label: 'Broadcast' },
+  { tab: 'facebook',  icon: markRaw(FacebookIcon), label: 'FB Post' },
+  { tab: 'upload',    icon: markRaw(Upload), label: 'Upload CSV' },
 ];
 
 const automationStatus = [
