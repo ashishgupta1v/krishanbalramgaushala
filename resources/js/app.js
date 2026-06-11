@@ -5,6 +5,7 @@ import { createPinia } from 'pinia';
 import { ZiggyVue } from 'ziggy-js';
 import axios from 'axios';
 import FloatingAudioControl from './Components/FloatingAudioControl.vue';
+import { useAudioStore } from './Stores/audio';
 import '../css/app.css';
 
 window.axios = axios;
@@ -25,6 +26,10 @@ createInertiaApp({
 
         const RootApp = {
             name: 'RootApp',
+            setup() {
+                const audioStore = useAudioStore();
+                audioStore.play();
+            },
             render() {
                 return h('div', { id: 'app-layout', style: { width: '100%', height: '100%' } }, [
                     h(App, props),

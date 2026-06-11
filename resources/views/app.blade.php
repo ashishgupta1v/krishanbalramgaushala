@@ -404,22 +404,6 @@
             const isStandalone = window.matchMedia('(display-mode: standalone)').matches || 
                                  window.navigator.standalone === true;
             
-            if (isStandalone) {
-                console.log('[PWA] Running in standalone mode. Install prompt skipped.');
-                return;
-            }
-
-            // 2. Check if user dismissed the banner recently
-            if (localStorage.getItem('gauseva_pwa_dismissed') === 'true') {
-                console.log('[PWA] User dismissed the install banner previously.');
-                return;
-            }
-
-            // 3. Detect Platform
-            const userAgent = window.navigator.userAgent.toLowerCase();
-            const isIOS = /iphone|ipad|ipod/.test(userAgent);
-            const isSafari = /safari/.test(userAgent) && !/crios|fxios|chrome|firefox/.test(userAgent);
-
             const banner = document.getElementById('pwa-install-banner');
             const installBtn = document.getElementById('pwa-install-btn');
             const closeBtn = document.getElementById('pwa-close-btn');
@@ -429,78 +413,89 @@
 
             let deferredPrompt = null;
 
-            // A. Catch the Chrome / Android install trigger
-            window.addEventListener('beforeinstallprompt', (e) => {
-                e.preventDefault();
-                deferredPrompt = e;
-                
-                if (banner) {
-                    banner.classList.remove('hidden');
-                    // Add smooth transition trigger
-                    setTimeout(() => banner.classList.add('show'), 1500);
-                }
-            });
+            if (!isStandalone) {
+                // 2. Check if user dismissed the banner recently
+                if (localStorage.getItem('gauseva_pwa_dismissed') !== 'true') {
+                    // 3. Detect Platform
+                    const userAgent = window.navigator.userAgent.toLowerCase();
+                    const isIOS = /iphone|ipad|ipod/.test(userAgent);
+                    const isSafari = /safari/.test(userAgent) && !/crios|fxios|chrome|firefox/.test(userAgent);
 
-            // B. Install button click handler
-            if (installBtn) {
-                installBtn.addEventListener('click', async () => {
-                    if (isIOS) {
-                        if (iosModal) {
-                            iosModal.classList.remove('hidden');
-                            setTimeout(() => iosModal.classList.add('show'), 50);
+                    // A. Catch the Chrome / Android install trigger
+                    window.addEventListener('beforeinstallprompt', (e) => {
+                        e.preventDefault();
+                        deferredPrompt = e;
+                        
+                        if (banner) {
+                            banner.classList.remove('hidden');
+                            // Add smooth transition trigger
+                            setTimeout(() => banner.classList.add('show'), 1500);
                         }
-                    } else if (deferredPrompt) {
-                        banner.classList.remove('show');
-                        setTimeout(() => banner.classList.add('hidden'), 400);
+                    });
 
-                        deferredPrompt.prompt();
-                        const { outcome } = await deferredPrompt.userChoice;
-                        console.log(`[PWA] Install dialog outcome: ${outcome}`);
-                        deferredPrompt = null;
-                    } else {
-                        // General fallback instruction
-                        alert("To install, tap your browser's menu option (e.g. three dots or share) and choose 'Add to Home screen' or 'Install app'.");
-                    }
-                });
-            }
+                    // B. Install button click handler
+                    if (installBtn) {
+                        installBtn.addEventListener('click', async () => {
+                            if (isIOS) {
+                                if (iosModal) {
+                                    iosModal.classList.remove('hidden');
+                                    setTimeout(() => iosModal.classList.add('show'), 50);
+                                }
+                            } else if (deferredPrompt) {
+                                banner.classList.remove('show');
+                                setTimeout(() => banner.classList.add('hidden'), 400);
 
-            // C. Close banner handler
-            if (closeBtn) {
-                closeBtn.addEventListener('click', () => {
-                    if (banner) {
-                        banner.classList.remove('show');
-                        setTimeout(() => banner.classList.add('hidden'), 400);
+                                deferredPrompt.prompt();
+                                const { outcome } = await deferredPrompt.userChoice;
+                                console.log(`[PWA] Install dialog outcome: ${outcome}`);
+                                deferredPrompt = null;
+                            } else {
+                                alert("To install, tap your browser's menu option (e.g. three dots or share) and choose 'Add to Home screen' or 'Install app'.");
+                            }
+                        });
                     }
-                    // Prevent showing it again for 7 days
-                    localStorage.setItem('gauseva_pwa_dismissed', 'true');
-                });
-            }
 
-            // D. iOS modal controls
-            if (iosCloseBtn) {
-                iosCloseBtn.addEventListener('click', () => {
-                    if (iosModal) {
-                        iosModal.classList.remove('show');
-                        setTimeout(() => iosModal.classList.add('hidden'), 300);
+                    // C. Close banner handler
+                    if (closeBtn) {
+                        closeBtn.addEventListener('click', () => {
+                            if (banner) {
+                                banner.classList.remove('show');
+                                setTimeout(() => banner.classList.add('hidden'), 400);
+                            }
+                            // Prevent showing it again for 7 days
+                            localStorage.setItem('gauseva_pwa_dismissed', 'true');
+                        });
                     }
-                });
-            }
-            if (iosOkBtn) {
-                iosOkBtn.addEventListener('click', () => {
-                    if (iosModal) {
-                        iosModal.classList.remove('show');
-                        setTimeout(() => iosModal.classList.add('hidden'), 300);
-                    }
-                    localStorage.setItem('gauseva_pwa_dismissed', 'true');
-                });
-            }
 
-            // E. Show iOS specific banner when using Safari on Apple devices
-            if (isIOS && isSafari) {
-                if (banner) {
-                    banner.classList.remove('hidden');
-                    setTimeout(() => banner.classList.add('show'), 2000);
+                    // D. iOS modal controls
+                    if (iosCloseBtn) {
+                        iosCloseBtn.addEventListener('click', () => {
+                            if (iosModal) {
+                                iosModal.classList.remove('show');
+                                setTimeout(() => iosModal.classList.add('hidden'), 300);
+                            }
+                        });
+                    }
+                    if (iosOkBtn) {
+                        iosOkBtn.addEventListener('click', () => {
+                            if (iosModal) {
+                                iosModal.classList.remove('show');
+                                setTimeout(() => iosModal.classList.add('hidden'), 300);
+                            }
+                            localStorage.setItem('gauseva_pwa_dismissed', 'true');
+                        });
+                    }
+
+                    // E. Show iOS specific banner when using Safari on Apple devices
+                    if (isIOS && isSafari) {
+                        if (banner) {
+                            banner.classList.remove('hidden');
+                            setTimeout(() => banner.classList.add('show'), 2000);
+                        }
+                    }
                 }
+            } else {
+                console.log('[PWA] Running in standalone mode. Install prompt skipped.');
             }
 
             // F. Show or Hide Social Floater depending on path (handles client-side Inertia transitions)

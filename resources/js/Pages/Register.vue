@@ -41,7 +41,6 @@
           <label for="married_chk" style="font-size:13px;font-weight:600;color:var(--tx);cursor:pointer;user-select:none;display:flex;align-items:center;gap:6px;flex-wrap:wrap;">
             <Heart style="width:14px;height:14px;color:var(--pr1);fill:var(--pr1);" />
             <span>Married Devotee</span>
-            <span style="font-size:11px;color:var(--tl);font-weight:400;">(Receive anniversary blessings)</span>
           </label>
         </div>
 
