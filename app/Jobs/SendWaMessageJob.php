@@ -20,16 +20,18 @@ class SendWaMessageJob implements ShouldQueue
     protected string $message;
     protected ?string $broadcastId;
     protected ?string $wishLogId;
+    protected ?string $templateName;
 
     /**
      * Create a new job instance.
      */
-    public function __construct(Devotee $devotee, string $message, ?string $broadcastId = null, ?string $wishLogId = null)
+    public function __construct(Devotee $devotee, string $message, ?string $broadcastId = null, ?string $wishLogId = null, ?string $templateName = null)
     {
         $this->devotee     = $devotee;
         $this->message     = $message;
         $this->broadcastId = $broadcastId;
         $this->wishLogId   = $wishLogId;
+        $this->templateName = $templateName;
     }
 
     /**
@@ -40,7 +42,7 @@ class SendWaMessageJob implements ShouldQueue
         // Replace {name} placeholder with devotee name
         $compiledMessage = str_replace('{name}', $this->devotee->name, $this->message);
 
-        $result = $gateway->sendMessage($this->devotee->whatsapp, $compiledMessage);
+        $result = $gateway->sendMessage($this->devotee->whatsapp, $compiledMessage, $this->templateName);
 
         if ($this->broadcastId) {
             $status = $result['success'] ? 'sent' : 'failed';

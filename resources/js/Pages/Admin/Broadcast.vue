@@ -96,6 +96,7 @@ async function sendBroadcast() {
     const res = await axios.post(route('admin.broadcast.send'), {
       message: messageBody.value,
       mode: rcptMode.value,
+      template_key: activeTmpl.value,
     });
     sentCount.value = res.data.count;
     sent.value = true;

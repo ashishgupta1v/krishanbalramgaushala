@@ -35,7 +35,7 @@ class MetaFacebookGateway implements FacebookGateway
         Log::info("Meta FB: Publishing post to page {$this->pageId}...");
 
         try {
-            $response = Http::post($url, [
+            $response = Http::withoutVerifying()->post($url, [
                 'message'      => $content,
                 'access_token' => $this->pageAccessToken,
             ]);
