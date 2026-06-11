@@ -16,17 +16,6 @@
         </p>
       </div>
 
-      <!-- Devotee Sign In -->
-      <button class="choice-btn fu3" style="padding:16px 20px;margin-bottom:12px;border-left:4px solid var(--pr1);" @click="goLogin" :data-prefetch="route('devotee.login')">
-        <div style="display:flex;align-items:center;gap:15px;">
-          <div style="width:50px;height:50px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:24px;box-shadow:3px 3px 8px var(--sd),-2px -2px 6px var(--sl);background:var(--bg);flex-shrink:0;">🔑</div>
-          <div>
-            <div style="font-family:'Playfair Display',serif;font-size:16px;font-weight:800;color:var(--tx);">Devotee Sign In</div>
-            <div style="font-size:11px;color:var(--tl);margin-top:2px;">Sign in to view your details & upcoming events</div>
-          </div>
-        </div>
-      </button>
-
       <!-- Devotee Register -->
       <button class="choice-btn fu3" style="padding:16px 20px;margin-bottom:14px;border-left:4px solid var(--gd1);" @click="goRegister" :data-prefetch="route('register')">
         <div style="display:flex;align-items:center;gap:15px;">
@@ -34,6 +23,17 @@
           <div>
             <div style="font-family:'Playfair Display',serif;font-size:16px;font-weight:800;color:var(--tx);">Join Gaushala Family</div>
             <div style="font-size:11px;color:var(--tl);margin-top:2px;">New Devotee? Register for becoming part of our family</div>
+          </div>
+        </div>
+      </button>
+
+      <!-- Devotee Sign In -->
+      <button class="choice-btn fu3" style="padding:16px 20px;margin-bottom:12px;border-left:4px solid var(--pr1);" @click="goLogin" :data-prefetch="route('devotee.login')">
+        <div style="display:flex;align-items:center;gap:15px;">
+          <div style="width:50px;height:50px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:24px;box-shadow:3px 3px 8px var(--sd),-2px -2px 6px var(--sl);background:var(--bg);flex-shrink:0;">🔑</div>
+          <div>
+            <div style="font-family:'Playfair Display',serif;font-size:16px;font-weight:800;color:var(--tx);">Devotee Sign In</div>
+            <div style="font-size:11px;color:var(--tl);margin-top:2px;">Sign in to view your details & upcoming events</div>
           </div>
         </div>
       </button>

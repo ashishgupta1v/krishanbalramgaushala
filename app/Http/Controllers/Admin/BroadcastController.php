@@ -33,13 +33,23 @@ class BroadcastController extends Controller
     public function send(Request $request)
     {
         $request->validate([
-            'message' => 'required|string',
-            'mode'    => 'required|in:all,active',
+            'message'      => 'required|string',
+            'mode'         => 'required|in:all,active',
+            'template_key' => 'nullable|string',
         ]);
 
         $devotees = $request->mode === 'active'
             ? Devotee::active()->get()
             : Devotee::all();
+
+        // Find the template meta name if provided
+        $metaName = null;
+        if ($request->template_key) {
+            $template = MessageTemplate::where('key', $request->template_key)->first();
+            if ($template) {
+                $metaName = $template->meta_name;
+            }
+        }
 
         // Create a Broadcast record
         $broadcast = Broadcast::create([
@@ -54,7 +64,7 @@ class BroadcastController extends Controller
         ]);
 
         // Dispatch background queue jobs
-        $devotees->each(fn ($d) => SendWaMessageJob::dispatch($d, $request->message, $broadcast->id));
+        $devotees->each(fn ($d) => SendWaMessageJob::dispatch($d, $request->message, $broadcast->id, null, $metaName));
 
         // If recipient list is empty, mark as done immediately
         if ($devotees->isEmpty()) {

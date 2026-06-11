@@ -10,12 +10,13 @@ class MockWhatsAppGateway implements WhatsAppGateway
     /**
      * Simulate sending a WhatsApp message by logging it.
      */
-    public function sendMessage(string $to, string $message): array
+    public function sendMessage(string $to, string $message, ?string $templateName = null): array
     {
         // Simulate a tiny network latency (e.g. 50-100ms)
         usleep(random_int(20, 80) * 1000);
 
-        Log::info("WhatsApp Send Mock: To: {$to} | Message: {$message}");
+        $tmplInfo = $templateName ? " | Template: {$templateName}" : "";
+        Log::info("WhatsApp Send Mock: To: {$to} | Message: {$message}{$tmplInfo}");
 
         return [
             'success' => true,

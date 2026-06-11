@@ -41,7 +41,7 @@ class DailyWishJob implements ShouldQueue
                 'wish_type'  => 'birthday',
                 'status'     => 'pending',
             ]);
-            SendWaMessageJob::dispatch($devotee, $bdayBody, null, $log->id);
+            SendWaMessageJob::dispatch($devotee, $bdayBody, null, $log->id, $bdayTemplate?->meta_name);
         }
 
         // 2. Send Anniversary Wishes on WhatsApp
@@ -56,7 +56,7 @@ class DailyWishJob implements ShouldQueue
                 'wish_type'  => 'anniversary',
                 'status'     => 'pending',
             ]);
-            SendWaMessageJob::dispatch($devotee, $annBody, null, $log->id);
+            SendWaMessageJob::dispatch($devotee, $annBody, null, $log->id, $annTemplate?->meta_name);
         }
 
         // 3. Automated Facebook Post

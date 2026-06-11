@@ -19,7 +19,7 @@ class MetaWhatsAppGateway implements WhatsAppGateway
     /**
      * Send a real WhatsApp message using Meta Cloud API.
      */
-    public function sendMessage(string $to, string $message): array
+    public function sendMessage(string $to, string $message, ?string $templateName = null): array
     {
         // 1. Ensure phone number has country code (default to '91' for India if 10 digits)
         $cleanNumber = preg_replace('/\D/', '', $to);
@@ -32,20 +32,65 @@ class MetaWhatsAppGateway implements WhatsAppGateway
         Log::info("Meta WA: Sending message to {$cleanNumber}...");
 
         try {
-            // Determine if the message is a template or standard text
-            // For general dynamic wishes/OTPs, we send them as a 'text' message
-            $payload = [
-                'messaging_product' => 'whatsapp',
-                'recipient_type'    => 'individual',
-                'to'                => $cleanNumber,
-                'type'              => 'text',
-                'text'              => [
-                    'preview_url' => false,
-                    'body'        => $message
-                ]
-            ];
+            // If templateName is not explicitly passed, fallback to env()
+            if (!$templateName) {
+                $templateName = env('META_WA_TEMPLATE_NAME');
+            }
 
-            $response = Http::withToken($this->accessToken)
+            if ($templateName) {
+                // Find devotee to get their name
+                $devotee = \App\Domain\Devotee\Devotee::where('whatsapp', 'like', '%' . substr($cleanNumber, -10))->first();
+                $name = $devotee ? $devotee->name : 'Devotee';
+
+                // Determine components/parameters based on the template name
+                if ($templateName === 'jaspers_market_order_confirmation_v1') {
+                    $code = strval(random_int(100000, 999999));
+                    $dateStr = now()->format('M d, Y');
+                    $parameters = [
+                        ['type' => 'text', 'text' => $name],
+                        ['type' => 'text', 'text' => $code],
+                        ['type' => 'text', 'text' => $dateStr],
+                    ];
+                } else {
+                    // For standard approved templates, we pass the devotee's name
+                    $parameters = [
+                        ['type' => 'text', 'text' => $name],
+                    ];
+                }
+
+                $payload = [
+                    'messaging_product' => 'whatsapp',
+                    'recipient_type'    => 'individual',
+                    'to'                => $cleanNumber,
+                    'type'              => 'template',
+                    'template'          => [
+                        'name'     => $templateName,
+                        'language' => [
+                            'code' => 'en_US'
+                        ],
+                        'components' => [
+                            [
+                                'type'       => 'body',
+                                'parameters' => $parameters
+                            ]
+                        ]
+                    ]
+                ];
+            } else {
+                $payload = [
+                    'messaging_product' => 'whatsapp',
+                    'recipient_type'    => 'individual',
+                    'to'                => $cleanNumber,
+                    'type'              => 'text',
+                    'text'              => [
+                        'preview_url' => false,
+                        'body'        => $message
+                    ]
+                ];
+            }
+
+            $response = Http::withoutVerifying()
+                ->withToken($this->accessToken)
                 ->withHeaders(['Content-Type' => 'application/json'])
                 ->post($url, $payload);
 
