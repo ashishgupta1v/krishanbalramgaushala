@@ -820,11 +820,26 @@ body::after {
   }
   .devo-profile-grid {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 380px 1fr;
     gap: 24px;
     align-items: start;
   }
 }
+
+/* Event Cards Grid for Desktop Dashboard Layout */
+.events-grid-layout {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+@media (min-width: 768px) {
+  .events-grid-layout {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+}
+
 
 /* ══ RESPONSIVE TABLE WRAPPER ══ */
 .tbl-scroll {

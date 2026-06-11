@@ -33,8 +33,10 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import { router, usePage } from '@inertiajs/vue3';
+import { useAudioStore } from '@/Stores/audio';
 
 const loading = ref(true);
+const audioStore = useAudioStore();
 
 onMounted(() => {
   const page = usePage();
@@ -46,6 +48,7 @@ onMounted(() => {
 });
 
 function enter() {
+  audioStore.play();
   router.visit(route('choose'));
 }
 </script>

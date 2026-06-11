@@ -17,11 +17,7 @@
         </div>
         <div style="display:flex;gap:8px;">
           <button class="btn-ghost" style="padding:8px 10px;color:var(--er);border-color:rgba(239,83,80,.2);display:flex;align-items:center;justify-content:center;" @click="handleLogout" title="Sign Out">
-            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
-              <polyline points="16 17 21 12 16 7"></polyline>
-              <line x1="21" y1="12" x2="9" y2="12"></line>
-            </svg>
+            <LogOut style="width:18px;height:18px;" />
           </button>
         </div>
       </div>
@@ -56,16 +52,19 @@
           <div class="nr fu2" style="padding:16px;">
             <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
               <div class="slbl" style="margin:0;">My Details</div>
-              <button class="btn-ghost" style="padding:5px 12px;font-size:10px;margin-left:auto;" @click="editing = !editing">
-                {{ editing ? 'Cancel' : '📝 Edit' }}
+              <button class="btn-ghost" style="padding:5px 12px;font-size:10px;margin-left:auto;display:inline-flex;align-items:center;gap:4px;" @click="editing = !editing">
+                <span v-if="editing">Cancel</span>
+                <span v-else style="display:inline-flex;align-items:center;gap:4px;"><Pencil style="width:11px;height:11px;" /> Edit</span>
               </button>
             </div>
 
             <!-- Viewing details -->
             <div v-if="!editing">
               <div class="a-row" v-if="devotee.dob">
-                <div style="display:flex;gap:10px;align-items:center;">
-                  <span style="font-size:21px;">🎂</span>
+                <div style="display:flex;gap:12px;align-items:center;">
+                  <div style="width:36px;height:36px;border-radius:50%;background:rgba(184,78,0,0.08);color:var(--pr);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                    <Cake style="width:18px;height:18px;" />
+                  </div>
                   <div>
                     <div style="font-size:10px;color:var(--td);">Birthday</div>
                     <div style="font-size:14px;font-weight:700;">{{ formatDate(devotee.dob) }}</div>
@@ -74,8 +73,10 @@
                 <div style="font-size:11px;color:var(--td);text-align:right;">Yearly blessings<br>from Gaushala</div>
               </div>
               <div class="a-row" v-if="devotee.anniversary">
-                <div style="display:flex;gap:10px;align-items:center;">
-                  <span style="font-size:21px;">💐</span>
+                <div style="display:flex;gap:12px;align-items:center;">
+                  <div style="width:36px;height:36px;border-radius:50%;background:rgba(225,48,108,0.08);color:#e1306c;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                    <Heart style="width:18px;height:18px;" />
+                  </div>
                   <div>
                     <div style="font-size:10px;color:var(--td);">Anniversary</div>
                     <div style="font-size:14px;font-weight:700;">{{ formatDate(devotee.anniversary) }}</div>
@@ -83,8 +84,10 @@
                 </div>
                 <div style="font-size:11px;color:var(--td);text-align:right;">Yearly blessings<br>sent on WhatsApp</div>
               </div>
-              <div style="display:flex;gap:10px;align-items:center;padding:10px 0;">
-                <span style="font-size:21px;">📲</span>
+              <div style="display:flex;gap:12px;align-items:center;padding:10px 0;">
+                <div style="width:36px;height:36px;border-radius:50%;background:rgba(37,211,102,0.08);color:var(--wa);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                  <Smartphone style="width:18px;height:18px;" />
+                </div>
                 <div>
                   <div style="font-size:10px;color:var(--td);">WhatsApp</div>
                   <div style="font-size:14px;font-weight:700;">+91 {{ devotee.whatsapp }}</div>
@@ -127,56 +130,81 @@
           </div>
 
           <!-- What you receive -->
-          <div class="nr fu3" style="padding:16px;">
+          <!-- <div class="nr fu3" style="padding:16px;">
             <div class="slbl">My Automations</div>
             <div class="a-row">
-              <span style="font-size:20px;">📲</span>
-              <div style="flex:1;margin-left:10px;">
+              <div style="width:32px;height:32px;border-radius:50%;background:rgba(37,211,102,0.08);color:var(--wa);display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-right:12px;">
+                <MessageCircle style="width:16px;height:16px;" />
+              </div>
+              <div style="flex:1;">
                 <div style="font-size:13px;font-weight:600;">WhatsApp Birthday Wish</div>
                 <div style="font-size:11px;color:var(--tl);margin-top:1px;">Personal message from Gaushala on your birthday</div>
               </div>
             </div>
             <div class="a-row" v-if="devotee.anniversary">
-              <span style="font-size:20px;">💐</span>
-              <div style="flex:1;margin-left:10px;">
+              <div style="width:32px;height:32px;border-radius:50%;background:rgba(240,138,48,0.08);color:var(--pr2);display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-right:12px;">
+                <Heart style="width:16px;height:16px;" />
+              </div>
+              <div style="flex:1;">
                 <div style="font-size:13px;font-weight:600;">WhatsApp Anniversary Wish</div>
                 <div style="font-size:11px;color:var(--tl);margin-top:1px;">Anniversary blessings for you and your family</div>
               </div>
             </div>
-            <div style="display:flex;align-items:center;gap:10px;padding:10px 0;">
-              <span style="font-size:20px;">📘</span>
-              <div style="flex:1;margin-left:10px;">
+            <div style="display:flex;align-items:center;padding:10px 0;">
+              <div style="width:32px;height:32px;border-radius:50%;background:rgba(24,119,242,0.08);color:var(--fb);display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-right:12px;">
+                <svg viewBox="0 0 24 24" style="width:16px;height:16px;" fill="currentColor">
+                  <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                </svg>
+              </div>
+              <div style="flex:1;">
                 <div style="font-size:13px;font-weight:600;">Facebook Page Blessing</div>
                 <div style="font-size:11px;color:var(--tl);margin-top:1px;">Featured in Gaushala's Facebook birthday post</div>
               </div>
             </div>
-          </div>
+          </div> -->
         </div>
 
         <!-- Right Column: Events, Cows Directory -->
         <div style="display:flex;flex-direction:column;gap:18px;">
           <!-- Upcoming Events Card -->
           <div class="nr fu4" style="padding:16px;">
-            <div class="slbl">Upcoming Events & Seva</div>
-            <div v-if="events && events.length" style="display:flex;flex-direction:column;gap:10px;margin-top:5px;">
+            <div class="slbl" style="margin-bottom:12px;">Upcoming Events & Seva</div>
+            <div v-if="events && events.length" class="events-grid-layout">
               <div v-for="ev in events" :key="ev.id" class="ev-card" style="margin-bottom:0;border-left-color:var(--pr1);box-shadow:none;border-radius:12px;background:var(--bg1);">
                 <div class="ev-ico">{{ ev.icon }}</div>
                 <div style="flex:1;">
                   <h4 style="font-size:13px;font-weight:700;color:var(--tx);margin:0;">{{ ev.title }}</h4>
                   <p style="font-size:11px;color:var(--tl);line-height:1.4;margin-top:2px;">{{ ev.description }}</p>
-                  <div style="display:flex;gap:12px;font-size:10px;color:var(--td);margin-top:6px;font-weight:600;">
-                    <span>📅 {{ ev.date_label }}</span>
-                    <span>⏰ {{ ev.time_label }}</span>
+                  <div style="display:flex;gap:12px;font-size:10px;color:var(--td);margin-top:6px;font-weight:600;align-items:center;">
+                    <span style="display:inline-flex;align-items:center;gap:4px;"><Calendar style="width:12px;height:12px;" /> {{ ev.date_label }}</span>
+                    <span style="display:inline-flex;align-items:center;gap:4px;"><Clock style="width:12px;height:12px;" /> {{ ev.time_label }}</span>
                   </div>
                 </div>
               </div>
             </div>
-            <div v-else style="text-align:center;padding:15px;font-size:11px;color:var(--tl);">
+            <div v-else style="text-align:center;padding:24px 15px;font-size:11px;color:var(--tl);">
               No upcoming events listed for now. Check back later!
             </div>
           </div>
 
-
+          <!-- Gau Seva Blessing Card -->
+          <div class="nr fu3" style="padding:20px; border-radius:20px; background: linear-gradient(135deg, rgba(230, 120, 23, 0.04) 0%, rgba(240, 180, 60, 0.08) 100%) !important; border: 1px solid rgba(180,128,40,0.15) !important; position:relative; overflow:hidden;">
+            <!-- Subtle design elements -->
+            <div style="display:flex; gap:14px; align-items:flex-start; position:relative; z-index:2;">
+              <div style="width:38px;height:38px;border-radius:50%;background:rgba(184,78,0,0.08);color:var(--pr1);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                <Sparkles style="width:18px;height:18px;" />
+              </div>
+              <div style="flex:1;">
+                <div style="font-family:'Playfair Display',serif; font-size:15px; font-weight:700; color:var(--pr); margin-bottom:6px;">Gau Seva Blessing</div>
+                <div style="font-size:13px; font-style:italic; color:var(--tx); line-height:1.6; font-family:'Playfair Display',serif; margin-bottom:6px;">
+                  "गावो मे चाग्रतो यान्तु गावो मे सन्तु पृष्ठतः।<br>गावो मे हृदये सन्तु गवां मध्ये वसाम्यहम्॥"
+                </div>
+                <div style="font-size:11px; color:var(--tl); line-height:1.5;">
+                  May Gau Mata be in front of me, behind me, and in my heart. Serving cows brings peace, health, and spiritual prosperity to our home and family.
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
 
       </div>
@@ -189,6 +217,7 @@
 import { ref, computed } from 'vue';
 import { router } from '@inertiajs/vue3';
 import { useDevoteeStore } from '@/Stores/devotee';
+import { LogOut, Pencil, Cake, Heart, Smartphone, MessageCircle, Calendar, Clock, Sparkles } from '@lucide/vue';
 
 const store = useDevoteeStore();
 

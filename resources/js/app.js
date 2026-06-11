@@ -4,6 +4,7 @@ import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import { createPinia } from 'pinia';
 import { ZiggyVue } from 'ziggy-js';
 import axios from 'axios';
+import FloatingAudioControl from './Components/FloatingAudioControl.vue';
 import '../css/app.css';
 
 window.axios = axios;
@@ -22,7 +23,17 @@ createInertiaApp({
     setup({ el, App, props, plugin }) {
         const pinia = createPinia();
 
-        createApp({ render: () => h(App, props) })
+        const RootApp = {
+            name: 'RootApp',
+            render() {
+                return h('div', { id: 'app-layout', style: { width: '100%', height: '100%' } }, [
+                    h(App, props),
+                    h(FloatingAudioControl)
+                ]);
+            }
+        };
+
+        createApp({ render: () => h(RootApp) })
             .use(plugin)
             .use(pinia)
             .use(ZiggyVue)

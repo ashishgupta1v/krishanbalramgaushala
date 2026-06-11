@@ -7,24 +7,27 @@
           <h2 style="font-family:'Playfair Display',serif;font-size:20px;">Members</h2>
           <p style="color:var(--tl);font-size:12px;margin-top:1px;">{{ filteredMembers.length }} of {{ members.length }} devotees</p>
         </div>
-        <a :href="route('admin.members.export', { milestone: selectedMilestone, period: selectedPeriod })" class="btn-ghost" style="padding:7px 14px;font-size:11px;text-decoration:none;font-weight:600;display:flex;align-items:center;gap:6px;">📥 Export CSV</a>
+        <a :href="route('admin.members.export', { milestone: selectedMilestone, period: selectedPeriod })" class="btn-ghost" style="padding:7px 14px;font-size:11px;text-decoration:none;font-weight:600;display:inline-flex;align-items:center;gap:6px;">
+          <Download style="width:12px;height:12px;" />
+          <span>Export CSV</span>
+        </a>
       </div>
 
       <!-- Search & Milestone Filters -->
       <div style="display:flex;flex-wrap:wrap;gap:12px;margin-bottom:16px;">
         <div style="position:relative;flex:1;min-width:240px;">
-          <span style="position:absolute;left:14px;top:50%;transform:translateY(-50%);font-size:14px;pointer-events:none;">🔍</span>
-          <input v-model="search" class="n-inp" type="text" placeholder="Search name or number…" style="padding-left:40px;">
+          <Search style="position:absolute;left:14px;top:50%;transform:translateY(-50%);width:14px;height:14px;color:var(--td);pointer-events:none;" />
+          <input v-model="search" class="n-inp" type="text" placeholder="Search name or number…" style="padding-left:38px;">
         </div>
         
         <!-- Milestone Type Selector -->
         <div style="display:flex;align-items:center;gap:6px;">
           <span style="font-size:11px;font-weight:700;color:var(--tl);white-space:nowrap;">Milestone:</span>
           <select v-model="selectedMilestone" @change="applyFilters" style="padding:10px 14px;border:none;border-radius:12px;background:var(--bg);box-shadow:inset 2px 2px 5px var(--sd),inset -2px -2px 5px var(--sl);color:var(--tx);font-family:'Poppins',sans-serif;font-size:12px;outline:none;cursor:pointer;">
-            <option value="all">🎉 All Devotees</option>
-            <option value="birthday">🎂 Birthdays</option>
-            <option value="anniversary">💐 Anniversaries</option>
-            <option value="any">💝 Any Milestone</option>
+            <option value="all">All Devotees</option>
+            <option value="birthday">Birthdays</option>
+            <option value="anniversary">Anniversaries</option>
+            <option value="any">Any Milestone</option>
           </select>
         </div>
 
@@ -32,10 +35,10 @@
         <div style="display:flex;align-items:center;gap:6px;">
           <span style="font-size:11px;font-weight:700;color:var(--tl);white-space:nowrap;">Period:</span>
           <select v-model="selectedPeriod" @change="applyFilters" style="padding:10px 14px;border:none;border-radius:12px;background:var(--bg);box-shadow:inset 2px 2px 5px var(--sd),inset -2px -2px 5px var(--sl);color:var(--tx);font-family:'Poppins',sans-serif;font-size:12px;outline:none;cursor:pointer;">
-            <option value="all">📅 Any Time</option>
-            <option value="today">☀️ Celebrating Today</option>
-            <option value="next_7_days">🔮 Next 7 Days</option>
-            <option value="next_week">🗓️ Next Calendar Week</option>
+            <option value="all">Any Time</option>
+            <option value="today">Celebrating Today</option>
+            <option value="next_7_days">Next 7 Days</option>
+            <option value="next_week">Next Calendar Week</option>
           </select>
         </div>
       </div>
@@ -70,8 +73,14 @@
               <div style="font-size:11px;color:var(--tl);">+91 {{ m.whatsapp }} &nbsp;·&nbsp; {{ m.city }}</div>
             </div>
             <div style="text-align:right;flex-shrink:0;">
-              <div v-if="m.dob"  style="font-size:10px;color:var(--td);">🎂 {{ fmtMD(m.dob) }}</div>
-              <div v-if="m.anniversary" style="font-size:10px;color:var(--td);">💐 {{ fmtMD(m.anniversary) }}</div>
+              <div v-if="m.dob"  style="font-size:10px;color:var(--td);display:inline-flex;align-items:center;gap:4px;justify-content:flex-end;width:100%;margin-bottom:2px;">
+                <Cake style="width:11px;height:11px;color:var(--pr1);" />
+                <span>{{ fmtMD(m.dob) }}</span>
+              </div>
+              <div v-if="m.anniversary" style="font-size:10px;color:var(--td);display:inline-flex;align-items:center;gap:4px;justify-content:flex-end;width:100%;margin-bottom:2px;">
+                <Heart style="width:11px;height:11px;color:#e1306c;" />
+                <span>{{ fmtMD(m.anniversary) }}</span>
+              </div>
               <span style="font-size:9px;padding:2px 7px;border-radius:8px;font-weight:700;" :style="m.status==='active'?'background:rgba(46,125,50,.14);color:var(--ok1);':'background:rgba(180,128,40,.1);color:var(--td);'">{{ m.status === 'active' ? 'Active' : 'Inactive' }}</span>
             </div>
           </div>
@@ -92,7 +101,10 @@
                 <div style="font-size:11px;font-weight:700;" :style="m.status==='active'?'color:var(--ok1);':'color:var(--td);'">{{ m.status === 'active' ? 'Active' : 'Inactive' }}</div>
               </div>
             </div>
-            <button @click.stop="removeMember(m.id)" style="background:rgba(198,40,40,.12);border:1px solid rgba(198,40,40,.28);border-radius:9px;padding:7px 14px;color:#ef5350;font-size:12px;cursor:pointer;font-family:'Poppins',sans-serif;font-weight:600;">🗑 Remove Member</button>
+            <button @click.stop="removeMember(m.id)" style="background:rgba(198,40,40,.12);border:1px solid rgba(198,40,40,.28);border-radius:9px;padding:7px 14px;color:#ef5350;font-size:12px;cursor:pointer;font-family:'Poppins',sans-serif;font-weight:600;display:inline-flex;align-items:center;gap:4px;">
+              <Trash style="width:12px;height:12px;" />
+              <span>Remove Devotee</span>
+            </button>
           </div>
         </div>
         <div v-if="filteredMembers.length === 0" style="text-align:center;color:var(--td);padding:40px 20px;font-size:14px;">No members found</div>
@@ -105,6 +117,7 @@
 import { ref, computed } from 'vue';
 import { router } from '@inertiajs/vue3';
 import AdminLayout from './Layout.vue';
+import { Download, Search, Cake, Heart, Trash } from '@lucide/vue';
 
 const props = defineProps({
   members:          { type: Array,  default: () => [] },

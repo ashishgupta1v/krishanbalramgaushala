@@ -7,14 +7,20 @@
           <h2 style="font-family:'Playfair Display',serif;font-size:20px;line-height:1.25;">Interactive Event & Calendar Manager</h2>
           <p style="color:var(--tl);font-size:12px;margin-top:4px;line-height:1.4;">Manage upcoming festivals, prayers, meetings, and veterinary checks dynamically</p>
         </div>
-        <button class="btn-saffron" @click="openCreateModal" style="padding:10px 18px;font-size:12px;white-space:nowrap;flex-shrink:0;height:fit-content;margin-top:2px;">➕ Add Event</button>
+        <button class="btn-saffron" @click="openCreateModal" style="padding:10px 18px;font-size:12px;white-space:nowrap;flex-shrink:0;height:fit-content;margin-top:2px;display:inline-flex;align-items:center;gap:6px;">
+          <Plus style="width:14px;height:14px;" />
+          <span>Add Event</span>
+        </button>
       </div>
 
       <!-- Events Grid / Table -->
       <div class="desktop-grid-2" style="align-items:start;gap:20px;">
         <!-- Left Side: List of current events -->
         <div style="display:flex;flex-direction:column;gap:12px;">
-          <div class="slbl" style="margin-top:0;">📋 Scheduled Events ({{ events.length }})</div>
+          <div class="slbl" style="margin-top:0;display:inline-flex;align-items:center;gap:6px;">
+            <ListTodo style="width:14px;height:14px;" />
+            <span>Scheduled Events ({{ events.length }})</span>
+          </div>
           
           <div v-for="ev in events" :key="ev.id" class="nr-sm sk-leather" style="padding:14px 16px;border-radius:16px;display:flex;gap:14px;align-items:start;">
             <div class="ev-ico" :style="`background:${evColor(ev.type).bg};border:1px solid ${evColor(ev.type).bdr}44;width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;`">
@@ -24,18 +30,28 @@
             <div style="flex:1;min-width:0;">
               <div style="display:flex;justify-content:space-between;align-items:start;gap:6px;">
                 <h4 style="font-size:14px;font-weight:700;color:var(--tx);">{{ ev.title }}</h4>
-                <div style="display:flex;gap:4px;">
-                  <button @click="openEditModal(ev)" style="background:none;border:none;cursor:pointer;font-size:13px;" title="Edit">✏️</button>
-                  <button @click="deleteEvent(ev.id)" style="background:none;border:none;cursor:pointer;font-size:13px;" title="Delete">🗑️</button>
+                <div style="display:flex;gap:8px;align-items:center;">
+                  <button @click="openEditModal(ev)" style="background:none;border:none;cursor:pointer;color:var(--td);display:flex;align-items:center;" title="Edit">
+                    <Pencil style="width:13px;height:13px;" />
+                  </button>
+                  <button @click="deleteEvent(ev.id)" style="background:none;border:none;cursor:pointer;color:var(--er1);display:flex;align-items:center;" title="Delete">
+                    <Trash style="width:13px;height:13px;" />
+                  </button>
                 </div>
               </div>
               <p style="font-size:11px;color:var(--tl);margin-top:2px;line-height:1.4;">{{ ev.description }}</p>
               
               <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px;">
                 <span :style="`font-size:10px;background:${evColor(ev.type).bg};color:${evColor(ev.type).dot};border:1px solid ${evColor(ev.type).bdr}44;border-radius:20px;padding:2px 9px;font-weight:700;text-transform:capitalize;`">{{ ev.type }}</span>
-                <span style="font-size:10px;background:rgba(180,128,40,.1);color:var(--tl);border-radius:20px;padding:2px 9px;font-weight:600;">⏰ {{ fmtDT(ev.scheduled_at) }}</span>
-                <span v-if="ev.time_label" style="font-size:10px;background:rgba(180,128,40,.1);color:var(--tl);border-radius:20px;padding:2px 9px;font-weight:600;">🏷️ {{ ev.time_label }}</span>
-                <span v-if="ev.is_recurring" style="font-size:10px;background:rgba(46,125,50,.1);color:var(--ok);border-radius:20px;padding:2px 9px;font-weight:700;">🔄 Recurring</span>
+                <span style="font-size:10px;background:rgba(180,128,40,.1);color:var(--tl);border-radius:20px;padding:2px 9px;font-weight:600;display:inline-flex;align-items:center;gap:4px;">
+                  <Clock style="width:10px;height:10px;" /> {{ fmtDT(ev.scheduled_at) }}
+                </span>
+                <span v-if="ev.time_label" style="font-size:10px;background:rgba(180,128,40,.1);color:var(--tl);border-radius:20px;padding:2px 9px;font-weight:600;display:inline-flex;align-items:center;gap:4px;">
+                  <Tag style="width:10px;height:10px;" /> {{ ev.time_label }}
+                </span>
+                <span v-if="ev.is_recurring" style="font-size:10px;background:rgba(46,125,50,.1);color:var(--ok);border-radius:20px;padding:2px 9px;font-weight:700;display:inline-flex;align-items:center;gap:4px;">
+                  <RefreshCw style="width:10px;height:10px;" /> Recurring
+                </span>
               </div>
             </div>
           </div>
@@ -47,7 +63,10 @@
 
         <!-- Right Side: Fast Quick-Fact & Guidelines panel -->
         <div class="nr sk-leather" style="padding:18px 20px;border-radius:20px;">
-          <h3 style="font-family:'Playfair Display',serif;font-size:16px;font-weight:700;margin-bottom:10px;">📅 Gaushala Calendar Rules</h3>
+          <h3 style="font-family:'Playfair Display',serif;font-size:16px;font-weight:700;margin-bottom:10px;display:flex;align-items:center;gap:6px;">
+            <Calendar style="width:16px;height:16px;color:var(--pr1);" />
+            <span>Gaushala Calendar Rules</span>
+          </h3>
           <p style="font-size:12px;color:var(--tl);line-height:1.6;margin-bottom:12px;">
             Events scheduled here will automatically appear on the Devotee Registry and personal profiles.
           </p>
@@ -147,6 +166,7 @@
 import { ref } from 'vue';
 import { router } from '@inertiajs/vue3';
 import AdminLayout from './Layout.vue';
+import { Plus, ListTodo, Pencil, Trash, Clock, Tag, RefreshCw, Calendar } from '@lucide/vue';
 
 const props = defineProps({
   events:    { type: Array,  default: () => [] },

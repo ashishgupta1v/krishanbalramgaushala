@@ -26,9 +26,9 @@
             <button class="chip" :class="{ on: rcptMode === 'active' }" @click="rcptMode = 'active'">Active Only ({{ activeCount }})</button>
           </div>
 
-          <button v-if="!sent" class="btn-green" style="width:100%;padding:15px;font-size:15px;margin-bottom:16px;" :disabled="sending" @click="sendBroadcast">
+          <button v-if="!sent" class="btn-green" style="width:100%;padding:15px;font-size:15px;margin-bottom:16px;display:inline-flex;align-items:center;justify-content:center;gap:6px;" :disabled="sending" @click="sendBroadcast">
             <span v-if="sending" class="spin"/>
-            <span v-else>📲 Send to {{ rcptCount }} Devotees</span>
+            <span v-else style="display:inline-flex;align-items:center;gap:6px;"><SendHorizontal style="width:16px;height:16px;" /> Send to {{ rcptCount }} Devotees</span>
           </button>
         </div>
 
@@ -38,7 +38,12 @@
           <div class="slbl" style="margin-top:0;">WhatsApp Preview</div>
           <div class="wa-bbl" style="margin-bottom:18px;">
             <div style="display:flex;align-items:center;gap:9px;margin-bottom:9px;padding-bottom:9px;border-bottom:1px solid rgba(255,255,255,.1);">
-              <div style="width:36px;height:36px;border-radius:50%;background:#128c7e;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;">🐄</div>
+              <div style="width:36px;height:36px;border-radius:50%;overflow:hidden;background:#fff;border:1px solid rgba(255,255,255,0.5);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                <picture>
+                  <source srcset="/logo.webp" type="image/webp">
+                  <img src="/logo1.png" alt="logo" width="36" height="36" class="logo-img" style="width:36px;height:36px;object-fit:cover;" />
+                </picture>
+              </div>
               <div>
                 <div style="color:#fff;font-weight:700;font-size:12px;">Krishan Balram Gaushala</div>
                 <div style="color:rgba(255,255,255,.4);font-size:10px;">Official Number</div>
@@ -50,8 +55,10 @@
           </div>
 
           <!-- Success banner -->
-          <div v-if="sent" style="background:rgba(46,125,50,.12);border:1px solid rgba(67,160,71,.28);border-radius:14px;padding:18px;text-align:center;">
-            <div style="font-size:36px;margin-bottom:6px;">✅</div>
+          <div v-if="sent" style="background:rgba(46,125,50,.12);border:1px solid rgba(67,160,71,.28);border-radius:14px;padding:18px;text-align:center;display:flex;flex-direction:column;align-items:center;">
+            <div style="width:48px;height:48px;border-radius:50%;background:rgba(46,125,50,0.1);color:var(--ok1);display:flex;align-items:center;justify-content:center;margin-bottom:10px;">
+              <Check style="width:24px;height:24px;stroke-width:3;" />
+            </div>
             <div style="color:var(--ok1);font-weight:700;font-size:14px;">Sent to {{ sentCount }} devotees on WhatsApp!</div>
             <button style="background:none;border:none;color:var(--td);font-size:12px;cursor:pointer;margin-top:8px;font-family:'Poppins',sans-serif;text-decoration:underline;" @click="sent = false">Send another</button>
           </div>
@@ -66,6 +73,7 @@
 import { ref, computed } from 'vue';
 import { router } from '@inertiajs/vue3';
 import AdminLayout from './Layout.vue';
+import { SendHorizontal, Check } from '@lucide/vue';
 
 const props = defineProps({
   templates:   { type: Array,  default: () => [] },
