@@ -26,10 +26,6 @@ createInertiaApp({
 
         const RootApp = {
             name: 'RootApp',
-            setup() {
-                const audioStore = useAudioStore();
-                audioStore.play();
-            },
             render() {
                 return h('div', { id: 'app-layout', style: { width: '100%', height: '100%' } }, [
                     h(App, props),
@@ -38,11 +34,16 @@ createInertiaApp({
             }
         };
 
-        createApp({ render: () => h(RootApp) })
+        const app = createApp({ render: () => h(RootApp) })
             .use(plugin)
             .use(pinia)
-            .use(ZiggyVue)
-            .mount(el);
+            .use(ZiggyVue);
+
+        // Instantiate and trigger the audio store with the active Pinia instance
+        const audioStore = useAudioStore(pinia);
+        audioStore.play();
+
+        app.mount(el);
     },
     progress: {
         color: '#d46600',

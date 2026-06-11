@@ -6,7 +6,6 @@ export const useAudioStore = defineStore('audio', () => {
   const audio = ref(null);
   const shouldPlay = ref(false);
   const hasInteracted = ref(false);
-  const isInitializing = ref(false);
   
   // Persistent preference: default to true (enabled)
   const isEnabled = ref(true);
@@ -17,61 +16,44 @@ export const useAudioStore = defineStore('audio', () => {
     }
   } catch {}
 
-  const fallbackUrl = 'https://assets.mixkit.co/music/preview/mixkit-serene-view-1002.mp3';
+  const fallbackUrl = 'https://archive.org/download/PanditHariprasadChaurasiaAtRamakrishnaMissionDelhi20140119/PanditHariprasadChaurasiaAtRamakrishnaMissionDelhi2014_01_19.mp3';
 
   function init() {
-    if (audio.value || isInitializing.value) return;
-    isInitializing.value = true;
+    if (audio.value) return;
     
-    console.log('[Audio] Checking custom audio track availability...');
-    const sourceUrl = '/audio/bhajan.mp3';
+    console.log('[Audio] Initializing HTML5 Audio element...');
     
-    // Asynchronous HEAD request check to prevent blocking load loops
-    fetch(sourceUrl, { method: 'HEAD' })
-      .then(res => {
-        let finalUrl = sourceUrl;
-        if (!res.ok) {
-          console.warn(`[Audio] Custom bhajan /audio/bhajan.mp3 returned status ${res.status}. Falling back to default.`);
-          finalUrl = fallbackUrl;
-        } else {
-          console.log('[Audio] Custom bhajan /audio/bhajan.mp3 is available on the server.');
-        }
-        createAudioElement(finalUrl);
-      })
-      .catch(err => {
-        console.warn('[Audio] Custom bhajan not found or failed check. Using default serene flute melody.', err);
-        createAudioElement(fallbackUrl);
-      });
-  }
-
-  function createAudioElement(url) {
-    console.log('[Audio] Creating HTML5 Audio element with URL:', url);
-    const audioObj = new Audio(url);
+    // Start with custom bhajan.mp3
+    const audioObj = new Audio('/audio/bhajan.mp3');
     audioObj.loop = true;
     
+    audioObj.addEventListener('error', (e) => {
+      const currentSrc = audioObj.src || '';
+      // Prevent infinite loop if fallback track also fails
+      if (!currentSrc.includes('PanditHariprasadChaurasia')) {
+        console.warn('[Audio] Failed to load primary bhajan /audio/bhajan.mp3. Swapping to fallback serene flute melody.', e);
+        audioObj.src = fallbackUrl;
+        audioObj.load();
+        
+        if (shouldPlay.value && isEnabled.value) {
+          console.log('[Audio] Swapped source. Attempting playback on fallback track...');
+          audioObj.play()
+            .then(() => {
+              isPlaying.value = true;
+              console.log('[Audio] Fallback playback started successfully!');
+            })
+            .catch(err => {
+              console.warn('[Audio] Fallback playback blocked by browser in error event. Registering interaction recovery.', err);
+              isPlaying.value = false;
+              setupInteractionRecovery();
+            });
+        }
+      } else {
+        console.error('[Audio] Both primary and fallback tracks failed to load.');
+      }
+    });
+
     audio.value = audioObj;
-    isInitializing.value = false;
-
-    // If play was queued during the background fetch check, trigger play now
-    if (shouldPlay.value && isEnabled.value) {
-      triggerPlayback();
-    }
-  }
-
-  function triggerPlayback() {
-    if (!audio.value) return;
-    
-    audio.value.play()
-      .then(() => {
-        isPlaying.value = true;
-        hasInteracted.value = true;
-        console.log('[Audio] Background audio started playing successfully.');
-      })
-      .catch(err => {
-        console.warn('[Audio] Playback blocked by browser policy. Registering interaction listeners.', err);
-        isPlaying.value = false;
-        setupInteractionRecovery();
-      });
   }
 
   function setupInteractionRecovery() {
@@ -83,7 +65,8 @@ export const useAudioStore = defineStore('audio', () => {
         return;
       }
       
-      console.log('[Audio] User interacted with document.');
+      console.log('[Audio] User interaction detected. Triggering playback...');
+      init();
       if (audio.value) {
         audio.value.play()
           .then(() => {
@@ -93,13 +76,31 @@ export const useAudioStore = defineStore('audio', () => {
             console.log('[Audio] Playback started successfully on user interaction!');
             cleanupListeners();
           })
-          .catch(e => {
-            console.warn('[Audio] Playback failed on interaction. Will try again on next tap:', e);
+          .catch(err => {
+            console.warn('[Audio] Playback failed on interaction:', err.name);
+            
+            // If primary failed due to load/decode issues, swap to fallback immediately inside click context
+            if (err.name !== 'NotAllowedError') {
+              const currentSrc = audio.value.src || '';
+              if (!currentSrc.includes('PanditHariprasadChaurasia')) {
+                console.warn('[Audio] Swapping to fallback serene flute melody on user interaction...');
+                audio.value.src = fallbackUrl;
+                audio.value.load();
+                
+                audio.value.play()
+                  .then(() => {
+                    isPlaying.value = true;
+                    shouldPlay.value = true;
+                    hasInteracted.value = true;
+                    console.log('[Audio] Fallback playback started successfully on user interaction!');
+                    cleanupListeners();
+                  })
+                  .catch(fallbackErr => {
+                    console.warn('[Audio] Fallback playback also failed on interaction:', fallbackErr.name);
+                  });
+              }
+            }
           });
-      } else {
-        console.log('[Audio] Audio element not ready yet. Queuing play intent for completion.');
-        shouldPlay.value = true;
-        cleanupListeners();
       }
     };
 
@@ -114,7 +115,7 @@ export const useAudioStore = defineStore('audio', () => {
 
   function play() {
     if (!isEnabled.value) {
-      console.log('[Audio] Playback skipped. Audio is disabled by user.');
+      console.log('[Audio] Playback ignored because audio is disabled by user preference.');
       return;
     }
 
@@ -122,12 +123,51 @@ export const useAudioStore = defineStore('audio', () => {
     init();
 
     if (audio.value) {
-      triggerPlayback();
+      console.log('[Audio] Attempting to start background playback...');
+      audio.value.play()
+        .then(() => {
+          isPlaying.value = true;
+          hasInteracted.value = true;
+          console.log('[Audio] Background playback started successfully!');
+        })
+        .catch(err => {
+          console.warn('[Audio] Playback attempt failed:', err.name, err.message);
+          
+          if (err.name === 'NotAllowedError') {
+            console.warn('[Audio] Autoplay blocked by browser. Queuing on first interaction.');
+            isPlaying.value = false;
+            setupInteractionRecovery();
+          } else {
+            // Loading/decoding error (e.g. corrupt bhajan.mp3)
+            const currentSrc = audio.value.src || '';
+            if (!currentSrc.includes('PanditHariprasadChaurasia')) {
+              console.warn('[Audio] Primary source failed to play. Swapping to fallback serene flute melody...');
+              audio.value.src = fallbackUrl;
+              audio.value.load();
+              
+              if (shouldPlay.value && isEnabled.value) {
+                audio.value.play()
+                  .then(() => {
+                    isPlaying.value = true;
+                    hasInteracted.value = true;
+                    console.log('[Audio] Fallback playback started successfully!');
+                  })
+                  .catch(fallbackErr => {
+                    console.warn('[Audio] Fallback playback also failed:', fallbackErr.name);
+                    isPlaying.value = false;
+                    setupInteractionRecovery();
+                  });
+              }
+            } else {
+              isPlaying.value = false;
+            }
+          }
+        });
     }
   }
 
   function pause() {
-    console.log('[Audio] Pausing background audio.');
+    console.log('[Audio] Pausing playback.');
     shouldPlay.value = false;
     if (audio.value) {
       audio.value.pause();
@@ -136,8 +176,9 @@ export const useAudioStore = defineStore('audio', () => {
   }
 
   function toggleAudio() {
+    init();
     isEnabled.value = !isEnabled.value;
-    console.log(`[Audio] Toggled audio preference: ${isEnabled.value ? 'ENABLED' : 'DISABLED'}`);
+    console.log(`[Audio] User toggled audio preference: ${isEnabled.value ? 'ENABLED' : 'DISABLED'}`);
     
     try {
       localStorage.setItem('gaushala_audio_enabled', String(isEnabled.value));
