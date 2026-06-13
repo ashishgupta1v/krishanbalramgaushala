@@ -56,5 +56,40 @@
       "url": "/devotee/login",
       "icons": [{ "src": "/icons/icon-96.png", "sizes": "96x96" }]
     }
+  ],
+  "launch_handler": {
+    "client_mode": ["navigate-new", "focus-existing"]
+  },
+  "share_target": {
+    "action": "/share",
+    "method": "GET",
+    "params": {
+      "title": "title",
+      "text": "text",
+      "url": "url"
+    }
+  },
+  "edge_side_panel": {
+    "preferred_width": 400
+  },
+  "note_taking": {
+    "new_note_url": "/profile"
+  },
+  "widgets": [
+    {
+      "name": "Upcoming Events",
+      "short_name": "Events",
+      "description": "View upcoming events at Krishan Balram Gaushala",
+      "tag": "events-widget",
+      "ms_ac_template": "/widgets/events-template.json",
+      "data": "/widgets/events-data.json",
+      "screenshots": [
+        {
+          "src": "/icons/icon-192.png",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+      ]
+    }
   ]
 }
