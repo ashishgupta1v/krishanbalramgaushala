@@ -1,0 +1,10 @@
+[{
+  "relation": ["delegate_permission/common.handle_all_urls"],
+  "target": {
+    "namespace": "android_app",
+    "package_name": "com.krishanbalramgaushala.twa",
+    "sha256_cert_fingerprints": [
+      "A5:8A:35:96:0C:93:FB:51:5C:A4:5C:EC:ED:F3:F6:E3:42:F4:8A:09:94:B6:F1:1B:1F:AE:B2:90:B7:ED:9D:C8"
+    ]
+  }
+}]
