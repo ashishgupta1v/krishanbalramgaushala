@@ -6,7 +6,7 @@
     @click="store.toggleAudio"
     :title="store.isEnabled ? 'Mute/Turn Off Background Music' : 'Unmute/Turn On Background Music'"
   >
-    <VolumeX v-if="!store.isEnabled || !store.isPlaying" style="width:16px;height:16px;" />
+    <VolumeX v-if="!store.isEnabled" style="width:16px;height:16px;" />
     <Volume2 v-else style="width:16px;height:16px;" />
   </button>
 </template>
