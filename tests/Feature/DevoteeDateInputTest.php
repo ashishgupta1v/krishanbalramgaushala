@@ -66,4 +66,29 @@ class DevoteeDateInputTest extends TestCase
         $this->assertEquals('1995-08-15', $devotee->dob->format('Y-m-d'));
         $this->assertEquals('2018-11-24', $devotee->anniversary->format('Y-m-d'));
     }
+
+    /** @test */
+    public function test_registration_dispatches_whatsapp_welcome_message_job()
+    {
+        \Illuminate\Support\Facades\Queue::fake();
+
+        $payload = [
+            'name'                  => 'Gauranga Das',
+            'whatsapp'              => '9876543211',
+            'dob'                   => '1995-08-15',
+            'anniversary'           => null,
+            'fb_consent'            => true,
+            'password'              => 'password123',
+            'password_confirmation' => 'password123',
+        ];
+
+        $response = $this->post(route('register.store'), $payload);
+
+        $response->assertJson(['success' => true]);
+
+        \Illuminate\Support\Facades\Queue::assertPushed(\App\Jobs\SendWaMessageJob::class, function ($job) {
+            return $job->getDevotee()->whatsapp === '9876543211'
+                && str_contains($job->getMessage(), 'Welcome to our divine');
+        });
+    }
 }

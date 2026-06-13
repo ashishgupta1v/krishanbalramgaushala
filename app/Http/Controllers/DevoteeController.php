@@ -49,6 +49,10 @@ class DevoteeController extends Controller
             'photo_path'  => $photoPath,
         ]);
 
+        // Dispatch WhatsApp welcome message
+        $welcomeMsg = "🙏 Jai Gau Mata!\n\nDear {name} Ji,\n\nWelcome to our divine Gau Seva family! 🐄\n\nMay Gau Mata bless your bond with eternal love and togetherness.\n\n— Krishan Balram Gaushala, Singla Enclave, Village Dullon Khurd, Pakhowal Road, Ludhiana";
+        \App\Jobs\SendWaMessageJob::dispatch($devotee, $welcomeMsg);
+
         // Store in session
         session(['gaushala_devotee_id' => $devotee->id]);
         cookie()->queue(cookie()->forever('gaushala_devotee_remember', $devotee->id));

@@ -34,6 +34,16 @@ class SendWaMessageJob implements ShouldQueue
         $this->templateName = $templateName;
     }
 
+    public function getDevotee(): Devotee
+    {
+        return $this->devotee;
+    }
+
+    public function getMessage(): string
+    {
+        return $this->message;
+    }
+
     /**
      * Execute the job.
      */
