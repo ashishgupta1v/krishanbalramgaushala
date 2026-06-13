@@ -78,7 +78,7 @@ export const useAudioStore = defineStore('audio', () => {
       // Clean up immediately to prevent race conditions / double-triggering on touchstart + click
       cleanupListeners();
 
-      if (!isEnabled.value || isPlaying.value || shouldPlay.value) {
+      if (!isEnabled.value || isPlaying.value) {
         return;
       }
       
