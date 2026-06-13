@@ -26,7 +26,7 @@ export const useAudioStore = defineStore('audio', () => {
     // Start with custom bhajan.mp3, optimize preload to reduce server strain and use cache-busting
     const audioObj = new Audio('/audio/bhajan.mp3?v=3');
     audioObj.loop = true;
-    audioObj.preload = 'metadata';
+    audioObj.preload = 'auto';
     
     audioObj.addEventListener('error', (e) => {
       const err = audioObj.error;
