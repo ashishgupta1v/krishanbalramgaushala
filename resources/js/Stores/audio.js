@@ -23,33 +23,43 @@ export const useAudioStore = defineStore('audio', () => {
     
     console.log('[Audio] Initializing HTML5 Audio element...');
     
-    // Start with custom bhajan.mp3
+    // Start with custom bhajan.mp3, optimize preload to reduce server strain
     const audioObj = new Audio('/audio/bhajan.mp3');
     audioObj.loop = true;
+    audioObj.preload = 'metadata';
     
     audioObj.addEventListener('error', (e) => {
+      const err = audioObj.error;
+      const errCode = err ? err.code : null;
       const currentSrc = audioObj.src || '';
-      // Prevent infinite loop if fallback track also fails
-      if (!currentSrc.includes('PanditHariprasadChaurasia')) {
-        console.warn('[Audio] Failed to load primary bhajan /audio/bhajan.mp3. Swapping to fallback serene flute melody.', e);
-        audioObj.src = fallbackUrl;
-        audioObj.load();
-        
-        if (shouldPlay.value && isEnabled.value) {
-          console.log('[Audio] Swapped source. Attempting playback on fallback track...');
-          audioObj.play()
-            .then(() => {
-              isPlaying.value = true;
-              console.log('[Audio] Fallback playback started successfully!');
-            })
-            .catch(err => {
-              console.warn('[Audio] Fallback playback blocked by browser in error event. Registering interaction recovery.', err);
-              isPlaying.value = false;
-              setupInteractionRecovery();
-            });
+      
+      console.warn(`[Audio] Error event triggered on source. Code: ${errCode}`, e);
+      
+      // Swap to fallback ONLY on decoding error (3) or format not supported (4)
+      if (errCode === 3 || errCode === 4) {
+        if (!currentSrc.includes('PanditHariprasadChaurasia')) {
+          console.warn('[Audio] Failed to decode primary bhajan /audio/bhajan.mp3. Swapping to fallback serene flute melody.');
+          audioObj.src = fallbackUrl;
+          audioObj.load();
+          
+          if (shouldPlay.value && isEnabled.value) {
+            console.log('[Audio] Swapped source. Attempting playback on fallback track...');
+            audioObj.play()
+              .then(() => {
+                isPlaying.value = true;
+                console.log('[Audio] Fallback playback started successfully!');
+              })
+              .catch(err => {
+                console.warn('[Audio] Fallback playback blocked by browser in error event. Registering interaction recovery.', err);
+                isPlaying.value = false;
+                setupInteractionRecovery();
+              });
+          }
+        } else {
+          console.error('[Audio] Both primary and fallback tracks failed to load.');
         }
       } else {
-        console.error('[Audio] Both primary and fallback tracks failed to load.');
+        console.log('[Audio] Non-fatal audio loading error (e.g. abort or network fluctuation). Ignored source swap.');
       }
     });
 
@@ -81,23 +91,28 @@ export const useAudioStore = defineStore('audio', () => {
             
             // If primary failed due to load/decode issues, swap to fallback immediately inside click context
             if (err.name !== 'NotAllowedError') {
-              const currentSrc = audio.value.src || '';
-              if (!currentSrc.includes('PanditHariprasadChaurasia')) {
-                console.warn('[Audio] Swapping to fallback serene flute melody on user interaction...');
-                audio.value.src = fallbackUrl;
-                audio.value.load();
-                
-                audio.value.play()
-                  .then(() => {
-                    isPlaying.value = true;
-                    shouldPlay.value = true;
-                    hasInteracted.value = true;
-                    console.log('[Audio] Fallback playback started successfully on user interaction!');
-                    cleanupListeners();
-                  })
-                  .catch(fallbackErr => {
-                    console.warn('[Audio] Fallback playback also failed on interaction:', fallbackErr.name);
-                  });
+              const mediaErr = audio.value.error;
+              const errCode = mediaErr ? mediaErr.code : null;
+              
+              if (errCode === null || errCode === 3 || errCode === 4) {
+                const currentSrc = audio.value.src || '';
+                if (!currentSrc.includes('PanditHariprasadChaurasia')) {
+                  console.warn('[Audio] Swapping to fallback serene flute melody on user interaction...');
+                  audio.value.src = fallbackUrl;
+                  audio.value.load();
+                  
+                  audio.value.play()
+                    .then(() => {
+                      isPlaying.value = true;
+                      shouldPlay.value = true;
+                      hasInteracted.value = true;
+                      console.log('[Audio] Fallback playback started successfully on user interaction!');
+                      cleanupListeners();
+                    })
+                    .catch(fallbackErr => {
+                      console.warn('[Audio] Fallback playback also failed on interaction:', fallbackErr.name);
+                    });
+                }
               }
             }
           });
@@ -139,27 +154,37 @@ export const useAudioStore = defineStore('audio', () => {
             setupInteractionRecovery();
           } else {
             // Loading/decoding error (e.g. corrupt bhajan.mp3)
-            const currentSrc = audio.value.src || '';
-            if (!currentSrc.includes('PanditHariprasadChaurasia')) {
-              console.warn('[Audio] Primary source failed to play. Swapping to fallback serene flute melody...');
-              audio.value.src = fallbackUrl;
-              audio.value.load();
-              
-              if (shouldPlay.value && isEnabled.value) {
-                audio.value.play()
-                  .then(() => {
-                    isPlaying.value = true;
-                    hasInteracted.value = true;
-                    console.log('[Audio] Fallback playback started successfully!');
-                  })
-                  .catch(fallbackErr => {
-                    console.warn('[Audio] Fallback playback also failed:', fallbackErr.name);
-                    isPlaying.value = false;
-                    setupInteractionRecovery();
-                  });
+            const mediaErr = audio.value.error;
+            const errCode = mediaErr ? mediaErr.code : null;
+            
+            // Swap if no code (promise rejected directly) or code is 3/4
+            if (errCode === null || errCode === 3 || errCode === 4) {
+              const currentSrc = audio.value.src || '';
+              if (!currentSrc.includes('PanditHariprasadChaurasia')) {
+                console.warn('[Audio] Primary source failed to play. Swapping to fallback serene flute melody...');
+                audio.value.src = fallbackUrl;
+                audio.value.load();
+                
+                if (shouldPlay.value && isEnabled.value) {
+                  audio.value.play()
+                    .then(() => {
+                      isPlaying.value = true;
+                      hasInteracted.value = true;
+                      console.log('[Audio] Fallback playback started successfully!');
+                    })
+                    .catch(fallbackErr => {
+                      console.warn('[Audio] Fallback playback also failed:', fallbackErr.name);
+                      isPlaying.value = false;
+                      setupInteractionRecovery();
+                    });
+                }
+              } else {
+                isPlaying.value = false;
               }
             } else {
+              console.log('[Audio] Non-fatal play failure (e.g. network stall). Retrying on interaction.');
               isPlaying.value = false;
+              setupInteractionRecovery();
             }
           }
         });
