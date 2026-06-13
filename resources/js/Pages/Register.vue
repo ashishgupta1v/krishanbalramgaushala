@@ -90,25 +90,6 @@
           Welcome, <strong>{{ form.name }} Ji</strong>!<br>
           You're now part of our Gau Seva family. 🙏
         </p>
-        <!-- WA Message Preview -->
-        <div class="wa-bbl" style="max-width:320px;margin:0 auto 28px;text-align:left;">
-          <div style="display:flex;align-items:center;gap:10px;margin-bottom:9px;padding-bottom:9px;border-bottom:1px solid rgba(255,255,255,.1);">
-            <div style="width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;padding:1px;background:var(--bg);border:1px solid rgba(255,255,255,0.5);">
-              <picture>
-                <source srcset="/logo.webp" type="image/webp">
-                <img src="/logo1.png" alt="logo" width="36" height="36" class="logo-img" style="width:36px;height:36px;" loading="eager" decoding="async" />
-              </picture>
-            </div>
-            <div>
-              <div style="color:#fff;font-weight:700;font-size:12px;">Krishan Balram Gaushala</div>
-              <div style="color:rgba(255,255,255,.45);font-size:10px;">Official • Just now</div>
-            </div>
-          </div>
-          <div class="wa-msg">
-            <p style="color:#fff;font-size:12px;line-height:1.7;white-space:pre-line;margin:0;">{{ welcomeMsg }}</p>
-            <div style="text-align:right;color:rgba(255,255,255,.4);font-size:10px;margin-top:5px;">✓✓ Delivered</div>
-          </div>
-        </div>
         <button class="btn-saffron" style="padding:14px 44px;font-size:15px;" @click="goProfile">View My Profile →</button>
       </div>
 
@@ -240,13 +221,26 @@ async function registerDevotee() {
       formData.append('photo', form.value.photo);
     }
     
-    await axios.post(route('register.store'), formData, {
+    const response = await axios.post(route('register.store'), formData, {
       headers: { 'Content-Type': 'multipart/form-data' }
     });
-    store.setDevotee({ name: form.value.name, whatsapp: form.value.whatsapp });
-    registered.value = true;
+    
+    // Verify the response indicates success
+    if (response.data && response.data.success) {
+      store.setDevotee({ name: form.value.name, whatsapp: form.value.whatsapp });
+      registered.value = true;
+    } else {
+      errorMsg.value = response.data?.message || 'Registration failed. Please try again.';
+    }
   } catch (e) {
-    errorMsg.value = e.response?.data?.message || 'Registration failed. This phone number may already be registered.';
+    // Extract specific field validation errors from Laravel
+    const errors = e.response?.data?.errors;
+    if (errors) {
+      const firstError = Object.values(errors).flat()[0];
+      errorMsg.value = firstError || e.response?.data?.message || 'Registration failed.';
+    } else {
+      errorMsg.value = e.response?.data?.message || 'Registration failed. This phone number may already be registered.';
+    }
   } finally {
     registering.value = false;
   }
