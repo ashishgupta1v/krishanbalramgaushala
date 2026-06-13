@@ -23,8 +23,8 @@ export const useAudioStore = defineStore('audio', () => {
     
     console.log('[Audio] Initializing HTML5 Audio element...');
     
-    // Start with custom bhajan.mp3, optimize preload to reduce server strain
-    const audioObj = new Audio('/audio/bhajan.mp3');
+    // Start with custom bhajan.mp3, optimize preload to reduce server strain and use cache-busting
+    const audioObj = new Audio('/audio/bhajan.mp3?v=3');
     audioObj.loop = true;
     audioObj.preload = 'metadata';
     
@@ -94,7 +94,8 @@ export const useAudioStore = defineStore('audio', () => {
               const mediaErr = audio.value.error;
               const errCode = mediaErr ? mediaErr.code : null;
               
-              if (errCode === null || errCode === 3 || errCode === 4) {
+              // Only swap to fallback on real, fatal media errors (code 3 = decode, 4 = unsupported)
+              if (errCode === 3 || errCode === 4) {
                 const currentSrc = audio.value.src || '';
                 if (!currentSrc.includes('PanditHariprasadChaurasia')) {
                   console.warn('[Audio] Swapping to fallback serene flute melody on user interaction...');
@@ -157,8 +158,8 @@ export const useAudioStore = defineStore('audio', () => {
             const mediaErr = audio.value.error;
             const errCode = mediaErr ? mediaErr.code : null;
             
-            // Swap if no code (promise rejected directly) or code is 3/4
-            if (errCode === null || errCode === 3 || errCode === 4) {
+            // Only swap to fallback on real, fatal media errors (code 3 = decode, 4 = unsupported)
+            if (errCode === 3 || errCode === 4) {
               const currentSrc = audio.value.src || '';
               if (!currentSrc.includes('PanditHariprasadChaurasia')) {
                 console.warn('[Audio] Primary source failed to play. Swapping to fallback serene flute melody...');
