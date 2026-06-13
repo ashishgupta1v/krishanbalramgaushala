@@ -23,8 +23,8 @@ export const useAudioStore = defineStore('audio', () => {
     
     console.log('[Audio] Initializing HTML5 Audio element...');
     
-    // Start with custom bhajan.mp3, optimize preload to reduce server strain
-    const audioObj = new Audio('/audio/bhajan.mp3');
+    // Start with custom bhajan.mp3, optimize preload to reduce server strain and use cache-busting
+    const audioObj = new Audio('/audio/bhajan.mp3?v=3');
     audioObj.loop = true;
     audioObj.preload = 'metadata';
     
@@ -69,9 +69,16 @@ export const useAudioStore = defineStore('audio', () => {
   function setupInteractionRecovery() {
     if (hasInteracted.value) return;
     
-    const startPlay = () => {
-      if (!isEnabled.value || isPlaying.value) {
-        cleanupListeners();
+    function cleanupListeners() {
+      window.removeEventListener('click', startPlay);
+      window.removeEventListener('touchstart', startPlay);
+    }
+
+    function startPlay() {
+      // Clean up immediately to prevent race conditions / double-triggering on touchstart + click
+      cleanupListeners();
+
+      if (!isEnabled.value || isPlaying.value || shouldPlay.value) {
         return;
       }
       
@@ -84,7 +91,6 @@ export const useAudioStore = defineStore('audio', () => {
             shouldPlay.value = true;
             hasInteracted.value = true;
             console.log('[Audio] Playback started successfully on user interaction!');
-            cleanupListeners();
           })
           .catch(err => {
             console.warn('[Audio] Playback failed on interaction:', err.name);
@@ -94,7 +100,7 @@ export const useAudioStore = defineStore('audio', () => {
               const mediaErr = audio.value.error;
               const errCode = mediaErr ? mediaErr.code : null;
               
-              if (errCode === null || errCode === 3 || errCode === 4) {
+              if (errCode === 3 || errCode === 4) {
                 const currentSrc = audio.value.src || '';
                 if (!currentSrc.includes('PanditHariprasadChaurasia')) {
                   console.warn('[Audio] Swapping to fallback serene flute melody on user interaction...');
@@ -107,7 +113,6 @@ export const useAudioStore = defineStore('audio', () => {
                       shouldPlay.value = true;
                       hasInteracted.value = true;
                       console.log('[Audio] Fallback playback started successfully on user interaction!');
-                      cleanupListeners();
                     })
                     .catch(fallbackErr => {
                       console.warn('[Audio] Fallback playback also failed on interaction:', fallbackErr.name);
@@ -117,12 +122,7 @@ export const useAudioStore = defineStore('audio', () => {
             }
           });
       }
-    };
-
-    const cleanupListeners = () => {
-      window.removeEventListener('click', startPlay);
-      window.removeEventListener('touchstart', startPlay);
-    };
+    }
 
     window.addEventListener('click', startPlay);
     window.addEventListener('touchstart', startPlay);
@@ -157,8 +157,8 @@ export const useAudioStore = defineStore('audio', () => {
             const mediaErr = audio.value.error;
             const errCode = mediaErr ? mediaErr.code : null;
             
-            // Swap if no code (promise rejected directly) or code is 3/4
-            if (errCode === null || errCode === 3 || errCode === 4) {
+            // Only swap to fallback on real, fatal media errors (code 3 = decode, 4 = unsupported)
+            if (errCode === 3 || errCode === 4) {
               const currentSrc = audio.value.src || '';
               if (!currentSrc.includes('PanditHariprasadChaurasia')) {
                 console.warn('[Audio] Primary source failed to play. Swapping to fallback serene flute melody...');

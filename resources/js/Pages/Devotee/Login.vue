@@ -45,6 +45,11 @@
         <Link :href="route('register')" style="font-size:12px;color:var(--pr1);font-weight:700;text-decoration:none;">Join Gaushala Family here</Link>
       </div>
 
+      <!-- Credits Footer -->
+      <div class="fu4" style="text-align:center; font-size:11px; color:var(--tl); margin-top:32px; font-family:'Poppins',sans-serif; letter-spacing:0.5px; opacity: 0.85;">
+        Designed & Developed by <span style="color:var(--gd1); font-weight:700;">Ashish Gupta</span>
+      </div>
+
     </div>
   </div>
 </template>
