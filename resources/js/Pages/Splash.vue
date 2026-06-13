@@ -17,7 +17,7 @@
       <h1 class="fu2" style="font-family:'Playfair Display',serif;font-size:28px;font-weight:800;color:var(--tx);line-height:1.18;text-align:center;">Krishan Balram</h1>
       <h2 class="fu3" style="font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:var(--pr);margin-bottom:5px;">Gaushala</h2>
       <div class="fu4" style="font-size:11px;color:var(--tl);font-weight:500;line-height:1.4;">Singla Enclave, Village Dullon Khurd,<br>Pakhowal Road, Ludhiana</div>
-      <div class="fu4" style="font-size:11px;color:var(--td);margin-bottom:52px;">Est. 2002 &nbsp;•&nbsp; Registered &nbsp;🙏</div>
+      <div class="fu4" style="font-size:11px;color:var(--td);margin-bottom:52px;">Est. 2003 &nbsp;•&nbsp; Registered &nbsp;🙏</div>
 
       <!-- Loader -->
       <div v-if="loading" style="width:36px;height:36px;border:3px solid rgba(180,100,0,.18);border-top-color:var(--pr1);border-radius:50%;animation:spin .9s linear infinite;"/>
