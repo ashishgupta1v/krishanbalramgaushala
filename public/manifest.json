@@ -1,6 +1,7 @@
 {
   "name": "GauSeva Connect — Krishan Balram Gaushala",
   "short_name": "GauSeva",
+  "id": "/?source=pwa",
   "description": "Connect with Krishan Balram Gaushala, Ludhiana. Register to receive blessings on your birthday and anniversary via WhatsApp.",
   "start_url": "/",
   "display": "standalone",
@@ -8,6 +9,9 @@
   "background_color": "#f7f4ea",
   "theme_color": "#b84e00",
   "lang": "en-IN",
+  "dir": "ltr",
+  "prefer_related_applications": false,
+  "related_applications": [],
   "categories": ["lifestyle", "social"],
   "icons": [
     { "src": "/icons/icon-72.png",  "sizes": "72x72",   "type": "image/png" },
@@ -25,7 +29,30 @@
       "sizes": "390x844",
       "type": "image/png",
       "form_factor": "narrow",
-      "label": "GauSeva Connect — Krishan Balram Gaushala"
+      "label": "GauSeva Connect — Krishan Balram Gaushala Mobile"
+    },
+    {
+      "src": "/icons/screenshot-desktop.png",
+      "sizes": "1024x768",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "GauSeva Connect — Krishan Balram Gaushala Desktop"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "My Profile",
+      "short_name": "Profile",
+      "description": "Open your devotee profile dashboard",
+      "url": "/profile",
+      "icons": [{ "src": "/icons/icon-96.png", "sizes": "96x96" }]
+    },
+    {
+      "name": "Sign In",
+      "short_name": "Sign In",
+      "description": "Sign in to your devotee account",
+      "url": "/devotee/login",
+      "icons": [{ "src": "/icons/icon-96.png", "sizes": "96x96" }]
     }
   ]
 }
