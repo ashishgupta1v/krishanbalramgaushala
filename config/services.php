@@ -35,4 +35,10 @@ return [
         ],
     ],
 
+    'greenapi' => [
+        'url' => env('GREEN_API_URL', 'https://api.green-api.com'),
+        'id' => env('GREEN_API_ID_INSTANCE'),
+        'token' => env('GREEN_API_TOKEN_INSTANCE'),
+    ],
+
 ];

@@ -14,6 +14,10 @@ class AppServiceProvider extends ServiceProvider
         $this->app->singleton(
             \App\Infrastructure\Gateways\WhatsAppGateway::class,
             function () {
+                $provider = env('WHATSAPP_PROVIDER');
+                if ($provider === 'greenapi' || env('GREEN_API_TOKEN_INSTANCE')) {
+                    return new \App\Infrastructure\Gateways\GreenApiWhatsAppGateway();
+                }
                 if (env('META_WA_ACCESS_TOKEN')) {
                     return new \App\Infrastructure\Gateways\MetaWhatsAppGateway();
                 }
