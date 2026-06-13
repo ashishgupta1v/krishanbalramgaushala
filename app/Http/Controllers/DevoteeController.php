@@ -21,9 +21,26 @@ class DevoteeController extends Controller
 
     public function store(Request $request)
     {
+        \Log::info('Registration attempt', ['whatsapp' => $request->input('whatsapp'), 'name' => $request->input('name')]);
+
+        // Check if there's a soft-deleted devotee with this whatsapp number
+        $existingSoftDeleted = Devotee::withTrashed()
+            ->where('whatsapp', $request->input('whatsapp'))
+            ->whereNotNull('deleted_at')
+            ->first();
+
+        // Check if there's an active (non-deleted) devotee with this number
+        $existingActive = Devotee::where('whatsapp', $request->input('whatsapp'))->first();
+        if ($existingActive) {
+            return response()->json([
+                'success' => false,
+                'message' => 'This WhatsApp number is already registered. Please Sign In.',
+            ], 422);
+        }
+
         $validated = $request->validate([
             'name'        => 'required|string|max:200',
-            'whatsapp'    => 'required|string|regex:/^\d{10}$/|unique:devotees,whatsapp',
+            'whatsapp'    => 'required|string|regex:/^\d{10}$/',
             'dob'         => 'required|date',
             'anniversary' => 'nullable|date',
             'fb_consent'  => 'boolean',
@@ -31,31 +48,74 @@ class DevoteeController extends Controller
             'photo'       => 'nullable|image|max:5120',
         ]);
 
+        \Log::info('Validation passed', ['name' => $validated['name'], 'whatsapp' => $validated['whatsapp']]);
+
         $photoPath = null;
         if ($request->hasFile('photo')) {
             $photoPath = $request->file('photo')->store('devotees', 'public');
         }
 
-        $devotee = Devotee::create([
-            'id'          => (string) Str::uuid(),
-            'name'        => $validated['name'],
-            'whatsapp'    => $validated['whatsapp'],
-            'dob'         => $validated['dob'],
-            'anniversary' => $validated['anniversary'] ?? null,
-            'fb_consent'  => $validated['fb_consent'] ?? false,
-            'status'      => 'active',
-            'joined_at'   => now(),
-            'password'    => Hash::make($validated['password']),
-            'photo_path'  => $photoPath,
-        ]);
+        try {
+            if ($existingSoftDeleted) {
+                // Restore and update the soft-deleted record
+                \Log::info('Restoring soft-deleted devotee', ['id' => $existingSoftDeleted->id]);
+                $existingSoftDeleted->restore();
+                $existingSoftDeleted->update([
+                    'name'        => $validated['name'],
+                    'whatsapp'    => $validated['whatsapp'],
+                    'dob'         => $validated['dob'],
+                    'anniversary' => $validated['anniversary'] ?? null,
+                    'fb_consent'  => $validated['fb_consent'] ?? false,
+                    'status'      => 'active',
+                    'joined_at'   => now(),
+                    'password'    => Hash::make($validated['password']),
+                    'photo_path'  => $photoPath ?? $existingSoftDeleted->photo_path,
+                ]);
+                $devotee = $existingSoftDeleted->fresh();
+            } else {
+                // Create new devotee
+                $devotee = Devotee::create([
+                    'name'        => $validated['name'],
+                    'whatsapp'    => $validated['whatsapp'],
+                    'dob'         => $validated['dob'],
+                    'anniversary' => $validated['anniversary'] ?? null,
+                    'fb_consent'  => $validated['fb_consent'] ?? false,
+                    'status'      => 'active',
+                    'joined_at'   => now(),
+                    'password'    => Hash::make($validated['password']),
+                    'photo_path'  => $photoPath,
+                ]);
+            }
+
+            \Log::info('Devotee saved successfully', ['id' => $devotee->id, 'whatsapp' => $devotee->whatsapp]);
+
+            // Verify the devotee was actually persisted
+            $check = Devotee::find($devotee->id);
+            if (!$check) {
+                \Log::error('Devotee NOT found in DB after create!', ['id' => $devotee->id]);
+                return response()->json(['success' => false, 'message' => 'Registration failed. Please try again.'], 500);
+            }
+
+        } catch (\Exception $e) {
+            \Log::error('Devotee creation failed', ['error' => $e->getMessage()]);
+            return response()->json(['success' => false, 'message' => 'Registration failed. Please try again.'], 500);
+        }
 
         // Dispatch WhatsApp welcome message
-        $welcomeMsg = "🙏 Jai Gau Mata!\n\nDear {name} Ji,\n\nWelcome to our divine Gau Seva family! 🐄\n\nMay Gau Mata bless your bond with eternal love and togetherness.\n\n— Krishan Balram Gaushala, Singla Enclave, Village Dullon Khurd, Pakhowal Road, Ludhiana";
-        \App\Jobs\SendWaMessageJob::dispatch($devotee, $welcomeMsg);
+        try {
+            $welcomeMsg = "🙏 Jai Gau Mata!\n\nDear {name} Ji,\n\nWelcome to our divine Gau Seva family! 🐄\n\nMay Gau Mata bless your bond with eternal love and togetherness.\n\n— Krishan Balram Gaushala, Singla Enclave, Village Dullon Khurd, Pakhowal Road, Ludhiana";
+            \App\Jobs\SendWaMessageJob::dispatch($devotee, $welcomeMsg);
+            \Log::info('Welcome WhatsApp job dispatched', ['devotee_id' => $devotee->id]);
+        } catch (\Exception $e) {
+            \Log::error('WhatsApp job dispatch failed', ['error' => $e->getMessage()]);
+            // Don't fail registration if WhatsApp dispatch fails
+        }
 
         // Store in session
         session(['gaushala_devotee_id' => $devotee->id]);
         cookie()->queue(cookie()->forever('gaushala_devotee_remember', $devotee->id));
+
+        \Log::info('Registration complete - returning success', ['devotee_id' => $devotee->id]);
 
         return response()->json(['success' => true, 'devotee' => $devotee]);
     }
