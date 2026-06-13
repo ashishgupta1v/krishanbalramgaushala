@@ -1,69 +1,47 @@
 <template>
   <AdminLayout>
-    <div class="page">
+    <div class="page" style="max-width:600px; margin:0 auto;">
       <h2 style="font-family:'Playfair Display',serif;font-size:20px;margin-bottom:3px;">WhatsApp Broadcast</h2>
-      <p style="color:var(--tl);font-size:12px;margin-bottom:18px;">Send messages to all or filtered devotees</p>
+      <p style="color:var(--tl);font-size:12px;margin-bottom:20px;">Send messages to all or filtered devotees</p>
 
-      <div class="desktop-grid-2" style="align-items:start;">
-        
-        <!-- Left Pane: Editor & Options -->
-        <div style="min-width: 0; width: 100%;">
-          <!-- Template chips — horizontal scroll on mobile -->
-          <div class="slbl" style="margin-top:0;">Choose Template</div>
-          <div class="chip-row" style="margin-bottom:16px;">
+      <div v-if="!sent" style="display:flex; flex-direction:column; gap:16px;">
+        <!-- Template chips -->
+        <div>
+          <div class="slbl" style="margin-top:0; margin-bottom:8px;">Choose Template</div>
+          <div class="chip-row" style="margin-bottom:4px;">
             <button v-for="t in templates" :key="t.key" class="chip" :class="{ on: activeTmpl === t.key }" @click="selectTemplate(t)">{{ t.label }}</button>
           </div>
+        </div>
 
-          <!-- Message editor -->
-          <div class="slbl">Message Content</div>
-          <textarea v-model="messageBody" class="n-ta" rows="6" placeholder="Type your message…" style="min-height:120px;" @input="updatePreview"/>
-          <div style="font-size:11px;color:var(--td);margin-top:4px;margin-bottom:16px;">Use <strong>{name}</strong> for personalisation</div>
+        <!-- Message editor -->
+        <div>
+          <div class="slbl" style="margin-bottom:6px;">Message Content</div>
+          <textarea v-model="messageBody" class="n-ta" rows="6" placeholder="Type your message…" style="min-height:120px;"/>
+          <div style="font-size:11px;color:var(--td);margin-top:6px;">Use <strong>{name}</strong> for personalisation</div>
+        </div>
 
-          <!-- Recipients -->
-          <div class="slbl">Recipients</div>
-          <div class="chip-row" style="margin-bottom:24px;">
+        <!-- Recipients -->
+        <div>
+          <div class="slbl" style="margin-bottom:8px;">Recipients</div>
+          <div class="chip-row" style="margin-bottom:12px;">
             <button class="chip" :class="{ on: rcptMode === 'all' }" @click="rcptMode = 'all'">All Devotees ({{ totalCount }})</button>
             <button class="chip" :class="{ on: rcptMode === 'active' }" @click="rcptMode = 'active'">Active Only ({{ activeCount }})</button>
           </div>
-
-          <button v-if="!sent" class="btn-green" style="width:100%;padding:15px;font-size:15px;margin-bottom:16px;display:inline-flex;align-items:center;justify-content:center;gap:6px;" :disabled="sending" @click="sendBroadcast">
-            <span v-if="sending" class="spin"/>
-            <span v-else style="display:inline-flex;align-items:center;gap:6px;"><SendHorizontal style="width:16px;height:16px;" /> Send to {{ rcptCount }} Devotees</span>
-          </button>
         </div>
 
-        <!-- Right Pane: WhatsApp Live Preview -->
-        <div style="min-width: 0; width: 100%;">
-          <!-- WA Preview -->
-          <div class="slbl" style="margin-top:0;">WhatsApp Preview</div>
-          <div class="wa-bbl" style="margin-bottom:18px;">
-            <div style="display:flex;align-items:center;gap:9px;margin-bottom:9px;padding-bottom:9px;border-bottom:1px solid rgba(255,255,255,.1);">
-              <div style="width:36px;height:36px;border-radius:50%;overflow:hidden;background:#fff;border:1px solid rgba(255,255,255,0.5);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-                <picture>
-                  <source srcset="/logo.webp" type="image/webp">
-                  <img src="/logo1.png" alt="logo" width="36" height="36" class="logo-img" style="width:36px;height:36px;object-fit:cover;" />
-                </picture>
-              </div>
-              <div>
-                <div style="color:#fff;font-weight:700;font-size:12px;">Krishan Balram Gaushala</div>
-                <div style="color:rgba(255,255,255,.4);font-size:10px;">Official Number</div>
-              </div>
-            </div>
-            <div class="wa-msg">
-              <p style="color:#fff;font-size:12px;line-height:1.7;white-space:pre-line;margin:0;word-break:break-word;">{{ preview }}</p>
-            </div>
-          </div>
+        <button class="btn-green" style="width:100%;padding:15px;font-size:15px;display:inline-flex;align-items:center;justify-content:center;gap:6px;" :disabled="sending" @click="sendBroadcast">
+          <span v-if="sending" class="spin"/>
+          <span v-else style="display:inline-flex;align-items:center;gap:6px;"><SendHorizontal style="width:16px;height:16px;" /> Send to {{ rcptCount }} Devotees</span>
+        </button>
+      </div>
 
-          <!-- Success banner -->
-          <div v-if="sent" style="background:rgba(46,125,50,.12);border:1px solid rgba(67,160,71,.28);border-radius:14px;padding:18px;text-align:center;display:flex;flex-direction:column;align-items:center;">
-            <div style="width:48px;height:48px;border-radius:50%;background:rgba(46,125,50,0.1);color:var(--ok1);display:flex;align-items:center;justify-content:center;margin-bottom:10px;">
-              <Check style="width:24px;height:24px;stroke-width:3;" />
-            </div>
-            <div style="color:var(--ok1);font-weight:700;font-size:14px;">Sent to {{ sentCount }} devotees on WhatsApp!</div>
-            <button style="background:none;border:none;color:var(--td);font-size:12px;cursor:pointer;margin-top:8px;font-family:'Poppins',sans-serif;text-decoration:underline;" @click="sent = false">Send another</button>
-          </div>
+      <!-- Success banner -->
+      <div v-else style="background:rgba(46,125,50,.12);border:1px solid rgba(67,160,71,.28);border-radius:16px;padding:24px;text-align:center;display:flex;flex-direction:column;align-items:center;margin-top:16px;">
+        <div style="width:48px;height:48px;border-radius:50%;background:rgba(46,125,50,0.1);color:var(--ok1);display:flex;align-items:center;justify-content:center;margin-bottom:12px;">
+          <Check style="width:24px;height:24px;stroke-width:3;" />
         </div>
-
+        <div style="color:var(--ok1);font-weight:700;font-size:15px;">Sent to {{ sentCount }} devotees on WhatsApp!</div>
+        <button style="background:none;border:none;color:var(--td);font-size:13px;cursor:pointer;margin-top:12px;font-family:'Poppins',sans-serif;text-decoration:underline;" @click="sent = false">Send another</button>
       </div>
     </div>
   </AdminLayout>
@@ -90,7 +68,6 @@ const sent        = ref(false);
 const sentCount   = ref(0);
 
 const rcptCount = computed(() => rcptMode.value === 'all' ? props.totalCount : props.activeCount);
-const preview   = computed(() => (messageBody.value || '(empty)').replace(/\{name\}/g, 'Devotee'));
 
 function selectTemplate(t) {
   activeTmpl.value = t.key;

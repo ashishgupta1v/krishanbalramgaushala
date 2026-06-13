@@ -170,14 +170,18 @@
           <div class="nr fu4" style="padding:16px;">
             <div class="slbl" style="margin-bottom:12px;">Upcoming Events & Seva</div>
             <div v-if="events && events.length" class="events-grid-layout">
-              <div v-for="ev in events" :key="ev.id" class="ev-card" style="margin-bottom:0;border-left-color:var(--pr1);box-shadow:none;border-radius:12px;background:var(--bg1);">
-                <div class="ev-ico">{{ ev.icon }}</div>
-                <div style="flex:1;">
-                  <h4 style="font-size:13px;font-weight:700;color:var(--tx);margin:0;">{{ ev.title }}</h4>
-                  <p style="font-size:11px;color:var(--tl);line-height:1.4;margin-top:2px;">{{ ev.description }}</p>
-                  <div style="display:flex;gap:12px;font-size:10px;color:var(--td);margin-top:6px;font-weight:600;align-items:center;">
-                    <span style="display:inline-flex;align-items:center;gap:4px;"><Calendar style="width:12px;height:12px;" /> {{ ev.date_label }}</span>
-                    <span style="display:inline-flex;align-items:center;gap:4px;"><Clock style="width:12px;height:12px;" /> {{ ev.time_label }}</span>
+              <div v-for="ev in events" :key="ev.id" class="ev-card" style="margin-bottom:12px; border-left:4px solid var(--pr1); border-radius:16px; background:var(--bg1); padding:16px; box-shadow:0 4px 12px rgba(180,128,40,0.04); display:flex; gap:14px; align-items:flex-start; transition:all 0.25s ease;">
+                <div class="ev-ico" style="width:44px; height:44px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:20px; flex-shrink:0; background:rgba(184,78,0,0.06); border:1px solid rgba(184,78,0,0.12); box-shadow:none;">{{ ev.icon }}</div>
+                <div style="flex:1; min-width:0;">
+                  <h4 style="font-size:14px; font-weight:700; color:var(--pr); margin:0; font-family:'Playfair Display',serif;">{{ ev.title }}</h4>
+                  <p style="font-size:12px; color:var(--tl); line-height:1.5; margin-top:4px; margin-bottom:8px; text-align:justify; word-break:break-word;">{{ ev.description }}</p>
+                  <div style="display:flex; gap:8px; flex-wrap:wrap; align-items:center;">
+                    <span style="display:inline-flex; align-items:center; gap:4px; font-size:10px; background:rgba(184,78,0,0.06); color:var(--pr1); border:1px solid rgba(184,78,0,0.12); border-radius:20px; padding:3px 10px; font-weight:700;">
+                      <Calendar style="width:11px; height:11px;" /> {{ ev.date_label }}
+                    </span>
+                    <span style="display:inline-flex; align-items:center; gap:4px; font-size:10px; background:rgba(0,0,0,0.04); color:var(--tl); border-radius:20px; padding:3px 10px; font-weight:600;">
+                      <Clock style="width:11px; height:11px;" /> {{ ev.time_label }}
+                    </span>
                   </div>
                 </div>
               </div>
@@ -218,6 +222,7 @@ import { ref, computed } from 'vue';
 import { router } from '@inertiajs/vue3';
 import { useDevoteeStore } from '@/Stores/devotee';
 import { LogOut, Pencil, Cake, Heart, Smartphone, MessageCircle, Calendar, Clock, Sparkles } from '@lucide/vue';
+import { compressImage } from '@/Utils/image';
 
 const store = useDevoteeStore();
 
@@ -249,17 +254,23 @@ const form = ref({
 
 const photoError = ref('');
 
-function handlePhotoUpload(e) {
+async function handlePhotoUpload(e) {
   photoError.value = '';
   const file = e.target.files[0];
   if (file) {
-    if (file.size > 5 * 1024 * 1024) {
-      photoError.value = 'Photo size must be less than 5MB.';
+    if (file.size > 15 * 1024 * 1024) {
+      photoError.value = 'Photo size must be less than 15MB.';
       e.target.value = '';
       form.value.photo = null;
       return;
     }
-    form.value.photo = file;
+    try {
+      const compressed = await compressImage(file, 400, 0.8);
+      form.value.photo = compressed;
+    } catch (err) {
+      console.error('Image compression failed, using original file', err);
+      form.value.photo = file;
+    }
   }
 }
 
