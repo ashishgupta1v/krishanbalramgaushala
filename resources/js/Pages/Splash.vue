@@ -54,7 +54,9 @@ onMounted(() => {
 
 function enter() {
   audioStore.play();
-  router.visit(route('choose'));
+  setTimeout(() => {
+    router.visit(route('choose'));
+  }, 150);
 }
 </script>
 
