@@ -45,7 +45,7 @@ class DevoteeController extends Controller
             'anniversary' => 'nullable|date',
             'fb_consent'  => 'boolean',
             'password'    => 'required|string|min:6|confirmed',
-            'photo'       => 'nullable|image|max:5120',
+            'photo'       => 'nullable|image|max:15360',
         ]);
 
         \Log::info('Validation passed', ['name' => $validated['name'], 'whatsapp' => $validated['whatsapp']]);
@@ -236,7 +236,7 @@ class DevoteeController extends Controller
             'dob'         => 'required|date',
             'anniversary' => 'nullable|date',
             'fb_consent'  => 'boolean',
-            'photo'       => 'nullable|image|max:5120',
+            'photo'       => 'nullable|image|max:15360',
         ]);
 
         if ($request->hasFile('photo')) {

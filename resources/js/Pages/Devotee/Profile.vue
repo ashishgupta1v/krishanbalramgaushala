@@ -218,6 +218,7 @@ import { ref, computed } from 'vue';
 import { router } from '@inertiajs/vue3';
 import { useDevoteeStore } from '@/Stores/devotee';
 import { LogOut, Pencil, Cake, Heart, Smartphone, MessageCircle, Calendar, Clock, Sparkles } from '@lucide/vue';
+import { compressImage } from '@/Utils/image';
 
 const store = useDevoteeStore();
 
@@ -249,17 +250,23 @@ const form = ref({
 
 const photoError = ref('');
 
-function handlePhotoUpload(e) {
+async function handlePhotoUpload(e) {
   photoError.value = '';
   const file = e.target.files[0];
   if (file) {
-    if (file.size > 5 * 1024 * 1024) {
-      photoError.value = 'Photo size must be less than 5MB.';
+    if (file.size > 15 * 1024 * 1024) {
+      photoError.value = 'Photo size must be less than 15MB.';
       e.target.value = '';
       form.value.photo = null;
       return;
     }
-    form.value.photo = file;
+    try {
+      const compressed = await compressImage(file, 400, 0.8);
+      form.value.photo = compressed;
+    } catch (err) {
+      console.error('Image compression failed, using original file', err);
+      form.value.photo = file;
+    }
   }
 }
 
