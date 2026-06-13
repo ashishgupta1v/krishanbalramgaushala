@@ -91,4 +91,35 @@ class DevoteeDateInputTest extends TestCase
                 && str_contains($job->getMessage(), 'Welcome to our divine');
         });
     }
+
+    /** @test */
+    public function test_send_wa_message_job_prepends_sanskrit_shlok_before_jai_gau_mata()
+    {
+        $devotee = Devotee::create([
+            'id'          => 'test-shlok-uuid',
+            'name'        => 'Aarav Mehta',
+            'whatsapp'    => '9876500000',
+            'dob'         => '1990-01-01',
+            'password'    => Hash::make('password123'),
+        ]);
+
+        $mockGateway = $this->createMock(\App\Infrastructure\Gateways\WhatsAppGateway::class);
+        $mockGateway->expects($this->once())
+            ->method('sendMessage')
+            ->with(
+                $this->equalTo('9876500000'),
+                $this->callback(function ($message) {
+                    return str_contains($message, 'सर्वदेवमयी गौः माता')
+                        && str_contains($message, '🙏 Jai Gau Mata')
+                        && str_contains($message, 'Aarav Mehta');
+                }),
+                $this->anything()
+            )
+            ->willReturn(['success' => true, 'msgid' => '12345']);
+
+        $this->app->instance(\App\Infrastructure\Gateways\WhatsAppGateway::class, $mockGateway);
+
+        $job = new \App\Jobs\SendWaMessageJob($devotee, "🙏 Jai Gau Mata!\n\nDear {name} Ji,\nWelcome!");
+        $job->handle($mockGateway);
+    }
 }

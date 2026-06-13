@@ -52,6 +52,22 @@ class SendWaMessageJob implements ShouldQueue
         // Replace {name} placeholder with devotee name
         $compiledMessage = str_replace('{name}', $this->devotee->name, $this->message);
 
+        // Prepend Sanskrit shlok before Jai Gau Mata
+        if (str_contains($compiledMessage, 'Jai Gau Mata')) {
+            if (!str_contains($compiledMessage, 'सर्वदेवमयी गौः माता')) {
+                $shlok = "सर्वदेवमयी गौः माता, सर्वतीर्थमयी यतः।\nतस्मात् सर्वदा पूज्या, सर्वकामफलप्रदा॥\n\n";
+                $pos = strpos($compiledMessage, '🙏 Jai Gau Mata');
+                if ($pos !== false) {
+                    $compiledMessage = substr_replace($compiledMessage, $shlok . '🙏 Jai Gau Mata', $pos, strlen('🙏 Jai Gau Mata'));
+                } else {
+                    $pos = strpos($compiledMessage, 'Jai Gau Mata');
+                    if ($pos !== false) {
+                        $compiledMessage = substr_replace($compiledMessage, $shlok . 'Jai Gau Mata', $pos, strlen('Jai Gau Mata'));
+                    }
+                }
+            }
+        }
+
         $result = $gateway->sendMessage($this->devotee->whatsapp, $compiledMessage, $this->templateName);
 
         if ($this->broadcastId) {
